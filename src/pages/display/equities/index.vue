@@ -10,6 +10,15 @@
         </div>
         <img class="botton" src="../../../assets/images/botton.png" alt="">
         <div class="left-top-content">
+          <div class="left-top-content-list" v-for="item in alarmlist" :key="item.content">
+            <el-divider></el-divider>
+            <div class="left-top-content-list-container">
+              <span>
+                {{item.content}}
+              </span>
+              <span>{{item.time}}</span>
+            </div>
+          </div>
           <el-divider></el-divider>
         </div>
       </div>
@@ -39,6 +48,13 @@ export default {
         { count: 2873, title: '历史情绪识别', colorType: 'green' },
         { count: 17215, title: '预警人次', colorType: 'yellow' },
       ],
+      alarmlist: [
+        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标', time: '2020-05-23 11:30' }
+      ]
     }
   }
 }
@@ -77,7 +93,6 @@ export default {
       width: 587px;
       height: 353px;
       margin-top: 44px;
-      padding-top: 39px;
       position: relative;
       .left-top-title {
         background: url(../../../assets/images/left_top_title.png) no-repeat;
@@ -89,7 +104,26 @@ export default {
         bottom: 324px;
       }
       .left-top-content {
-        // margin-top: 67px;
+        width: 100%;
+        height: 100%;
+        padding-top: 67px;
+        .left-top-content-list {
+          width: 100%;
+          height: 50px;
+          .left-top-content-list-container {
+            display: flex;
+            padding-left: 47px;
+            padding-right: 51px;
+            justify-content: space-between;
+            padding-top: 4px;
+            font-size: 14px;
+            font-family: Adobe Heiti Std R, Adobe Heiti Std R-R;
+            font-weight: R;
+            text-align: left;
+            color: #d4fff2;
+            line-height: 42px;
+          }
+        }
       }
     }
     .left-bottom {
