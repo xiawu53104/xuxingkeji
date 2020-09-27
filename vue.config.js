@@ -15,7 +15,9 @@ module.exports = {
         plugins: [
           autoprefixer(),
           pxtoviewport({
-            viewportWidth: 1920,
+            viewportWidth: 1080,
+            viewportUnit: 'vh',
+            fontViewportUnit: 'vh'
           })
         ]
       }

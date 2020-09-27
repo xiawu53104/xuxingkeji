@@ -1,6 +1,5 @@
 <template>
-  <div class="pages-display">
-    <img :src="bgImg" class="bg-img">
+  <div class="pages-display" :style="{backgroundImage: `url(${bgImg})`}">
     <Header />
     <router-view/>
   </div>
@@ -26,11 +25,7 @@ export default {
 .pages-display{
   width: 100%;
   height: 100%;
-  background-repeat: no-repeat;
+  // background-repeat: no-repeat;
   background-size: 100% 100%;
-  .bg-img{
-    position: absolute;
-    z-index: -1;
-  }
 }
 </style>
