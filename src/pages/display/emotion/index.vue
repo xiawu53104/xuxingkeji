@@ -18,21 +18,9 @@ export default {
   data() {
     return {
       reportItems: [
-        {
-          count: { text: 10392, color: '#C6FCFF' },
-          title: { text: '企业总人数', color: '#BFE0FF' },
-          backgroundImage: 'linear-gradient(#71BEFF, #284FB7)'
-        },
-        {
-          count: { text: 2873, color: '#D4FFF2' },
-          title: { text: '历史情绪识别', color: '#BDFFEB' },
-          backgroundImage: 'linear-gradient(#71FFCF, #18967A)'
-        },
-        {
-          count: { text: 17215, color: '#FFFFFF' },
-          title: { text: '预警人次', color: '#FFF2BF' },
-          backgroundImage: 'linear-gradient(#FFED71, #C56202)'
-        },
+        { count: 10392, title: '企业总人数', colorType: 'bule' },
+        { count: 2873, title: '历史情绪识别', colorType: 'green' },
+        { count: 17215, title: '预警人次', colorType: 'yellow' },
       ],
     }
   }
