@@ -48,7 +48,7 @@ export default {
 <style lang="less" scoped>
 .components-displayHeader{
   position: relative;
-  height: 41px;
+  height: 82px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   .bg-img{
@@ -58,11 +58,11 @@ export default {
   }
   .nav-wrap{
     display: inline-block;
-    margin-top: 10px;
-    margin-left: 16px;
+    margin-top: 20px;
+    margin-left: 32px;
   }
   .title{
-    font-size: 18px;
+    font-size: 36px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -77,10 +77,10 @@ export default {
     cursor: pointer;
     .quite-img{
       vertical-align: middle;
-      margin-right: 5px;
+      margin-right: 10px;
     }
     .quite-text{
-      font-size: 7px;
+      font-size: 14px;
       color: #F0F1F7;
       position: relative;
       top: 1px;
