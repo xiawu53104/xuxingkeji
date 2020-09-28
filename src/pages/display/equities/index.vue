@@ -37,11 +37,25 @@
     </div>
     <div class="middle">
       <div class="middle-top"></div>
-      <div class="middle-bottom" :style="{backgroundImage: `url(${eventBG})`}"></div>
+      <div class="middle-bottom" :style="{backgroundImage: `url(${eventBG})`}">
+        <div class="middle-bottom-title" :style="{backgroundImage: `url(${eventTitle})`}">
+          <div class="title">事件上报趋势图</div>
+        </div>
+        <img class="botton" :src="moreIcon" alt="">
+        <div class="event-container" ref="eventChart"></div>
+      </div>
     </div>
     <div class="right">
-      <div class="right-top" :style="{backgroundImage: `url(${eventBG})`}"></div>
-      <div class="right-bottom" :style="{backgroundImage: `url(${studyBG})`}"></div>
+      <div class="right-top" :style="{backgroundImage: `url(${hardWareBG})`}">
+        <div class="right-top-title" :style="{backgroundImage: `url(${hardWareTitle})`}">
+          <div class="title">硬件状态</div>
+        </div>
+      </div>
+      <div class="right-bottom" :style="{backgroundImage: `url(${studyBG})`}">
+        <div class="right-bottom-title" :style="{backgroundImage: `url(${studyTitle})`}">
+          <div class="title">职工安全学习分析</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -56,8 +70,13 @@ import safeTitle from '@/assets/images/left_bottom_title.png'
 import echarts from 'echarts'
 import option from './equities'
 import eventBG from '@/assets/images/middle_bottom.png'
+import eventTitle from '@/assets/images/middle_bottom_title.png'
 import hardWareBG from '@/assets/images/right_top.png'
+import hardWareTitle from '@/assets/images/right_top_title.png'
 import studyBG from '@/assets/images/right_bottom.png'
+import studyTitle from '@/assets/images/right_bottom_title.png'
+import eventOption from './event_report'
+
 export default {
   components: {
     ReportItem
@@ -82,14 +101,19 @@ export default {
       safeBG,
       safeTitle,
       eventBG,
+      eventTitle,
       hardWareBG,
+      hardWareTitle,
       studyBG,
+      studyTitle,
       select: 1,
     }
   },
   mounted () {
     let chart = echarts.init(this.$refs.container)
     chart.setOption(option)
+    let eventCharts = echarts.init(this.$refs.eventChart)
+    eventCharts.setOption(eventOption)
   }
 }
 </script>
@@ -180,6 +204,7 @@ export default {
         margin-left: 30px;
       }
       .container{
+        // margin-top: 52px;
         width: 587px;
         height: 365px;
         margin: 0 auto;
@@ -200,6 +225,20 @@ export default {
       height: 417px;
       margin-top: 34px;
       background-size: 100% 100%;
+      position: relative;
+      .middle-bottom-title {
+        background-size: 252px 53px;
+        width: 252px;
+        height: 53px;
+        position: absolute;
+        left: 208px;
+        bottom: 388px;
+      }
+      .event-container{
+        width: 587px;
+        height: 365px;
+        margin: 0 auto;
+      }
     }
   }
   .right {
@@ -211,12 +250,30 @@ export default {
       height: 484px;
       background-size: 100% 100%;
       margin-top: 33px;
+      position: relative;
+      .right-top-title {
+        background-size: 192px 53px;
+        width: 192px;
+        height: 53px;
+        position: absolute;
+        left: 198px;
+        bottom: 455px;
+      }
     }
     .right-bottom {
       width: 587px;
       height: 417px;
       background-size: 100% 100%;
       margin-top: 33px;
+      position: relative;
+      .right-bottom-title {
+        background-size: 292px 53px;
+        width: 292px;
+        height: 53px;
+        position: absolute;
+        left: 148px;
+        bottom: 388px;
+      }
     }
   }
   .pages-display-emotion-reportItem:not(:last-child){
