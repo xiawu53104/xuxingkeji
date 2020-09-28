@@ -36,7 +36,12 @@
       </div>
     </div>
     <div class="middle">
-
+      <div class="middle-top"></div>
+      <div class="middle-bottom" :style="{backgroundImage: `url(${eventBG})`}"></div>
+    </div>
+    <div class="right">
+      <div class="right-top" :style="{backgroundImage: `url(${eventBG})`}"></div>
+      <div class="right-bottom" :style="{backgroundImage: `url(${studyBG})`}"></div>
     </div>
   </div>
 </template>
@@ -50,6 +55,9 @@ import safeBG from '@/assets/images/left-bottom.png'
 import safeTitle from '@/assets/images/left_bottom_title.png'
 import echarts from 'echarts'
 import option from './equities'
+import eventBG from '@/assets/images/middle_bottom.png'
+import hardWareBG from '@/assets/images/right_top.png'
+import studyBG from '@/assets/images/right_bottom.png'
 export default {
   components: {
     ReportItem
@@ -62,17 +70,20 @@ export default {
         { count: 17215, title: '预警人次', colorType: 'yellow' },
       ],
       alarmlist: [
-        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标', time: '2020-05-23 11:30' }
+        { content: '一氧化碳超标1', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标2', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标3', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标4', time: '2020-05-23 11:30' },
+        { content: '一氧化碳超标5', time: '2020-05-23 11:30' }
       ],
       moreIcon,
       alarmBG,
       alarmTitle,
       safeBG,
       safeTitle,
+      eventBG,
+      hardWareBG,
+      studyBG,
       select: 1,
     }
   },
@@ -85,6 +96,7 @@ export default {
 
 <style lang="less" scoped>
 .pages-display-equities{
+  display: flex;
   .botton{
     width: 25px;
     height: 23px;
@@ -110,6 +122,7 @@ export default {
     width: 588px;
     padding-top: 32px;
     margin-left: 24px;
+    // float: left;/
     .left-top {
       background-size: 100% 100%;
       width: 587px;
@@ -154,7 +167,7 @@ export default {
       margin-top: 35px;
       margin-bottom: 31px;
       position: relative;
-      padding: 50px 0 0 30px;
+      padding-top: 50px;
       .left-bottom-title {
         background-size: 232px 53px;
         width: 232px;
@@ -163,9 +176,12 @@ export default {
         left: 178px;
         bottom: 388px;
       }
+      .radio-wrap {
+        margin-left: 30px;
+      }
       .container{
-        width: 360px;
-        height: 260px;
+        width: 587px;
+        height: 365px;
         margin: 0 auto;
       }
     }
@@ -173,6 +189,35 @@ export default {
   .middle {
     width: 668px;
     margin-left: 20px;
+    // float: left;
+    .middle-top {
+      width: 667px;
+      height: 484px;
+      margin-top: 33px;
+    }
+    .middle-bottom {
+      width: 668px;
+      height: 417px;
+      margin-top: 34px;
+      background-size: 100% 100%;
+    }
+  }
+  .right {
+    width: 587px;
+    margin-left: 17px;
+    // float: left;
+    .right-top {
+      width: 587px;
+      height: 484px;
+      background-size: 100% 100%;
+      margin-top: 33px;
+    }
+    .right-bottom {
+      width: 587px;
+      height: 417px;
+      background-size: 100% 100%;
+      margin-top: 33px;
+    }
   }
   .pages-display-emotion-reportItem:not(:last-child){
     margin-right: 22px;
