@@ -1,27 +1,70 @@
 export default {
-    tooltip: {},
-    radar: {
-      name: {
-        textStyle: {
-          color: '#fff',
-          backgroundColor: 'transparent',
-        }
-      },
-      indicator: [
-        { name: '开心20%', max: 6500},
-        { name: '平静40%', max: 6500},
-        { name: '困惑60%', max: 6500},
-        { name: '惊讶10%', max: 6500},
-        { name: '厌恶10%', max: 6500},
-      ]
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    color: ['#00d98b', '#eb6f49', '#8256e8', '#15efef', '#0091f1', '#ff6daf', '#FDB628'],
+    legend: {
+      bottom: 40,
+      data: ['XX危险源1', 'XX危险源2', 'XX危险源3', 'XX危险源4', 'XX危险源5','XX危险源6'],
+      itemWidth: 10,
+      itemHeight: 10,
+      // itemGap: 52,
+      textStyle: {
+        color: '#01d4f9',
+        fontSize: '9',
+        fontFamily: 'Microsoft YaHei Regular, Microsoft YaHei Regular-Regular',
+        fontWeight: 400
+      }
     },
     series: [{
       name: 'equities',
-      type: 'radar',
+      type: 'pie',
+      center: ['50%', '40%'],
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          formatter: function (params) {
+            return params.percent+ '% 危险隐患'
+          },
+          fontSize: '32px',
+          color: '#2BFAFF',
+          fontWeight: 'bold'
+        },
+        labelLine: {
+          show: true
+        },
+      },
       data: [
         {
-          value: [4300, 4000, 4500, 5000, 2000],
-          name: 'emotion'
+          value: 45,
+          name: 'XX危险源1'
+        },
+        {
+          value: 30,
+          name: 'XX危险源2'
+        },
+        {
+          value: 17,
+          name: 'XX危险源3'
+        },
+        {
+          value: 23,
+          name: 'XX危险源4'
+        },
+        {
+          value: 5,
+          name: 'XX危险源5'
+        },
+        {
+          value: 4,
+          name: 'XX危险源6'
         },
       ]
     }]
