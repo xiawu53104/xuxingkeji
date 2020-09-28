@@ -38,6 +38,7 @@
     </div>
 
     <center-content></center-content>
+    <right-content></right-content>
   </div>
 </template>
 
@@ -52,11 +53,13 @@ import historyBg from '@/assets/images/BG@2x.png'
 import historyTitleBg from '@/assets/images/多边形 1@2x.png'
 import CenterContent from './centerContent'
 import historyOption from './employeeHsitory'
+import RightContent from './rightContent'
 
 export default {
   components: {
     ReportItem,
     CenterContent,
+    RightContent,
   },
   data() {
     return {
@@ -89,6 +92,7 @@ export default {
   height: 100%;
   padding: 0 20px 32px 20px;
   display: flex;
+  justify-content: space-between;
   .radio-wrap{
     margin-top: 50px;
     margin-left: 30px;
