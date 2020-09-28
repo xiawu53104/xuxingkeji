@@ -92,7 +92,7 @@ export default {
   height: 100%;
   padding: 0 20px 32px 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   .radio-wrap{
     margin-top: 50px;
     margin-left: 30px;
