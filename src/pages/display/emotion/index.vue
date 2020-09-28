@@ -13,21 +13,31 @@
         </div>
         <img :src="moreIcon" class="more-icon">
         <div class="radio-wrap">
-          <el-radio-group v-model="select">
+          <el-radio-group v-model="select1">
             <el-radio :label="1">日度</el-radio>
             <el-radio :label="2">月度</el-radio>
             <el-radio :label="3">年度</el-radio>
           </el-radio-group>
         </div>
-        <div class="container" ref="container"></div>
+        <div class="container" ref="container1"></div>
       </div>
 
-      <div class="employee-history" :style="{backgroundImage: `url(${historyBg})`}">
+      <div class="employee-history clear-mgn" :style="{backgroundImage: `url(${historyBg})`}">
         <div class="history-title-wrap" :style="{backgroundImage: `url(${historyTitleBg})`}">
           职工历史心理报告分析
         </div>
+        <div class="radio-wrap">
+          <el-radio-group v-model="select2">
+            <el-radio :label="1">日度</el-radio>
+            <el-radio :label="2">月度</el-radio>
+            <el-radio :label="3">年度</el-radio>
+          </el-radio-group>
+          <div class="data-wrap" ref="container2"></div>
+        </div>
       </div>
     </div>
+
+    <center-content></center-content>
   </div>
 </template>
 
@@ -40,10 +50,13 @@ import echarts from 'echarts'
 import option from './emotion'
 import historyBg from '@/assets/images/BG@2x.png'
 import historyTitleBg from '@/assets/images/多边形 1@2x.png'
+import CenterContent from './centerContent'
+import historyOption from './employeeHsitory'
 
 export default {
   components: {
     ReportItem,
+    CenterContent,
   },
   data() {
     return {
@@ -55,14 +68,17 @@ export default {
       emotionBg,
       titleBg,
       moreIcon,
-      select: 1,
+      select1: 1,
+      select2: 1,
       historyBg,
       historyTitleBg,
     }
   },
   mounted() {
-    var myChart = echarts.init(this.$refs.container)
+    var myChart = echarts.init(this.$refs.container1)
     myChart.setOption(option)
+    var myChart1 = echarts.init(this.$refs.container2)
+    myChart1.setOption(historyOption)
   }
 }
 </script>
@@ -73,6 +89,10 @@ export default {
   height: 100%;
   padding: 0 20px 32px 20px;
   display: flex;
+  .radio-wrap{
+    margin-top: 50px;
+    margin-left: 30px;
+  }
   .left{
     width: 588px;
     padding-top: 32px;
@@ -125,10 +145,6 @@ export default {
       right: 28px;
       cursor: pointer;
     }
-    .radio-wrap{
-      margin-top: 50px;
-      margin-left: 30px;
-    }
     .container{
       width: 360px;
       height: 260px;
@@ -155,6 +171,11 @@ export default {
       transform: translate(-50%, -50%);
       color: #ADFAFF;
       font-size: 24px;
+    }
+    .data-wrap{
+      width: 560px;
+      height: 300px;
+      margin-top: 42px;
     }
   }
 }

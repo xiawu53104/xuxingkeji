@@ -1,10 +1,17 @@
 export default {
   tooltip: {},
+  grid: {
+    backgroundColor: 'rgba(96,105,141,0.2)',
+    borderColor: '#fff',
+  },
   radar: {
-    name: {
-      textStyle: {
-        color: '#fff',
-        backgroundColor: 'transparent',
+    textStyle: {
+      color: '#fff',
+      backgroundColor: 'transparent',
+    },
+    slitArea: {
+      areaStyle: {
+        color: ['rgba(0,0,0,0.3)','rgba(200,200,200,0.3)']
       }
     },
     indicator: [
