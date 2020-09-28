@@ -4,11 +4,11 @@
       <div class="left-header">
         <report-item v-for="(item, i) in reportItems" v-bind="item" :key="i"></report-item>
       </div>
-      <div class="left-top">
-        <div class="left-top-title">
+      <div class="left-top" :style="{backgroundImage: `url(${alarmBG})`}">
+        <div class="left-top-title" :style="{backgroundImage: `url(${alarmTitle})`}">
           <div class="title">今日异常提醒</div>
         </div>
-        <img class="botton" src="../../../assets/images/botton.png" alt="">
+        <img class="botton" :src="moreIcon" alt="">
         <div class="left-top-content">
           <div class="left-top-content-list" v-for="item in alarmlist" :key="item.content">
             <el-divider></el-divider>
@@ -22,11 +22,17 @@
           <el-divider></el-divider>
         </div>
       </div>
-      <div class="left-bottom">
-        <div class="left-bottom-title">
+      <div class="left-bottom" :style="{backgroundImage: `url(${safeBG})`}">
+        <div class="left-bottom-title" :style="{backgroundImage: `url(${safeTitle})`}">
           <div class="title">安全隐患分析</div>
-
         </div>
+        <div class="radio-wrap">
+          <el-radio-group v-model="select">
+            <el-radio :label="1">日度</el-radio>
+            <el-radio :label="3">年度</el-radio>
+          </el-radio-group>
+        </div>
+        <div class="container" ref="container"></div>
       </div>
     </div>
     <div class="middle">
@@ -37,9 +43,16 @@
 
 <script>
 import ReportItem from '../emotion/reportItem'
+import moreIcon from '@/assets/images/botton.png'
+import alarmBG from '@/assets/images/left_top.png'
+import alarmTitle from '@/assets/images/left_top_title.png'
+import safeBG from '@/assets/images/left-bottom.png'
+import safeTitle from '@/assets/images/left_bottom_title.png'
+import echarts from 'echarts'
+import option from './equities'
 export default {
   components: {
-    ReportItem,
+    ReportItem
   },
   data() {
     return {
@@ -54,8 +67,18 @@ export default {
         { content: '一氧化碳超标', time: '2020-05-23 11:30' },
         { content: '一氧化碳超标', time: '2020-05-23 11:30' },
         { content: '一氧化碳超标', time: '2020-05-23 11:30' }
-      ]
+      ],
+      moreIcon,
+      alarmBG,
+      alarmTitle,
+      safeBG,
+      safeTitle,
+      select: 1,
     }
+  },
+  mounted () {
+    let chart = echarts.init(this.$refs.container)
+    chart.setOption(option)
   }
 }
 </script>
@@ -88,14 +111,12 @@ export default {
     padding-top: 32px;
     margin-left: 24px;
     .left-top {
-      background: url(../../../assets/images/left_top.png) no-repeat;
       background-size: 100% 100%;
       width: 587px;
       height: 353px;
       margin-top: 44px;
       position: relative;
       .left-top-title {
-        background: url(../../../assets/images/left_top_title.png) no-repeat;
         background-size: 100% 100%;
         width: 222px;
         height: 53px;
@@ -127,21 +148,25 @@ export default {
       }
     }
     .left-bottom {
-      background: url(../../../assets/images/left_top.png) no-repeat;
       background-size: 100% 100%;
       width: 587px;
       height: 417px;
       margin-top: 35px;
       margin-bottom: 31px;
       position: relative;
+      padding: 50px 0 0 30px;
       .left-bottom-title {
-        background: url(../../../assets/images/left_bottom_title.png) no-repeat;
         background-size: 232px 53px;
         width: 232px;
         height: 53px;
         position: absolute;
         left: 178px;
         bottom: 388px;
+      }
+      .container{
+        width: 360px;
+        height: 260px;
+        margin: 0 auto;
       }
     }
   }
