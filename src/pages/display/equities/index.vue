@@ -10,7 +10,10 @@
         </div>
         <img class="botton" :src="moreIcon" alt="">
         <div class="left-top-content">
-          <div class="left-top-content-list" v-for="item in alarmlist" :key="item.content">
+          <!-- <div class="list-wrap"> -->
+            <scroll-list></scroll-list>
+          <!-- </div> -->
+          <!-- <div class="left-top-content-list" v-for="item in alarmlist" :key="item.content">
             <el-divider></el-divider>
             <div class="left-top-content-list-container">
               <span>
@@ -19,7 +22,7 @@
               <span>{{item.time}}</span>
             </div>
           </div>
-          <el-divider></el-divider>
+          <el-divider></el-divider> -->
         </div>
       </div>
       <div class="left-bottom" :style="{backgroundImage: `url(${safeBG})`}">
@@ -50,6 +53,18 @@
         <div class="right-top-title" :style="{backgroundImage: `url(${hardWareTitle})`}">
           <div class="title">硬件状态</div>
         </div>
+        <div class="right-top-lf" :style="{backgroundImage: `url(${rightTopLf})`}">
+          <div class="right-top-lf-title">
+            监控摄像总数：75
+          </div>
+          <div class="monitorVideoChart" ref="monitorVideoChart"></div>
+        </div>
+        <div class="right-top-lf rf" :style="{backgroundImage: `url(${rightTopLf})`}">
+          <div class="right-top-lf-title">
+            智能硬件总数：75
+          </div>
+          <div class="hardwareChart" ref="hardwareChart"></div>
+        </div>
       </div>
       <div class="right-bottom" :style="{backgroundImage: `url(${studyBG})`}">
         <div class="right-bottom-title" :style="{backgroundImage: `url(${studyTitle})`}">
@@ -62,6 +77,7 @@
 
 <script>
 import ReportItem from '../emotion/reportItem'
+import ScrollList from '@/components/scrollList/index'
 import moreIcon from '@/assets/images/botton.png'
 import alarmBG from '@/assets/images/left_top.png'
 import alarmTitle from '@/assets/images/left_top_title.png'
@@ -76,10 +92,11 @@ import hardWareTitle from '@/assets/images/right_top_title.png'
 import studyBG from '@/assets/images/right_bottom.png'
 import studyTitle from '@/assets/images/right_bottom_title.png'
 import eventOption from './event_report'
-
+import rightTopLf from '@/assets/images/right_top_lf.png'
 export default {
   components: {
-    ReportItem
+    ReportItem,
+    ScrollList
   },
   data() {
     return {
@@ -106,6 +123,7 @@ export default {
       hardWareTitle,
       studyBG,
       studyTitle,
+      rightTopLf,
       select: 1,
     }
   },
@@ -163,25 +181,9 @@ export default {
       }
       .left-top-content {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 30px);
         padding-top: 67px;
-        .left-top-content-list {
-          width: 100%;
-          height: 50px;
-          .left-top-content-list-container {
-            display: flex;
-            padding-left: 47px;
-            padding-right: 51px;
-            justify-content: space-between;
-            padding-top: 4px;
-            font-size: 14px;
-            font-family: Adobe Heiti Std R, Adobe Heiti Std R-R;
-            font-weight: R;
-            text-align: left;
-            color: #d4fff2;
-            line-height: 42px;
-          }
-        }
+        overflow: hidden;
       }
     }
     .left-bottom {
@@ -204,7 +206,6 @@ export default {
         margin-left: 30px;
       }
       .container{
-        // margin-top: 52px;
         width: 587px;
         height: 365px;
         margin: 0 auto;
@@ -226,6 +227,7 @@ export default {
       margin-top: 34px;
       background-size: 100% 100%;
       position: relative;
+      padding-top: 51px;
       .middle-bottom-title {
         background-size: 252px 53px;
         width: 252px;
@@ -235,9 +237,9 @@ export default {
         bottom: 388px;
       }
       .event-container{
-        width: 587px;
+        width: 668px;
         height: 365px;
-        margin: 0 auto;
+        // margin: 0 auto;
       }
     }
   }
@@ -258,6 +260,29 @@ export default {
         position: absolute;
         left: 198px;
         bottom: 455px;
+      }
+      .right-top-lf {
+        // display: inline-block;
+        width: 266px;
+        height: 393px;
+        background-size: 100% 100%;
+        margin-left: 24px;
+        margin-top: 66px;
+        float: left;
+        &.rf{
+          margin-left: 10px;
+        }
+        .right-top-lf-title {
+          height: 42px;
+          width: 100%;
+          padding: 0 0 0 20px;
+          font-size: 16px;
+          font-family: Adobe Heiti Std R, Adobe Heiti Std R-R;
+          font-weight: R;
+          text-align: left;
+          color: #ffffff;
+          line-height: 42px;
+        }
       }
     }
     .right-bottom {

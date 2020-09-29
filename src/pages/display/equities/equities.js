@@ -5,8 +5,9 @@ export default {
     },
     color: ['#00d98b', '#eb6f49', '#8256e8', '#15efef', '#0091f1', '#ff6daf', '#FDB628'],
     legend: {
-      bottom: 40,
-      data: ['XX危险源1', 'XX危险源2', 'XX危险源3', 'XX危险源4', 'XX危险源5','XX危险源6'],
+      bottom: 33,
+      left: 101,
+      data: ['XX危险源1', 'XX危险源2', 'XX危险源3', 'XX危险源4', 'XX危险源5','XX危险源6','XX危险源7'],
       itemWidth: 10,
       itemHeight: 10,
       // itemGap: 52,
@@ -65,6 +66,10 @@ export default {
         {
           value: 4,
           name: 'XX危险源6'
+        },
+        {
+          value: 14,
+          name: 'XX危险源7'
         },
       ]
     }]

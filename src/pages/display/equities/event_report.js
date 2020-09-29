@@ -1,16 +1,41 @@
+import echarts from 'echarts'
 export default {
     tooltip: {
+        show: true,
+        trigger: 'axis',
+        position: function (point) {
+            // 固定在顶部
+            return [point[0], '-13%'];
+        },
+        formatter: params => {
+            if (params.length) {
+                let msg = new Date(params[0].value[0]).getMonth() + 1 + '.' + new Date(params[0].value[0]).getDate() + ' ：<br />'
+                params.forEach(item => {
+                    msg +=  item.seriesName + '：' + item.value[1] + '起<br />' 
+                });
+                return msg
+            }
+        }
     },
     // color: ['#00d98b', '#eb6f49', '#8256e8', '#15efef', '#0091f1', '#ff6daf', '#FDB628'],
     legend: {
       top: 0,
-      left: 0,
+      left: 50,
+      icon: 'roundRect',
+      itemWidth: 12,
+      itemHeight: 6,
+      itemGap: 23,
       textStyle: {
         color: '#fff',
-        fontSize: '12',
+        fontSize: 12,
         fontFamily: 'Source Han Sans CN Regular',
         fontWeight: 400
       }
+    },
+    grid: {
+        left: 50,
+        right: 30,
+        top: 41
     },
     xAxis: {
         type: 'time',
@@ -19,88 +44,96 @@ export default {
         },
         axisLine: {
             lineStyle: {
-                color: '#15EFEF',
+                color: '#9FCEFF',
                 opcity: 0.8,
             }
         },
         axisTick: {
             lineStyle: {
-                color: '#15EFEF',
+                color: '#9FCEFF',
                 opcity: 0.8,
             }
-        }
+        },
+        axisLabel: {
+            color: '#9FCEFF',
+            fontSize: '12',
+            opcity: 0.8,
+            formatter: params => {
+                return new Date(params).getMonth()+1+ '.'+new Date(params).getDate()
+            }
+        },
     },
     yAxis: {
         type: 'value',
         splitLine: {
-            show: false
+            show: false,
+            // lineStyle: {
+            //     color: 'tansparent'
+            // }
         },
         axisLine: {
             lineStyle: {
-                color: '#15EFEF',
+                color: '#9FCEFF',
                 opcity: 0.8,
             }
         },
         axisTick: {
             inside: false,
             lineStyle: {
-                color: '#15EFEF',
+                color: '#9FCEFF',
                 opcity: 0.8,
             }
         },
         axisLabel: {
             color: '#9FCEFF',
-            fontSize: '12'
+            fontSize: '12',
+            opcity: 0.8
         },
         z: 10
     },
     series: [
         {
-            name: '周期检查',
+            name: '自查上报',
             type: 'line',
-            smooth: true,
+            showSymbol: false,
+            hoverAnimation: true,
             symbol: 'circle',
-            symbolSize: 5,
-            sampling: 'average',
+            symbolSize: 1,
             itemStyle: {
-                color: '#FF6DAF'
+                color: '#17EDEE'
             },
-            stack: 'a',
             areaStyle: {
-                color: '#FF6DAF',
-                // new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                //     offset: 0,
-                //     color: '#8ec6ad'
-                // }, {
-                //     offset: 1,
-                //     color: '#ffe'
-                // }])
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(21, 239, 239, 1)'
+                }, {
+                    offset: 1,
+                    color: 'rgba(21, 239, 239, .1)'
+                }])
             },
             data: [['2020-09-01', 180], ['2020-09-02', 160], ['2020-09-04', 210], ['2020-09-05', 215], ['2020-09-06', 230], ['2020-09-08', 205], ['2020-09-10', 219]]
         },
         {
-            name: '自查上报',
+            name: '周期检查',
             type: 'line',
-            smooth: true,
-            stack: 'a',
+            showSymbol: false,
+            hoverAnimation: true,
             symbol: 'circle',
-            symbolSize: 5,
-            sampling: 'average',
+            symbolSize: 1,
             itemStyle: {
-                color: '#17EDEE'
+                color: '#FF6DAF'
             },
             areaStyle: {
-                color: '#17EDEE'
-                // new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                //     offset: 0,
-                //     color: '#d68262'
-                // }, {
-                //     offset: 1,
-                //     color: '#ffe'
-                // }])
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(255, 109, 175, 1)'
+                }, {
+                    offset: 1,
+                    color: 'rgba(255, 109, 175, .1)'
+                }])
             },
             data: [['2020-09-01', 180], ['2020-09-02', 160], ['2020-09-04', 210], ['2020-09-05', 215], ['2020-09-06', 230], ['2020-09-08', 205], ['2020-09-10', 219]]
-        }
-
+        },
+        
     ]
 }
