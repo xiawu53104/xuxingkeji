@@ -70,6 +70,7 @@
         <div class="right-bottom-title" :style="{backgroundImage: `url(${studyTitle})`}">
           <div class="title">职工安全学习分析</div>
         </div>
+        <div class="studyChart" ref="studyChart"></div>
       </div>
     </div>
   </div>
@@ -93,6 +94,9 @@ import studyBG from '@/assets/images/right_bottom.png'
 import studyTitle from '@/assets/images/right_bottom_title.png'
 import eventOption from './event_report'
 import rightTopLf from '@/assets/images/right_top_lf.png'
+import monitorVideoOption from './monitor_video'
+import hardwareOption from './hardware'
+import studyOption from './study'
 export default {
   components: {
     ReportItem,
@@ -132,6 +136,12 @@ export default {
     chart.setOption(option)
     let eventCharts = echarts.init(this.$refs.eventChart)
     eventCharts.setOption(eventOption)
+    let monitorVideoChart = echarts.init(this.$refs.monitorVideoChart)
+    monitorVideoChart.setOption(monitorVideoOption)
+    let hardwareChart = echarts.init(this.$refs.hardwareChart)
+    hardwareChart.setOption(hardwareOption)
+    let studyChart = echarts.init(this.$refs.studyChart)
+    studyChart.setOption(studyOption)
   }
 }
 </script>
@@ -271,6 +281,10 @@ export default {
         float: left;
         &.rf{
           margin-left: 0.625rem;
+          .hardwareChart {
+            width: 16.625rem;
+            height: 21.9375rem;
+          }
         }
         .right-top-lf-title {
           height: 2.625rem;
@@ -282,6 +296,10 @@ export default {
           text-align: left;
           color: #ffffff;
           line-height: 2.625rem;
+        }
+        .monitorVideoChart {
+          width: 16.625rem;
+          height: 21.9375rem;
         }
       }
     }
@@ -298,6 +316,10 @@ export default {
         position: absolute;
         left: 9.25rem;
         bottom: 24.25rem;
+      }
+      .studyChart {
+        width: 36.6875rem;
+        height: 26.0625rem;
       }
     }
   }
