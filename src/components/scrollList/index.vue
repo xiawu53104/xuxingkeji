@@ -44,17 +44,17 @@ export default {
   overflow: hidden;
   .left-top-content-list {
     width: 100%;
-    height: 50px;
+    height: 3.125rem;
     .left-top-content-list-container {
       display: flex;
-      padding-left: 47px;
-      padding-right: 51px;
+      padding-left: 2.9375rem;
+      padding-right: 3.1875rem;
       justify-content: space-between;
-      padding-top: 4px;
-      font-size: 14px;
+      padding-top: 0.25rem;
+      font-size: 0.875rem;
       text-align: left;
       color: #d4fff2;
-      line-height: 42px;
+      line-height: 2.625rem;
     }
   }
 }

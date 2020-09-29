@@ -94,86 +94,86 @@ export default {
 
 <style lang="less" scoped>
 .pages-display-emotion-center{
-  width: 673px;
+  width: 42.0625rem;
   height: 100%;
-  margin: 32px 16px 0 16px;
+  margin: 2rem 1rem 0 1rem;
   .emotion-recognition-wrap{
     width: 100%;
-    height: 654px;
+    height: 40.875rem;
     position: relative;
     overflow: hidden;
     .bg-img{
       position: absolute;
-      width: 883px;
-      height: 672px;
+      width: 55.1875rem;
+      height: 42rem;
       z-index: 0;
       top: 0;
       left: 0;
     }
     .info-wrap{
-      width: 127px;
-      height: 205px;
+      width: 7.9375rem;
+      height: 12.8125rem;
       position: absolute;
       top: 0;
       left: 0;
       background: rgba(0,0,0,.5);
-      box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.7);
+      box-shadow: 0rem 0rem 2.5rem 0rem rgba(0,0,0,0.7);
       .border{
-        width: 127px;
-        height: 2px;
+        width: 7.9375rem;
+        height: 0.125rem;
         background: #51ffff;
-        box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.7);
+        box-shadow: 0rem 0rem 2.5rem 0rem rgba(0,0,0,0.7);
         top: 0;
         left: 0;
       }
       .text{
-        height: 16px;
-        font-size: 16px;
-        line-height: 16px;
+        height: 1rem;
+        font-size: 1rem;
+        line-height: 1rem;
         color: #fff;
-        margin-left: 20px;
-        margin-top: 15px;
-        margin-bottom: 10px;
+        margin-left: 1.25rem;
+        margin-top: 0.9375rem;
+        margin-bottom: 0.625rem;
       }
       .box{
         color: #fff;
-        font-size: 14px;
-        margin-left: 20px;
+        font-size: 0.875rem;
+        margin-left: 1.25rem;
         &>div:not(:last-child){
-          margin-bottom: 8px;
+          margin-bottom: 0.5rem;
         }
       }
     }
     .progress-bar-wrap{
-      width: 673px;
-      height: 84px;
+      width: 42.0625rem;
+      height: 5.25rem;
       background: rgba(0,0,0,.5);
-      border-radius: 0px 0px 5px 5px;
+      border-radius: 0rem 0rem 0.3125rem 0.3125rem;
       position: absolute;
       left: 0;
       bottom: 0;
       display: flex;
       align-items: center;
       .content{
-        margin-left: 12px;
+        margin-left: 0.75rem;
         .label{
-          font-size: 18px;
+          font-size: 1.125rem;
           color: #fff;
         }
         .bar{
           display: inline-block;
-          width: 448px;
-          height: 32px;
-          border: 1px solid #b2bccc;
-          border-radius: 4px;
+          width: 28rem;
+          height: 2rem;
+          border: 0.0625rem solid #b2bccc;
+          border-radius: 0.25rem;
           background-image: linear-gradient(to right,#0073F0, #00B5FA);
           background-repeat: no-repeat;
           vertical-align: middle;
-          margin-left: 10px;
-          margin-right: 20px;
+          margin-left: 0.625rem;
+          margin-right: 1.25rem;
         }
         .percent{
-          font-size: 24px;
+          font-size: 1.5rem;
           font-weight: 400;
           color: #fff;
           vertical-align: middle;
@@ -182,58 +182,58 @@ export default {
     }
   }
   .low-grade-wrap{
-    width: 668px;
-    height: 247px;
+    width: 41.75rem;
+    height: 15.4375rem;
     position: relative;
-    margin-top: 36px;
+    margin-top: 2.25rem;
     .border-bg{
-      width: 668px;
+      width: 41.75rem;
       position: absolute;
       top:0;
       left: 0;
       z-index: 0;
     }
     .title-width{
-      width: 232px;
+      width: 14.5rem;
     }
     .radio-wrap{
-      margin-top: 50px;
-      padding: 0 30px;
+      margin-top: 3.125rem;
+      padding: 0 1.875rem;
       display: flex;
       justify-content: space-between;
     }
     .report-wrap{
-      width: 613px;
-      height: 104px;
+      width: 38.3125rem;
+      height: 6.5rem;
       background: rgba(255,255,255, .1);
-      border-radius: 5px;
+      border-radius: 0.3125rem;
       margin: 0 auto;
-      margin-top: 30px;
-      padding-left: 90px;
+      margin-top: 1.875rem;
+      padding-left: 5.625rem;
       position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
       .left{
         position: absolute;
-        width: 90px;
-        height: 104px;
+        width: 5.625rem;
+        height: 6.5rem;
         left: 0;
         top: 0;
         text-align: center;
         color: #fff;
         .icon{
-          width: 25px;
-          height: 23px;
-          margin-top: 27px;
+          width: 1.5625rem;
+          height: 1.4375rem;
+          margin-top: 1.6875rem;
         }
         .status{
-          font-size: 12px;
-          margin-top: 14px;
+          font-size: 0.75rem;
+          margin-top: 0.875rem;
         }
         .right-border{
-          width: 1px;
-          height: 35px;
+          width: 0.0625rem;
+          height: 2.1875rem;
           opacity: 0.5;
           background: #d0bcb9;
           position: absolute;
@@ -244,26 +244,26 @@ export default {
       }
       .name-box{
         color: #fff;
-        margin-left: 20px;
+        margin-left: 1.25rem;
         .name{
-          font-size: 16px;
-          margin-bottom: 20px;
+          font-size: 1rem;
+          margin-bottom: 1.25rem;
         }
         .date{
-          font-size: 14px;
+          font-size: 0.875rem;
         }
       }
       .score{
         color: #51FFFF;
-        font-size: 48px;
-        margin-right: 37px;
+        font-size: 3rem;
+        margin-right: 2.3125rem;
         font-weight: 700;
       }
       .link-img{
         position: absolute;
-        width: 19px;
-        right: 7px;
-        top: 7px;
+        width: 1.1875rem;
+        right: 0.4375rem;
+        top: 0.4375rem;
       }
     }
   }

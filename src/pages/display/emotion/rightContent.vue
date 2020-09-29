@@ -66,70 +66,71 @@ export default {
 
 <style lang="less" scoped>
 .pages-display-emotion-right{
-  width: 587px;
+  width: 36.6875rem;
   height: 100%;
   .title-width{
-    width: 292px;
+    width: 18.25rem;
   }
   .grade-wrap{
     width: 100%;
-    height: 484px;
+    height: 30.25rem;
     position: relative;
-    margin-top: 31px;
+    margin-top: 1.9375rem;
     .grade-bg{
       width: 100%;
-      height: 484px;
+      height: 30.25rem;
       position: absolute;
       top: 0;
       left: 0;
       z-index: 0;
     }
     .radio-wrap{
-      margin-left: 30px;
-      margin-top: 20px;
+      margin-left: 1.875rem;
+      margin-top: 1.25rem;
     }
     .list-title{
-      height: 16px;
-      font-size: 16px;
+      height: 1rem;
+      font-size: 1rem;
       text-align: left;
       color: #ffffff;
-      margin: 20px 0 15px 30px;
+      margin: 1.25rem 0 0.9375rem 1.875rem;
     }
     .more-img{
-      width: 25px;
-      height: 23px;
+      width: 1.5625rem;
+      height: 1.4375rem;
       position: absolute;
-      top: 28px;
-      right: 28px;
+      top: 1.75rem;
+      right: 1.75rem;
     }
     .list-wrap{
-      height: 154px;
+      height: 9.625rem;
       overflow: hidden;
+      padding-right: 0.5rem;
     }
     .chart-title{
-      font-size: 16px;
+      font-size: 1rem;
       color: #ffffff;
-      margin: 10px 0 15px 30px;
+      margin: 0.625rem 0 0.9375rem 1.875rem;
     }
     .chart-wrap{
-      height: 200px;
-      width: 587px;
+      height: 12.5rem;
+      width: 36.6875rem;
     }
   }
   .result-wrap{
-    width: 587px;
-    height: 417px;
+    width: 36.6875rem;
+    height: 26.0625rem;
     position: relative;
-    margin-top: 38px;
+    margin-top: 2.375rem;
     .result-bg{
-      width: 587px;
-      height: 417px;
+      width: 36.6875rem;
+      height: 26.0625rem;
       position: absolute;
       z-index: 0;
     }
     .content-wrap{
-      margin-top: 42px;
-      padding: 0 22px;
+      margin-top: 2.625rem;
+      padding: 0 1.375rem;
       display: flex;
       justify-content: space-between;
     }

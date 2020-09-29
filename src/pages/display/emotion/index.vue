@@ -90,32 +90,32 @@ export default {
 .pages-display-emotion{
   width: 100%;
   height: 100%;
-  padding: 0 20px 32px 20px;
+  padding: 0 1.25rem 2rem 1.25rem;
   display: flex;
   justify-content: space-around;
   .radio-wrap{
-    margin-top: 50px;
-    margin-left: 30px;
+    margin-top: 3.125rem;
+    margin-left: 1.875rem;
   }
   .left{
-    width: 588px;
-    padding-top: 32px;
+    width: 36.75rem;
+    padding-top: 2rem;
   }
   .left-header{
-    margin-bottom: 46px;
+    margin-bottom: 2.875rem;
     .pages-display-emotion-reportItem:not(:last-child){
-      margin-right: 22px;
+      margin-right: 1.375rem;
     }
   }
   .emotion-wrap{
-    width: 587px;
-    height: 353px;
+    width: 100%;
+    height: 22.0625rem;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
     .bg{
-      width: 587px;
-      height: 353px;
+      width: 36.6875rem;
+      height: 22.0625rem;
       position: absolute;
       z-index: 0;
     }
@@ -124,9 +124,9 @@ export default {
       top: 0;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 222px;
-      height: 53px;
-      line-height: 53px;
+      width: 13.875rem;
+      height: 3.3125rem;
+      line-height: 3.3125rem;
       text-align: center;
       .title-bg{
         width: 100%;
@@ -137,35 +137,35 @@ export default {
         left: 0;
       }
       .title{
-        font-size: 24px;
+        font-size: 1.5rem;
         color: #adfaff;
       }
     }
     .more-icon{
       position: absolute;
-      width: 25px;
-      height: 23px;
-      top: 28px;
-      right: 28px;
+      width: 1.5625rem;
+      height: 1.4375rem;
+      top: 1.75rem;
+      right: 1.75rem;
       cursor: pointer;
     }
     .container{
-      width: 360px;
-      height: 260px;
+      width: 22.5rem;
+      height: 16.25rem;
       margin: 0 auto;
     }
   }
   .employee-history{
-    width: 587px;
-    height: 417px;
-    margin-top: 35px;
+    width: 36.6875rem;
+    height: 26.0625rem;
+    margin-top: 2.1875rem;
     position: relative;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     .history-title-wrap{
-      width: 332px;
-      height: 53px;
-      line-height: 53px;
+      width: 20.75rem;
+      height: 3.3125rem;
+      line-height: 3.3125rem;
       text-align: center;
       background-repeat: no-repeat;
       background-size: 100% 100%;
@@ -174,12 +174,12 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
       color: #ADFAFF;
-      font-size: 24px;
+      font-size: 1.5rem;
     }
     .data-wrap{
-      width: 560px;
-      height: 300px;
-      margin-top: 42px;
+      width: 35rem;
+      height: 18.75rem;
+      margin-top: 2.625rem;
     }
   }
 }

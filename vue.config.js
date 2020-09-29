@@ -9,18 +9,4 @@ module.exports = {
     config.resolve.alias
       .set('@', resolve('src'))
   },
-  css: {
-    loaderOptions: {
-      postcss: {
-        plugins: [
-          autoprefixer(),
-          pxtoviewport({
-            viewportWidth: 1920,
-            // viewportUnit: 'vh',
-            // fontViewportUnit: 'vh'
-          })
-        ]
-      }
-    }
-  }
 }

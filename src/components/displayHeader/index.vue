@@ -48,7 +48,7 @@ export default {
 <style lang="less" scoped>
 .components-displayHeader{
   position: relative;
-  height: 82px;
+  height: 5.125rem;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   .bg-img{
@@ -58,11 +58,11 @@ export default {
   }
   .nav-wrap{
     display: inline-block;
-    margin-top: 20px;
-    margin-left: 32px;
+    margin-top: 1.25rem;
+    margin-left: 2rem;
   }
   .title{
-    font-size: 36px;
+    font-size: 2.25rem;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -73,17 +73,17 @@ export default {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    right: 28px;
+    right: 1.75rem;
     cursor: pointer;
     .quite-img{
       vertical-align: middle;
-      margin-right: 10px;
+      margin-right: 0.625rem;
     }
     .quite-text{
-      font-size: 14px;
+      font-size: 0.875rem;
       color: #F0F1F7;
       position: relative;
-      top: 1px;
+      top: 0.0625rem;
     }
   }
 }

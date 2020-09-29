@@ -25,7 +25,7 @@ export default {
 .pages-display{
   width: 100%;
   height: 100%;
-  // background-repeat: no-repeat;
+  background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 </style>

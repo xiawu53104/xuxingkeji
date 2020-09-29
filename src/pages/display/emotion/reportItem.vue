@@ -50,20 +50,17 @@ export default {
 <style lang="less" scoped>
 .pages-display-emotion-reportItem{
   display: inline-block;
-  width: 176px;
-  height: 86px;
-  // background-image: linear-gradient(#71BEFF, #284FB7);
-  border-radius: 6px;
+  width: 11rem;
+  height: 5.375rem;
+  border-radius: 0.375rem;
   text-align: center;
   .number{
-    // color: #C6FCFF;
-    font-size: 30px;
-    margin-top: 10px;
+    font-size: 1.875rem;
+    margin-top: 0.625rem;
   }
   .title{
-    // color: #BFE0FF;
-    font-size: 14px;
-    margin-top: 5px;
+    font-size: 0.875rem;
+    margin-top: 0.3125rem;
   }
 }
 </style>

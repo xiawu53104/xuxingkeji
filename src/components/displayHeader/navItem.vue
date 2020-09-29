@@ -38,15 +38,15 @@ export default {
 <style lang="less" scoped>
 .components-header-nav{
   display: inline-block;
-  width: 194px;
-  height: 52px;
-  line-height: 52px;
+  width: 12.125rem;
+  height: 3.25rem;
+  line-height: 3.25rem;
   text-align: center;
   font-weight: bold;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   color: #F0F1F7;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1.25rem;
   &.active{
     color: #52FFFF;
   }

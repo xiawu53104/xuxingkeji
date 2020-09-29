@@ -140,169 +140,169 @@ export default {
 .pages-display-equities{
   display: flex;
   .botton{
-    width: 25px;
-    height: 23px;
+    width: 1.5625rem;
+    height: 1.4375rem;
     position: absolute;
-    top: 28px;
-    right: 28px;
+    top: 1.75rem;
+    right: 1.75rem;
   }
   .title {
-    // width: 154px;
+    // width: 9.625rem;
     width: 100%;
     height: 100%;
-    height: 23px;
-    font-size: 24px;
+    height: 1.4375rem;
+    font-size: 1.5rem;
     font-family: Adobe Heiti Std R, Adobe Heiti Std R-R;
     font-weight: R;
     text-align: center;
     color: #adfaff;
-    margin-top: 5px;
-    line-height: 42px;
-    letter-spacing: 2px;
+    margin-top: 0.3125rem;
+    line-height: 2.625rem;
+    letter-spacing: 0.125rem;
   }
   .left{
-    width: 588px;
-    padding-top: 32px;
-    margin-left: 24px;
+    width: 36.75rem;
+    padding-top: 2rem;
+    margin-left: 1.5rem;
     // float: left;/
     .left-top {
       background-size: 100% 100%;
-      width: 587px;
-      height: 353px;
-      margin-top: 44px;
+      width: 36.6875rem;
+      height: 22.0625rem;
+      margin-top: 2.75rem;
       position: relative;
       .left-top-title {
         background-size: 100% 100%;
-        width: 222px;
-        height: 53px;
+        width: 13.875rem;
+        height: 3.3125rem;
         position: absolute;
-        left: 173px;
-        bottom: 324px;
+        left: 10.8125rem;
+        bottom: 20.25rem;
       }
       .left-top-content {
         width: 100%;
-        height: calc(100% - 30px);
-        padding-top: 67px;
+        height: calc(100% - 1.875rem);
+        padding-top: 4.1875rem;
         overflow: hidden;
       }
     }
     .left-bottom {
       background-size: 100% 100%;
-      width: 587px;
-      height: 417px;
-      margin-top: 35px;
-      margin-bottom: 31px;
+      width: 36.6875rem;
+      height: 26.0625rem;
+      margin-top: 2.1875rem;
+      margin-bottom: 1.9375rem;
       position: relative;
-      padding-top: 50px;
+      padding-top: 3.125rem;
       .left-bottom-title {
-        background-size: 232px 53px;
-        width: 232px;
-        height: 53px;
+        background-size: 14.5rem 3.3125rem;
+        width: 14.5rem;
+        height: 3.3125rem;
         position: absolute;
-        left: 178px;
-        bottom: 388px;
+        left: 11.125rem;
+        bottom: 24.25rem;
       }
       .radio-wrap {
-        margin-left: 30px;
+        margin-left: 1.875rem;
       }
       .container{
-        width: 587px;
-        height: 365px;
+        width: 36.6875rem;
+        height: 22.8125rem;
         margin: 0 auto;
       }
     }
   }
   .middle {
-    width: 668px;
-    margin-left: 20px;
+    width: 41.75rem;
+    margin-left: 1.25rem;
     // float: left;
     .middle-top {
-      width: 667px;
-      height: 484px;
-      margin-top: 33px;
+      width: 41.6875rem;
+      height: 30.25rem;
+      margin-top: 2.0625rem;
     }
     .middle-bottom {
-      width: 668px;
-      height: 417px;
-      margin-top: 34px;
+      width: 41.75rem;
+      height: 26.0625rem;
+      margin-top: 2.125rem;
       background-size: 100% 100%;
       position: relative;
-      padding-top: 51px;
+      padding-top: 3.1875rem;
       .middle-bottom-title {
-        background-size: 252px 53px;
-        width: 252px;
-        height: 53px;
+        background-size: 15.75rem 3.3125rem;
+        width: 15.75rem;
+        height: 3.3125rem;
         position: absolute;
-        left: 208px;
-        bottom: 388px;
+        left: 13rem;
+        bottom: 24.25rem;
       }
       .event-container{
-        width: 668px;
-        height: 365px;
+        width: 41.75rem;
+        height: 22.8125rem;
         // margin: 0 auto;
       }
     }
   }
   .right {
-    width: 587px;
-    margin-left: 17px;
+    width: 36.6875rem;
+    margin-left: 1.0625rem;
     // float: left;
     .right-top {
-      width: 587px;
-      height: 484px;
+      width: 36.6875rem;
+      height: 30.25rem;
       background-size: 100% 100%;
-      margin-top: 33px;
+      margin-top: 2.0625rem;
       position: relative;
       .right-top-title {
-        background-size: 192px 53px;
-        width: 192px;
-        height: 53px;
+        background-size: 12rem 3.3125rem;
+        width: 12rem;
+        height: 3.3125rem;
         position: absolute;
-        left: 198px;
-        bottom: 455px;
+        left: 12.375rem;
+        bottom: 28.4375rem;
       }
       .right-top-lf {
         // display: inline-block;
-        width: 266px;
-        height: 393px;
+        width: 16.625rem;
+        height: 24.5625rem;
         background-size: 100% 100%;
-        margin-left: 24px;
-        margin-top: 66px;
+        margin-left: 1.5rem;
+        margin-top: 4.125rem;
         float: left;
         &.rf{
-          margin-left: 10px;
+          margin-left: 0.625rem;
         }
         .right-top-lf-title {
-          height: 42px;
+          height: 2.625rem;
           width: 100%;
-          padding: 0 0 0 20px;
-          font-size: 16px;
+          padding: 0 0 0 1.25rem;
+          font-size: 1rem;
           font-family: Adobe Heiti Std R, Adobe Heiti Std R-R;
           font-weight: R;
           text-align: left;
           color: #ffffff;
-          line-height: 42px;
+          line-height: 2.625rem;
         }
       }
     }
     .right-bottom {
-      width: 587px;
-      height: 417px;
+      width: 36.6875rem;
+      height: 26.0625rem;
       background-size: 100% 100%;
-      margin-top: 33px;
+      margin-top: 2.0625rem;
       position: relative;
       .right-bottom-title {
-        background-size: 292px 53px;
-        width: 292px;
-        height: 53px;
+        background-size: 18.25rem 3.3125rem;
+        width: 18.25rem;
+        height: 3.3125rem;
         position: absolute;
-        left: 148px;
-        bottom: 388px;
+        left: 9.25rem;
+        bottom: 24.25rem;
       }
     }
   }
   .pages-display-emotion-reportItem:not(:last-child){
-    margin-right: 22px;
+    margin-right: 1.375rem;
   }
  
 }

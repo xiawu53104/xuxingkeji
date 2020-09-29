@@ -1,19 +1,32 @@
 <template>
   <div id="app">
-    <!-- <dv-full-screen-container> -->
-      <router-view/>
-    <!-- </dv-full-screen-container> -->
+    <router-view/>
   </div>
 </template>
+
+<script>
+import { pageResize } from '@/common/resize'
+
+export default {
+  mounted() {
+    pageResize()
+    window.addEventListener('resize', pageResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', pageResize)
+  }
+}
+</script>
 
 <style lang="less">
 html,body{
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #0C2050;
 }
 #app{
-  width: 100%;
-  height: 100%;
+  // overflow: hidden;
+  margin: 0 auto;
 }
 </style>

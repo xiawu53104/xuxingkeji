@@ -15,18 +15,18 @@ export default {
 
 <style lang="less" scoped>
 .pages-result-item{
-  width: 266px;
-  height: 348px;
+  width: 16.625rem;
+  height: 21.75rem;
   background: rgba(255,255,255,0.1);
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   display: inline-block;
   .title{
-    height: 44px;
+    height: 2.75rem;
     background: rgba(173,250,255,0.1);
-    line-height: 44px;
-    padding-left: 20px;
+    line-height: 2.75rem;
+    padding-left: 1.25rem;
     color: #fff;
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 </style>
