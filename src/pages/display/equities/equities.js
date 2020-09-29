@@ -1,12 +1,41 @@
 export default {
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} ({d}%)'
+      formatter: params => {
+        return params.name + '上报问题'+ '<br /> <p style="text-align: center;margin-top: 5px;">' + params.value + '次</p>'
+      },
+      textStyle: {
+        color: '#01D4F9',
+        fontSize: 10
+      },
+      position: function (pos, params, dom, rect, size) {
+        // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+        var obj = {top: 60};
+        obj[['right', 'left'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+        return obj;
+      },
+      backgroundColor: 'transparent'
+    },
+    title: {
+      text: '',
+      x: '44%',
+      y: '38%',
+      textStyle: {
+        color: '#fff',
+      },
+      subtext: '危险隐患',
+      subtextStyle: {
+        color: '#fff',
+        fontSize: 10,
+        fontWeight:'bold',
+      },
+      itemGap: 11,
     },
     color: ['#00d98b', '#eb6f49', '#8256e8', '#15efef', '#0091f1', '#ff6daf', '#FDB628'],
     legend: {
+      width: 300,
       bottom: 33,
-      left: 101,
+      left: 81,
       data: ['XX危险源1', 'XX危险源2', 'XX危险源3', 'XX危险源4', 'XX危险源5','XX危险源6','XX危险源7'],
       itemWidth: 10,
       itemHeight: 10,
@@ -21,8 +50,8 @@ export default {
     series: [{
       name: 'equities',
       type: 'pie',
-      center: ['50%', '40%'],
-      radius: ['40%', '70%'],
+      center: ['50%', '38%'],
+      radius: ['45%', '65%'],
       avoidLabelOverlap: false,
       label: {
         show: false,
@@ -32,9 +61,9 @@ export default {
         label: {
           show: true,
           formatter: function (params) {
-            return params.percent+ '% 危险隐患'
+            return params.percent+ ' %'
           },
-          fontSize: '32px',
+          fontSize: '18',
           color: '#2BFAFF',
           fontWeight: 'bold'
         },
