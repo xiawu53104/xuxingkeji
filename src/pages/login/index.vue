@@ -3,8 +3,11 @@
 </template>
 
 <script>
+// import $ from 'jquery'
+// import bg from '@/assets/images/guide-bg.png'
+
 export default {
-  
+
 }
 </script>
 

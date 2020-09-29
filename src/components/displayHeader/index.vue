@@ -1,7 +1,7 @@
 <template>
   <div class="components-displayHeader clear-mgn" :style="{backgroundImage: bg}">
     <div class="nav-wrap">
-      <nav-item v-for="item in navList" :key="item.path" :title="item.meta.navTitle" :path="item.path"></nav-item>
+      <nav-item v-for="item in navList" :key="item.path" :title="item.meta.title" :path="item.path"></nav-item>
     </div>
     <div class="title">
       互联网+工会 职工关怀系统

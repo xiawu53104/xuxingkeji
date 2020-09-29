@@ -9,15 +9,21 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/guide'
+    redirect: '/guide',
   },
   {
     path: '/guide',
-    component: Login
+    component: Login,
+    meta: {
+      title: '引导'
+    },
   },
   {
     path: '/login',
-    component: Guide
+    component: Guide,
+    meta: {
+      title: '登录'
+    },
   },
   {
     path: '/display',
@@ -26,21 +32,21 @@ const routes = [
       {
         path: 'emotion',
         meta: {
-          navTitle: '情绪识别系统'
+          title: '情绪识别系统'
         },
         component: () => import(/* webpackChunkName: "emotion" */ '../pages/display/emotion/index.vue')
       },
       {
         path: 'equities',
         meta: {
-          navTitle: '职工权益保障'
+          title: '职工权益保障'
         },
         component: () => import(/* webpackChunkName: "equities" */ '../pages/display/equities/index.vue')
       },
       {
         path: 'service',
         meta: {
-          navTitle: '职工服务应用'
+          title: '职工服务应用'
         },
         component: () => import(/* webpackChunkName: "service" */ '../pages/display/service/index.vue')
       },
@@ -52,6 +58,15 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title || 'xuxingkeji'
+  }
+  // const isLogin = window.sessionStorage.getItem('isLogin')
+  // isLogin ? next() : next('/login')
+  next()
 })
 
 export default router

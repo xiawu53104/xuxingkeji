@@ -47,6 +47,8 @@ export default {
   color: #F0F1F7;
   cursor: pointer;
   font-size: 1.25rem;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   &.active{
     color: #52FFFF;
   }

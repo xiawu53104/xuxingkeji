@@ -11,7 +11,7 @@
           <img :src="titleBg" class="title-bg">
           <span class="title">情绪指数分布</span>
         </div>
-        <img :src="moreIcon" class="more-icon">
+        <img :src="moreIcon" class="more-icon" @click="handleEmotionMore">
         <div class="radio-wrap">
           <el-radio-group v-model="select1">
             <el-radio :label="1">日度</el-radio>
@@ -32,10 +32,88 @@
             <el-radio :label="2">月度</el-radio>
             <el-radio :label="3">年度</el-radio>
           </el-radio-group>
-          <div class="data-wrap" ref="container2"></div>
+          <div class="date-picker-wrap">
+            <el-date-picker
+              align="right"
+              style="width: 4.25rem"
+              :editable="false"
+              :clearable="false"
+              size="mini"
+              v-model="selsctYear"
+              type="year"
+              placeholder="选择年">
+            </el-date-picker>
+            <img :src="arrowIcon" class="arrow">
+          </div>
         </div>
+        <div class="data-wrap" ref="container2"></div>
       </div>
     </div>
+
+    <el-dialog
+      title="企业职工列表"
+      width="79.875rem"
+      :visible.sync="dialogVisible">
+      <div class="search-box">
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名/手机号" style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+              <el-option
+                v-for="item in departmentOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.isSpy" placeholder="是否特殊工种" style="width: 13rem;">
+              <el-option
+                v-for="item in isSpyOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="formInline.sexy" placeholder="性别" style="width: 10.625rem;">
+              <el-option
+                v-for="item in sexyOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary">搜索</el-button>
+            <el-button type="success">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <el-table :data="tableData" style="width: 100%" size="mini" border>
+        <el-table-column prop="number" label="序号"></el-table-column>
+        <el-table-column prop="name" label="职工姓名"></el-table-column>
+        <el-table-column prop="sexy" label="性别"></el-table-column>
+        <el-table-column prop="department" label="职工部门"></el-table-column>
+        <el-table-column prop="position" label="职工职位"></el-table-column>
+        <el-table-column prop="isSpy" label="是否特殊工种"></el-table-column>
+        <el-table-column prop="phone" label="职工手机号"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="">
+            <el-button type="text" size="small">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="page-wrap">
+        <el-pagination background layout="total,prev,pager,next"
+          :total="100" prev-text="上一页" next-text="下一页"></el-pagination>
+      </div>
+    </el-dialog>
 
     <center-content></center-content>
     <right-content></right-content>
@@ -54,6 +132,7 @@ import historyTitleBg from '@/assets/images/多边形 1@2x.png'
 import CenterContent from './centerContent'
 import historyOption from './employeeHsitory'
 import RightContent from './rightContent'
+import arrowIcon from '@/assets/images/下 拉_1@2x.png'
 
 export default {
   components: {
@@ -75,6 +154,57 @@ export default {
       select2: 1,
       historyBg,
       historyTitleBg,
+      arrowIcon,
+      selsctYear: '',
+      dialogVisible: false,
+      departmentOptions: [
+        { value: '1', label: '技术部' },
+        { value: '2', label: '商务部' },
+        { value: '3', label: '财务部' },
+      ],
+      isSpyOptions: [
+        { value: '1', label: '是' },
+        { value: '2', label: '否' },
+      ],
+      sexyOptions: [
+        { value: '1', label: '男' },
+        { value: '2', label: '女' },
+      ],
+      formInline: {
+        nameOrPhone: '',
+        department: '',
+        isSpy: '',
+        sexy: '',
+      },
+      tableData: [
+        {
+          number: '1',
+          name: '王小虎',
+          sexy: '男',
+          department: '技术部',
+          position: '部门经理',
+          isSpy: '是',
+          phone: '1234567896'
+        }, 
+        {
+          number: '1',
+          name: '王小虎',
+          sexy: '男',
+          department: '技术部',
+          position: '部门经理',
+          isSpy: '是',
+          phone: '1234567896'
+        },
+        {
+          number: '1',
+          name: '王小虎',
+          sexy: '男',
+          department: '技术部',
+          position: '部门经理',
+          isSpy: '是',
+          phone: '1234567896'
+        },
+      ],
     }
   },
   mounted() {
@@ -82,6 +212,11 @@ export default {
     myChart.setOption(option)
     var myChart1 = echarts.init(this.$refs.container2)
     myChart1.setOption(historyOption)
+  },
+  methods: {
+    handleEmotionMore() {
+      this.dialogVisible = true
+    }
   }
 }
 </script>
@@ -90,12 +225,26 @@ export default {
 .pages-display-emotion{
   width: 100%;
   height: 100%;
-  padding: 0 1.25rem 2rem 1.25rem;
+  padding: 0 1.25rem;
   display: flex;
   justify-content: space-around;
   .radio-wrap{
+    width: 100%;
     margin-top: 3.125rem;
-    margin-left: 1.875rem;
+    padding: 0 1.875rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .date-picker-wrap{
+      position: relative;
+      .arrow{
+        width: 0.375rem;
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
   }
   .left{
     width: 36.75rem;
@@ -181,6 +330,10 @@ export default {
       height: 18.75rem;
       margin-top: 2.625rem;
     }
+  }
+  .page-wrap{
+    text-align: right;
+    margin-top: 1.75rem;
   }
 }
 </style>
