@@ -6,9 +6,11 @@
       </div>
     </div>
     <div class="main">
-      <img :src="equitiesImg" class="equities-img guide-img">
+      <img v-for="item in imgList" :key="item.to" :class="[item.class, 'guide-img']"
+        :src="item.src" @click="$router.push(item.to)">
+      <!-- <img :src="equitiesImg" class="equities-img guide-img">
       <img :src="emotionImg" class="emotion-img guide-img">
-      <img :src="serviceImg" class="service-img guide-img">
+      <img :src="serviceImg" class="service-img guide-img"> -->
     </div>
   </div>
 </template>
@@ -26,11 +28,10 @@ export default {
       bg,
       headerBg,
       imgList: [
-        { src: equitiesImg, to: '' }
+        { src: equitiesImg, to: '/display/equities', class: 'equities-img' },
+        { src: emotionImg, to: '/display/emotion', class: 'emotion-img' },
+        { src: serviceImg, to: '/display/service', class: 'service-img' },
       ],
-      equitiesImg,
-      emotionImg,
-      serviceImg,
     }
   },
 }

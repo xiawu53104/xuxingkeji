@@ -34,12 +34,14 @@
           </el-radio-group>
           <div class="date-picker-wrap">
             <el-date-picker
+              :picker-options="pickerOption"
               align="right"
               style="width: 4.25rem"
               :editable="false"
               :clearable="false"
               size="mini"
               v-model="selsctYear"
+              @change="onChange"
               type="year"
               placeholder="选择年">
             </el-date-picker>
@@ -133,6 +135,7 @@ import CenterContent from './centerContent'
 import historyOption from './employeeHsitory'
 import RightContent from './rightContent'
 import arrowIcon from '@/assets/images/下 拉_1@2x.png'
+import * as service from '../apis'
 
 export default {
   components: {
@@ -142,6 +145,11 @@ export default {
   },
   data() {
     return {
+      pickerOption: {
+        disabledDate: (date) => {
+          return date.getTime() > Date.now()
+        }
+      },
       reportItems: [
         { count: 10392, title: '企业总人数', colorType: 'bule' },
         { count: 2873, title: '历史情绪识别', colorType: 'green' },
@@ -155,7 +163,7 @@ export default {
       historyBg,
       historyTitleBg,
       arrowIcon,
-      selsctYear: '',
+      selsctYear: new Date(),
       dialogVisible: false,
       departmentOptions: [
         { value: '1', label: '技术部' },
@@ -207,15 +215,32 @@ export default {
       ],
     }
   },
-  mounted() {
+  async mounted() {
     var myChart = echarts.init(this.$refs.container1)
     myChart.setOption(option)
-    var myChart1 = echarts.init(this.$refs.container2)
-    myChart1.setOption(historyOption)
+    this.hsitoryChart = echarts.init(this.$refs.container2)
+    this.initHistoryChart()
   },
   methods: {
+    async initHistoryChart() {
+      const month = new Date().getMonth()
+      let newOption = JSON.parse(JSON.stringify(historyOption))
+      const len = month + 2
+      newOption.xAxis.data = newOption.xAxis.data.slice(0, len)
+      const rawData = await service.getHistoryAnalysis()
+      console.log('rawData', rawData)
+      newOption.series[0].data = rawData.data.map(x => x.avg)
+      this.hsitoryChart.setOption(newOption)
+    },
     handleEmotionMore() {
       this.dialogVisible = true
+    },
+    onChange(v) {
+      if (v.getFullYear() < new Date().getFullYear()) {
+        this.hsitoryChart.setOption(historyOption)
+      } else {
+        this.initHistoryChart()
+      }
     }
   }
 }
