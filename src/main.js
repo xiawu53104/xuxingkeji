@@ -7,10 +7,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import scroll from 'vue-seamless-scroll'
 import './style/reset.less'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-import 'swiper/css/swiper.css'
+import 'swiper/swiper-bundle.css'
 import axios from './common/axios'
 
-Vue.use(VueAwesomeSwiper)
+Vue.use(VueAwesomeSwiper,  /* { default global options } */)
 
 
 Vue.use(scroll)

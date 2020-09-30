@@ -7,7 +7,25 @@
             <div class="title">劳模榜</div>
           </div>
           <img class="botton" :src="moreIcon" alt="">
-          <div class="content-img"></div>
+          <!-- <div class="content-img"></div> -->
+          <swiper 
+          class="content-img"
+          ref="mySwiper" 
+          :options="swiperOptions"
+          :auto-update="true"
+          :auto-destroy="true"
+          :delete-instance-on-destroy="true"
+          :cleanup-styles-on-destroy="true"
+          >
+            <swiper-slide>Slide 1</swiper-slide>
+            <swiper-slide>Slide 2</swiper-slide>
+            <swiper-slide>Slide 3</swiper-slide>
+            <swiper-slide>Slide 4</swiper-slide>
+            <swiper-slide>Slide 5</swiper-slide>
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
+            <!-- <div class="swiper-pagination" slot="pagination"></div> -->
+          </swiper>
         </div>
         <div class="left-header-lf rf" :style="{backgroundImage: `url(${leftHeaderRf})`}">
           <div class="left-header-lf-title" :style="{backgroundImage: `url(${leftHeaderRfTitle})`}">
@@ -44,8 +62,26 @@ export default {
       leftHeaderLfTitle,
       leftHeaderRfTitle,
       leftFooterTitle,
-      moreIcon
+      moreIcon,
+      swiperOptions: {
+        pagination: {
+          el: '.swiper-pagination',
+          loop: true,
+          autoplay: true,
+          stopOnLastSlider: false
+        },
+        // Some Swiper option/callback...
+      }
     }
+  },
+  computed: {
+    swiper() {
+      return this.$refs.mySwiper.$swiper
+    }
+  },
+  mounted() {
+    console.log('Current Swiper instance object', this.swiper)
+    this.swiper.slideTo(3, 1000, false)
   }
 }
 </script>
@@ -101,6 +137,10 @@ export default {
         .content-img {
           width: 258px;
           height: 278px;
+          color: #fff;
+          margin-top: 41px;
+          text-align: center;
+          line-height: 278px;
         }
       }
     }
