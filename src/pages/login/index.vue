@@ -57,6 +57,7 @@ export default {
         duration: 1500
       })
       setTimeout(() => {
+        window.sessionStorage.setItem('isLogin', 'true')
         this.$router.push('/guide')
       }, 1000)
     },

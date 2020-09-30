@@ -2,7 +2,8 @@
   <div class="pages-display-emotion">
     <div class="left">
       <div class="left-header">
-        <report-item v-for="(item, i) in reportItems" v-bind="item" :key="i"></report-item>
+        <report-item v-for="(item, i) in reportItems"
+          v-bind="item" :key="i" @click="handleClick(item)"></report-item>
       </div>
 
       <div class="emotion-wrap clear-mgn" :style="{backgroundImage: `url(${emotionBg})`}">
@@ -151,9 +152,9 @@ export default {
         }
       },
       reportItems: [
-        { count: 10392, title: '企业总人数', colorType: 'bule' },
-        { count: 2873, title: '历史情绪识别', colorType: 'green' },
-        { count: 17215, title: '预警人次', colorType: 'yellow' },
+        { id: 1, count: 10392, title: '企业总人数', colorType: 'bule' },
+        { id: 2, count: 2873, title: '历史情绪识别', colorType: 'green' },
+        { id: 3, count: 17215, title: '预警人次', colorType: 'yellow' },
       ],
       emotionBg,
       titleBg,
@@ -220,6 +221,9 @@ export default {
     myChart.setOption(option)
     this.hsitoryChart = echarts.init(this.$refs.container2)
     this.initHistoryChart()
+
+    const rawData = await service.getPsychology()
+    console.log('rawData', rawData)
   },
   methods: {
     async initHistoryChart() {
@@ -228,9 +232,13 @@ export default {
       const len = month + 2
       newOption.xAxis.data = newOption.xAxis.data.slice(0, len)
       const rawData = await service.getHistoryAnalysis()
-      console.log('rawData', rawData)
       newOption.series[0].data = rawData.data.map(x => x.avg)
       this.hsitoryChart.setOption(newOption)
+    },
+    handleClick(item) {
+      if (item.id === 1) {
+        this.dialogVisible = true
+      }
     },
     handleEmotionMore() {
       this.dialogVisible = true

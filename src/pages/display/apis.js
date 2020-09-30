@@ -27,4 +27,5 @@ export const getLowScoreSelections = async () => {
 // 心理测评结果分析
 export const getReport = async () => {
     const rawData = await http.post(`/psychol/evaluation/reportAnalysis`)
+    return rawData.data
 }

@@ -33,7 +33,8 @@ export default {
   },
   methods: {
     handleQuite() {
-      console.log('click')
+      window.sessionStorage.removeItem('isLogin')
+      this.$router.push('/login')
     }
   },
   computed: {

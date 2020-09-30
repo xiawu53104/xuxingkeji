@@ -64,9 +64,12 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title || 'xuxingkeji'
   }
-  // const isLogin = window.sessionStorage.getItem('isLogin')
-  // isLogin ? next() : next('/login')
-  next()
+  const isLogin = window.sessionStorage.getItem('isLogin')
+  if (isLogin || to.path === '/login') {
+    next()
+  } else {
+    next('/login')
+  }
 })
 
 export default router
