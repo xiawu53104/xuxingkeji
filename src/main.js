@@ -4,17 +4,20 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import dataV from '@jiaminghi/data-view'
 import scroll from 'vue-seamless-scroll'
 import './style/reset.less'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
+import axios from './common/axios'
+
+Vue.use(VueAwesomeSwiper)
+
 
 Vue.use(scroll)
 Vue.use(ElementUI)
-Vue.use(dataV)
-Vue.use(VueAwesomeSwiper)
 Vue.config.productionTip = false
+
+Vue.prototype.$http = axios
 
 new Vue({
   router,
