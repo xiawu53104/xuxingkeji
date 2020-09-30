@@ -160,7 +160,6 @@ export default {
     // width: 9.625rem;
     width: 100%;
     height: 100%;
-    height: 1.4375rem;
     font-size: 1.5rem;
     font-family: Adobe Heiti Std R, Adobe Heiti Std R-R;
     font-weight: R;

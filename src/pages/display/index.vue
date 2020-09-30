@@ -30,6 +30,7 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   margin: 0 auto;
+  height: 100%;
 }
 </style>
 <style lang="less">

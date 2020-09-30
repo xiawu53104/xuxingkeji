@@ -7,10 +7,13 @@ import 'element-ui/lib/theme-chalk/index.css'
 import dataV from '@jiaminghi/data-view'
 import scroll from 'vue-seamless-scroll'
 import './style/reset.less'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
 
 Vue.use(scroll)
 Vue.use(ElementUI)
 Vue.use(dataV)
+Vue.use(VueAwesomeSwiper)
 Vue.config.productionTip = false
 
 new Vue({
