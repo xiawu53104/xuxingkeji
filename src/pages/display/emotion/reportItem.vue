@@ -1,7 +1,8 @@
 <template>
-  <div class="pages-display-emotion-reportItem" :style="{backgroundImage: colors.backgroundImage}">
-    <div class="number" :style="{color: colors.countColor}">10,392</div>
-    <div class="title" :style="{color: colors.titleColor}">企业总人数</div>
+  <div class="pages-display-emotion-reportItem" @click="$emit('click')"
+    :style="{backgroundImage: colors.backgroundImage}">
+    <div class="number" :style="{color: colors.countColor}">{{count}}</div>
+    <div class="title" :style="{color: colors.titleColor}">{{title}}</div>
   </div>
 </template>
 
@@ -54,6 +55,7 @@ export default {
   height: 5.375rem;
   border-radius: 0.375rem;
   text-align: center;
+  cursor: pointer;
   .number{
     font-size: 1.875rem;
     margin-top: 0.625rem;
