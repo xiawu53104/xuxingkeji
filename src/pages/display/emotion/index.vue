@@ -221,17 +221,14 @@ export default {
     myChart.setOption(option)
     this.hsitoryChart = echarts.init(this.$refs.container2)
     this.initHistoryChart()
-
-    const rawData = await service.getPsychology()
-    console.log('rawData', rawData)
   },
   methods: {
     async initHistoryChart() {
       const month = new Date().getMonth()
       let newOption = JSON.parse(JSON.stringify(historyOption))
-      const len = month + 2
+      const len = month + 1
       newOption.xAxis.data = newOption.xAxis.data.slice(0, len)
-      const rawData = await service.getHistoryAnalysis()
+      const rawData = await service.getHistoryAnalysis(new Date().getFullYear())
       newOption.series[0].data = rawData.data.map(x => x.avg)
       this.hsitoryChart.setOption(newOption)
     },
@@ -243,8 +240,11 @@ export default {
     handleEmotionMore() {
       this.dialogVisible = true
     },
-    onChange(v) {
+    async onChange(v) {
       if (v.getFullYear() < new Date().getFullYear()) {
+        let newOption = JSON.parse(JSON.stringify(historyOption))
+        const rawData = await service.getHistoryAnalysis(v.getFullYear())
+        newOption.series[0].data = rawData.data.map(x => x.avg)
         this.hsitoryChart.setOption(historyOption)
       } else {
         this.initHistoryChart()

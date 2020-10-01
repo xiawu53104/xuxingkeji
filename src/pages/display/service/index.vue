@@ -57,66 +57,66 @@ export default {
     // width: 9.625rem;
     width: 100%;
     height: 100%;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-family: Adobe Heiti Std R;
     font-weight: R;
     text-align: center;
     color: #adfaff;
-    margin-top: 6px;
-    line-height: 42px;
-    letter-spacing: 2px;
+    margin-top: 0.375rem;
+    line-height: 2.625rem;
+    letter-spacing: 0.125rem;
   }
   .botton{
-    width: 19px;
-    height: 19px;
+    width: 1.1875rem;
+    height: 1.1875rem;
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 0.9375rem;
+    right: 0.9375rem;
   }
   .left{
-    width: 588px;
-    padding-top: 42px;
-    margin-left: 19px;
+    width: 36.75rem;
+    padding-top: 2.625rem;
+    margin-left: 1.1875rem;
     .left-header {
       width: 100%;
       height: 100%;
       .left-header-lf {
-        width: 284px;
-        height: 484px;
+        width: 17.75rem;
+        height: 30.25rem;
         background-size: 100% 100%;
-        margin-right: 20px;
+        margin-right: 1.25rem;
         float: left;
         position: relative;
         .left-header-lf-title {
           background-size: 100% 100%;
-          width: 192px;
-          height: 53px;
+          width: 12rem;
+          height: 3.3125rem;
           position: absolute;
-          left: 46px;
-          bottom: 455px;
+          left: 2.875rem;
+          bottom: 28.4375rem;
         }
         &.rf {
           margin-right: 0;
         }
         .content-img {
-          width: 258px;
-          height: 278px;
+          width: 16.125rem;
+          height: 17.375rem;
         }
       }
     }
     .left-footer {
-      width: 587px;
-      height: 417px;
+      width: 36.6875rem;
+      height: 26.0625rem;
       background-size: 100% 100%;
-      margin-top: 34px;
+      margin-top: 2.125rem;
       position: relative;
       .left-footer-title {
         background-size: 100% 100%;
-        width: 232px;
-        height: 53px;
+        width: 14.5rem;
+        height: 3.3125rem;
         position: absolute;
-        left: 178px;
-        bottom: 388px;
+        left: 11.125rem;
+        bottom: 24.25rem;
       }
     }
   }

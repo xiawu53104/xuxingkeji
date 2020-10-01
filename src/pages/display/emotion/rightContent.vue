@@ -6,15 +6,22 @@
         心理测评成绩分析
       </div>
       <div class="radio-wrap">
-        <el-radio-group v-model="select">
-          <el-radio :label="2">月度</el-radio>
-          <el-radio :label="3">年度</el-radio>
+        <el-radio-group v-model="select" @change="gradeChange">
+          <el-radio :label="2">本月</el-radio>
+          <el-radio :label="3">本年</el-radio>
         </el-radio-group>
       </div>
       <div class="list-title">测评排行榜</div>
       <img :src="moreImg" class="more-img">
       <div class="list-wrap">
-        <scroll-list></scroll-list>
+        <scroll-list :data="users">
+          <template v-slot:default="{data: {i, item}}">
+            <span class="list-item">{{`TOP${i}`}}</span>
+            <span class="list-item">{{item.name}}</span>
+            <span class="list-item">{{item.department}}</span>
+            <span class="list-item">{{item.position}}</span>
+          </template>
+        </scroll-list>
       </div>
       <div class="chart-title">测评成绩趋势图</div>
       <div ref="container" class="chart-wrap"></div>
@@ -62,6 +69,16 @@ import resultBg from '@/assets/images/BG@2x.png'
 import ResultItem from './resultItem'
 import recognitionOption from './recognition'
 import appraisalOption from './appraisal'
+import * as service from '../apis'
+import getUsers from '../user'
+
+const getMonthDays = () => {
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const d = new Date(year, month, 0)
+  return d.getDate()
+}
 
 export default {
   components: {
@@ -77,15 +94,40 @@ export default {
       resultBg,
       select1: 1,
       select2: 1,
+      users: [],
     }
   },
   mounted() {
-    const chart = echarts.init(this.$refs.container)
-    chart.setOption(gradeOption)
+    this.chart = echarts.init(this.$refs.container)
+    this.initGradeChart(this.select)
+    this.initUsers()
+
     const chart1 = echarts.init(this.$refs.chartWrap1)
     chart1.setOption(recognitionOption)
     const chart2 = echarts.init(this.$refs.chartWrap2)
     chart2.setOption(appraisalOption)
+  },
+  methods: {
+    async initGradeChart(type) {
+      let option = JSON.parse(JSON.stringify(gradeOption))
+      if (type == 2) {
+        const axis = []
+        for (let i = 1; i <= getMonthDays(); i++) {
+          axis.push(i)
+        }
+        option.xAxis.data = axis
+      }
+      const rawData = await service.getPsychology()
+      option.series[0].data = rawData.data.trend.map(x => x.avg)
+      this.chart.setOption(option)
+    },
+    initUsers() {
+      const users = getUsers()
+      this.users = users.sort((a, b) => b.avg - a.avg).slice(0, 20)
+    },
+    gradeChange(v) {
+      this.initGradeChart(v)
+    },
   }
 }
 </script>
@@ -132,6 +174,10 @@ export default {
       height: 9.625rem;
       overflow: hidden;
       padding-right: 0.5rem;
+      .list-item{
+        display: inline-block;
+        width: 5rem;
+      }
     }
     .chart-title{
       font-size: 1rem;

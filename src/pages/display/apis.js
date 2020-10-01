@@ -1,8 +1,10 @@
 import http from '@/common/axios'
 
 // 职工历史心理报告分析
-export const getHistoryAnalysis = async () => {
-    const rawData = await http.post(`/psychol/evaluation/historyAnalysis`)
+export const getHistoryAnalysis = async (year) => {
+    const rawData = await http.post(`/psychol/evaluation/historyAnalysis`, {
+        year
+    })
     return rawData.data
 }
 

@@ -1,12 +1,12 @@
 export default {
   tooltip: {
     trigger: 'axis',
-    axisPointer: {
-      type: 'cross',
-      crossStyle: {
-        color: '#999'
-      }
-    }
+    // axisPointer: {
+    //   type: 'cross',
+    //   crossStyle: {
+    //     color: '#999'
+    //   }
+    // }
   },
   textStyle: {
     color: '#fff'
@@ -16,7 +16,7 @@ export default {
   },
   xAxis: {
     type: 'category',
-    data: ['0211', '0212', '0213', '0214', '0215', '0216', '0217', '0218'],
+    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     axisPointer: {
       type: 'shadow'
     },
