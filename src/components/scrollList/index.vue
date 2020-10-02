@@ -47,8 +47,7 @@ export default {
     height: 3.125rem;
     .left-top-content-list-container {
       display: flex;
-      padding-left: 2.9375rem;
-      padding-right: 3.1875rem;
+      padding: 0 2rem;
       justify-content: space-between;
       padding-top: 0.25rem;
       font-size: 0.875rem;

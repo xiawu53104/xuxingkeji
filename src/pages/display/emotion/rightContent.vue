@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import gradeBg from '@/assets/images/BG _2@2x.png'
+import gradeBg from '@/assets/images/grade-bg.png'
 import titleBg from '@/assets/images/多边形 1_2@2x.png'
 import ScrollList from '@/components/scrollList/index'
 import moreImg from '@/assets/images/更多@2x.png'

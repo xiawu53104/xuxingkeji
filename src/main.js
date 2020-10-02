@@ -10,7 +10,7 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/swiper-bundle.css'
 import axios from './common/axios'
 
-Vue.use(VueAwesomeSwiper)
+Vue.use(VueAwesomeSwiper,  /* { default global options } */)
 
 
 Vue.use(scroll)
