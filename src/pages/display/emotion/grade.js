@@ -13,6 +13,9 @@ export default {
   },
   grid: {
     top: 10,
+    left: 29,
+    bottom: 44,
+    right: 23
   },
   xAxis: {
     type: 'category',
@@ -22,15 +25,39 @@ export default {
     },
     axisLine: {
       lineStyle: {
-        color: '#ADFAFF'
+        color: '#ADFAFF',
+        width: 0.5
       }
+    },
+    axisTick: {
+      lineStyle: {
+        color: '#ADFAFF',
+        width: 0.5
+      }
+    },
+    axisLabel: {
+      color: '#ADFAFF',
+      fontSize: 10
     }
   },
   yAxis: {
     axisLine: {
       lineStyle: {
-        color: '#ADFAFF'
+        color: '#ADFAFF',
+        width: 0.5
       }
+    },
+    axisTick: {
+      lineStyle: {
+        color: '#ADFAFF',
+        width: 0.5
+      }
+    },
+    axisLabel: {
+      show: false
+    },
+    splitLine: {
+      show: false
     }
   },
   series: [
@@ -39,7 +66,18 @@ export default {
       itemStyle: {
         color: '#32B7E9',
       },
-      data: [2.0, 4.9, 7.0, 23.2, 25.6, 32.6, 20.0, 6.4, 3.3]
+      data: [2.0, 4.9, 7.0, 23.2, 25.6, 32.6, 20.0, 6.4, 3.3],
+      showSymbol: false,
+      areaStyle: {
+        color: {
+          type: 'linear',
+          colorStops: [{
+            offset: 0, color: '#1A4271' // 0% 处的颜色
+          }, {
+            offset: 1, color: '#1A4271' // 100% 处的颜色
+          }],
+        }
+      }
     },
   ]
 };

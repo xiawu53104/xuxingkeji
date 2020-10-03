@@ -10,19 +10,13 @@
         </div>
         <img class="botton" :src="moreIcon" alt="">
         <div class="left-top-content">
-          <!-- <div class="list-wrap"> -->
-            <scroll-list></scroll-list>
-          <!-- </div> -->
-          <!-- <div class="left-top-content-list" v-for="item in alarmlist" :key="item.content">
-            <el-divider></el-divider>
-            <div class="left-top-content-list-container">
-              <span>
-                {{item.content}}
-              </span>
-              <span>{{item.time}}</span>
-            </div>
-          </div>
-          <el-divider></el-divider> -->
+            <scroll-list :data="alarmlist">
+              <template v-slot:default="{data: {item}}">
+                <!-- <span class="list-item">{{`TOP${i + 1}`}}</span> -->
+                <span class="list-item list-item-lf">{{item.content}}</span>
+                <span class="list-item list-item-rf">{{item.time}}</span>
+              </template>
+            </scroll-list>
         </div>
       </div>
       <div class="left-bottom" :style="{backgroundImage: `url(${safeBG})`}">
@@ -39,7 +33,7 @@
       </div>
     </div>
     <div class="middle">
-      <div class="middle-top"></div>
+      <div class="middle-top" :style="{backgroundImage: `url(${bg})`}"></div>
       <div class="middle-bottom" :style="{backgroundImage: `url(${eventBG})`}">
         <div class="middle-bottom-title" :style="{backgroundImage: `url(${eventTitle})`}">
           <div class="title">事件上报趋势图</div>
@@ -53,6 +47,7 @@
         <div class="right-top-title" :style="{backgroundImage: `url(${hardWareTitle})`}">
           <div class="title">硬件状态</div>
         </div>
+        <img class="botton" :src="moreIcon" alt="">
         <div class="right-top-lf" :style="{backgroundImage: `url(${rightTopLf})`}">
           <div class="right-top-lf-title">
             监控摄像总数：75
@@ -97,6 +92,7 @@ import rightTopLf from '@/assets/images/right_top_lf.png'
 import monitorVideoOption from './monitor_video'
 import hardwareOption from './hardware'
 import studyOption from './study'
+import bg from '@/assets/images/曲线 540@2x.png'
 export default {
   components: {
     ReportItem,
@@ -128,6 +124,7 @@ export default {
       studyBG,
       studyTitle,
       rightTopLf,
+      bg,
       select: 1,
     }
   },
@@ -193,6 +190,17 @@ export default {
         height: calc(100% - 1.875rem);
         padding-top: 4.1875rem;
         overflow: hidden;
+        .list-item {
+          &.list-item-lf {
+            margin-left: 2.9375rem;
+          }
+          &.list-item-middle {
+            margin-left: 1.4375rem;
+          }
+          &.list-item-rf {
+            margin-right: 3.1875rem;
+          }
+        }
       }
     }
     .left-bottom {
@@ -229,6 +237,7 @@ export default {
       width: 41.6875rem;
       height: 30.25rem;
       margin-top: 2.0625rem;
+      background-size: 100% 100%;
     }
     .middle-bottom {
       width: 41.75rem;

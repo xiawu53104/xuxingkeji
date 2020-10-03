@@ -108,7 +108,7 @@ html {
 .el-dialog{
   background: #071427;
   border: 0.0625rem solid #51ffff;
-  box-shadow: 0px 0px 2.5rem 0px rgba(0,0,0,0.7); 
+  box-shadow: 0rem 0rem 2.5rem 0rem rgba(0,0,0,0.7); 
   .el-dialog__header{
     background: #005662;
     .el-dialog__title{
@@ -133,4 +133,31 @@ html {
 
 .el-button--text{
   color: #01CDD2;
+}
+
+.el-pagination__total{
+  color: #fff;
+}
+.el-pagination.is-background .el-pager li{
+  color: #fff;
+  background-color: rgba(21,239,239,0);
+  border-radius: 0;
+  border: 1px solid #15efef;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background-color: rgba(21,239,239,0.5);
+}
+.el-pagination.is-background .btn-next{
+  color: #fff;
+  border-radius: 0;
+  background-color: rgba(21,239,239,0.5);
+  border: 1px solid #15efef;
+  padding: 0 1rem;
+}
+.el-pagination.is-background .btn-prev{
+  color: #fff;
+  border-radius: 0;
+  background-color: rgba(21,239,239,0.5);
+  border: 1px solid #15efef;
+  padding: 0 1rem;
 }

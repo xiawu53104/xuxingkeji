@@ -38,6 +38,7 @@ export default {
   overflow: hidden;
   .avatar-img{
     width: 100%;
+    height: 100%;
   }
   .name-box{
     font-size: 1rem;

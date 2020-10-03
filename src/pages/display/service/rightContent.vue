@@ -9,20 +9,23 @@
         <div class="books-wrap-lf-title">
           博学之星
         </div>
-        <div class="list-wrap">
-        <scroll-list :data="users">
-          <template v-slot:default="{data: {i, item}}">
-            <span class="list-item">{{`TOP${i + 1}`}}</span>
-            <span class="list-item">{{item.name}}</span>
-            <span class="list-item">{{item.department}}</span>
-          </template>
-        </scroll-list>
-      </div>
+        <div class="list">
+          <div class="list-wrap">
+            <scroll-list :data="users">
+              <template v-slot:default="{data: {i, item}}">
+                <span class="list-item">{{`TOP${i + 1}`}}</span>
+                <span class="list-item">{{item.name}}</span>
+                <span class="list-item">{{item.department}}</span>
+              </template>
+            </scroll-list>
+          </div>
+        </div>
       </div>
       <div class="books-wrap-lf rf" :style="{backgroundImage: `url(${booksWrap})`}">
         <div class="books-wrap-lf-title">
           工种借阅分析
         </div>
+        <div class="booksWrapChart" ref="booksWrapChart"></div>
       </div>
     </div>
 
@@ -42,6 +45,8 @@ import booksWrap from '@/assets/images/books_wrap.png'
 import bottomBg from '@/assets/images/BG@2x.png'
 import ScrollList from '@/components/scrollList/index'
 import getUsers from '../user'
+import echarts from 'echarts'
+import booksWrapOption from './books_wrap'
 
 export default {
   data() {
@@ -59,6 +64,8 @@ export default {
   },
   mounted() {
     this.initUsers()
+    let booksWrapChart = echarts.init(this.$refs.booksWrapChart)
+    booksWrapChart.setOption(booksWrapOption)
   },
   methods: {
     initUsers() {
@@ -98,6 +105,10 @@ export default {
       background-size: 100% 100%;
       &.rf {
         margin-left: 0.625rem;
+        .booksWrapChart {
+          width: 16.625rem;
+          height: 21.9375rem;
+        }
       }
       .books-wrap-lf-title {
         height: 2.625rem;
@@ -107,6 +118,10 @@ export default {
         text-align: left;
         color: #ffffff;
         line-height: 2.625rem;
+      }
+      .list {
+        width: 16.625rem;
+        height: 22.5rem;
       }
     }
     .list-wrap{

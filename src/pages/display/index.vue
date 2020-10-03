@@ -50,32 +50,7 @@ export default {
   .el-input__inner:focus{
     border-color: #52ffff;
   }
-  .el-pagination__total{
-    color: #fff;
-  }
-  .el-pagination.is-background .el-pager li{
-    color: #fff;
-    background-color: rgba(21,239,239,0);
-    border-radius: 0;
-    border: 1px solid #15efef;
-  }
-  .el-pagination.is-background .el-pager li:not(.disabled).active{
-    background-color: rgba(21,239,239,0.5);
-  }
-  .el-pagination.is-background .btn-next{
-    color: #fff;
-    border-radius: 0;
-    background-color: rgba(21,239,239,0.5);
-    border: 1px solid #15efef;
-    padding: 0 1rem;
-  }
-  .el-pagination.is-background .btn-prev{
-    color: #fff;
-    border-radius: 0;
-    background-color: rgba(21,239,239,0.5);
-    border: 1px solid #15efef;
-    padding: 0 1rem;
-  }
+  
   .el-date-editor--year .el-input__prefix{
     display: none;
   }

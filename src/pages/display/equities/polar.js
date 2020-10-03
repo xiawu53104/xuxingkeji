@@ -8,15 +8,24 @@ export const getOption = (normal, unNormal, total, colorList) => {
             fontSize: 12,
             fontWeight:'bold',
         },
-        subtext: '异常：' + unNormal + '个',
+        subtext: '{a|异常：}{b|'+unNormal+'}{a|个}',
         subtextStyle: {
-            color: '#fff',
-            fontSize: 12,
-            fontWeight:'bold',
-            },
-            itemGap: 11,
-            left: '68',
-            top: '94'
+            rich: {
+                a: {
+                    fontSize: 12,
+                    fontWeight:'bold',
+                    color: '#fff'
+                },
+                b: {
+                    fontSize: 12,
+                    fontWeight:'bold',
+                    color: '#FF0000'
+                }
+            }
+        },
+        itemGap: 11,
+        left: '68',
+        top: '94',
         },
         angleAxis: {
             max: 75,

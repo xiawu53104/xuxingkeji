@@ -1,22 +1,31 @@
 export default {
     title: {
-        text: '已完成：',
+        text: '已完成：150人',
         textStyle: {
             fontSize: 14,
             color: '#fff',
             fontWeight: 600
         },
-        subtext: '未完成：',
+        subtext: '{a|未完成：}{b|42人}',
         subtextStyle: {
-            fontSize: 14,
-            fontWeight: 400,
-            color: '#fff'
+            rich: {
+                a: {
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: '#fff'
+                },
+                b: {
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: '#FF0000'
+                }
+            }
         },
         // left: 'left',
         x: 20,
         y: 40,
     },
-    color: ['#EB6F49', '#15EFEF'],
+    color: ['#15EFEF', '#EB6F49'],
     tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)',
