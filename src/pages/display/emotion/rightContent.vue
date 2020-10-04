@@ -104,8 +104,8 @@ export default {
 
     const chart1 = echarts.init(this.$refs.chartWrap1)
     chart1.setOption(recognitionOption)
-    const chart2 = echarts.init(this.$refs.chartWrap2)
-    chart2.setOption(appraisalOption)
+    this.chart2 = echarts.init(this.$refs.chartWrap2)
+    this.initReportChart()
   },
   methods: {
     async initGradeChart(type) {
@@ -128,6 +128,14 @@ export default {
     gradeChange(v) {
       this.initGradeChart(v)
     },
+    async initReportChart() {
+      const rawData = await service.getReport()
+      const options = JSON.parse(JSON.stringify(appraisalOption))
+      options.series[0].data.forEach(x => {
+        x.value = rawData.data[x.key]
+      })
+      this.chart2.setOption(options)
+    }
   }
 }
 </script>

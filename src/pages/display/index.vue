@@ -63,5 +63,11 @@ export default {
     padding: 0 0.5rem;
     font-size: 0.75rem;
   }
+  .el-input--mini .el-input__icon{
+    line-height: 1rem;
+  }
+  .el-select .el-input .el-select__caret{
+    font-size: 0.75rem;
+  }
 }
 </style>

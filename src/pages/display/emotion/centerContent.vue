@@ -35,16 +35,9 @@
           <el-radio :label="3">年度</el-radio>
         </el-radio-group>
 
-        <!-- <el-dropdown>
-          <span class="el-dropdown-link">
-            下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>黄金糕</el-dropdown-item>
-            <el-dropdown-item>狮子头</el-dropdown-item>
-            <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown> -->
+        <el-select v-model="lowScoreSelect" placeholder="请选择" size="mini" style="width: 9.375rem">
+          <el-option v-for="it in lowScoreOptions" :key="it.scale_id" :label="it.scale_name" :value="it.scale_id"></el-option>
+        </el-select>
       </div>
 
       <div class="report-wrap">
@@ -72,6 +65,7 @@ import borderBg from '@/assets/images/BG _3@2x.png'
 import titleBg from '@/assets/images/多边形 1_3@2x.png'
 import attentionIcon from '@/assets/images/叹号@2x.png'
 import linkImg from '@/assets/images/链接@2x.png'
+import * as service from '../apis'
 
 export default {
   data() {
@@ -82,7 +76,25 @@ export default {
       select: 1,
       attentionIcon,
       linkImg,
+      lowScoreSelect: '',
+      lowScoreOptions: [],
     }
+  },
+  mounted() {
+    this.initData()
+  },
+  methods: {
+    async initData() {
+      const res = await service.getLowScoreSelections()
+      this.lowScoreOptions = res.data
+      this.lowScoreSelect = res.data[0].scale_id
+      // TODO: 接口联调
+      const rawData = await service.getLowScore({
+        status: 1,
+        assess_id: 1
+      })
+      console.log(rawData)
+    },
   },
   computed: {
     bgSize() {

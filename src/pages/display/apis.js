@@ -15,8 +15,8 @@ export const getPsychology = async () => {
 }
 
 // 低分报告
-export const getLowScore = async () => {
-    const rawData = await http.post(`/psychol/evaluation/lowScore`)
+export const getLowScore = async (data) => {
+    const rawData = await http.post(`/psychol/evaluation/lowScore`, data)
     return rawData.data
 }
 

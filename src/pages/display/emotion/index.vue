@@ -53,11 +53,8 @@
       </div>
     </div>
 
-    <el-dialog
-      title="企业职工列表"
-      width="79.875rem"
-      :visible.sync="dialogVisible">
-      <div class="search-box">
+    <DialogWithTable v-model="dialogVisible" :total="tableData.length" :isLoading="false" v-if="dialogVisible">
+      <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
           <el-form-item >
             <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名/手机号" style="width: 150px"></el-input>
@@ -97,9 +94,9 @@
             <el-button type="success">重置</el-button>
           </el-form-item>
         </el-form>
-      </div>
+      </template>
       <el-table :data="tableData" style="width: 100%" size="mini" border>
-        <el-table-column prop="number" label="序号"></el-table-column>
+        <el-table-column prop="id" label="序号"></el-table-column>
         <el-table-column prop="name" label="职工姓名"></el-table-column>
         <el-table-column prop="sexy" label="性别"></el-table-column>
         <el-table-column prop="department" label="职工部门"></el-table-column>
@@ -112,11 +109,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="page-wrap">
-        <el-pagination background layout="total,prev,pager,next"
-          :total="100" prev-text="上一页" next-text="下一页"></el-pagination>
-      </div>
-    </el-dialog>
+    </DialogWithTable>
 
     <center-content></center-content>
     <right-content></right-content>
@@ -136,13 +129,18 @@ import CenterContent from './centerContent'
 import historyOption from './employeeHsitory'
 import RightContent from './rightContent'
 import arrowIcon from '@/assets/images/下 拉_1@2x.png'
+import DialogWithTable from '@/components/dialogWithTable/index'
 import * as service from '../apis'
+import getUsers from '../user'
+
+const users = getUsers();
 
 export default {
   components: {
     ReportItem,
     CenterContent,
     RightContent,
+    DialogWithTable,
   },
   data() {
     return {
@@ -185,40 +183,19 @@ export default {
         isSpy: '',
         sexy: '',
       },
-      tableData: [
-        {
-          number: '1',
-          name: '王小虎',
-          sexy: '男',
-          department: '技术部',
-          position: '部门经理',
-          isSpy: '是',
-          phone: '1234567896'
-        }, 
-        {
-          number: '1',
-          name: '王小虎',
-          sexy: '男',
-          department: '技术部',
-          position: '部门经理',
-          isSpy: '是',
-          phone: '1234567896'
-        },
-        {
-          number: '1',
-          name: '王小虎',
-          sexy: '男',
-          department: '技术部',
-          position: '部门经理',
-          isSpy: '是',
-          phone: '1234567896'
-        },
-      ],
+      tableData: [],
     }
   },
   async mounted() {
     var myChart = echarts.init(this.$refs.container1)
     myChart.setOption(option)
+    myChart.on('click', { name: 'emotion' }, function(params) {
+      console.log('aaaaaaaa', params)
+    })
+    myChart.on('click', 'radar.indicator', function(params) {
+      console.log('bbbbbbb', params)
+    })
+
     this.hsitoryChart = echarts.init(this.$refs.container2)
     this.initHistoryChart()
   },
@@ -235,6 +212,7 @@ export default {
     handleClick(item) {
       if (item.id === 1) {
         this.dialogVisible = true
+        this.tableData = users.slice(0, 10)
       }
     },
     handleEmotionMore() {
@@ -363,10 +341,6 @@ export default {
       height: 18.75rem;
       margin-top: 2.625rem;
     }
-  }
-  .page-wrap{
-    text-align: right;
-    margin-top: 1.75rem;
   }
 }
 </style>

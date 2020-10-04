@@ -13,7 +13,7 @@ export default {
       { name: '厌恶10%', max: 6500},
     ]
   },
-  series: [{
+  series: {
     name: 'emotion',
     type: 'radar',
     itemStyle: {
@@ -29,5 +29,5 @@ export default {
         name: 'emotion'
       },
     ]
-  }]
+  }
 };

@@ -21,10 +21,10 @@ export default {
       radius: '65%',
       center: ['50%', '40%'],
       data: [
-        {value: 335, name: '优秀'},
-        {value: 310, name: '良好'},
-        {value: 234, name: '中等'},
-        {value: 135, name: '极差'},
+        {value: 335, name: '优秀', key: 'excellent'},
+        {value: 310, name: '良好', key: 'commonly'},
+        {value: 234, name: '中等', key: 'difference'},
+        {value: 135, name: '极差', key: 'very_bad'},
       ],
       emphasis: {
         itemStyle: {
