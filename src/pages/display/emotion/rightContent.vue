@@ -12,7 +12,7 @@
         </el-radio-group>
       </div>
       <div class="list-title">测评排行榜</div>
-      <img :src="moreImg" class="more-img">
+      <img :src="moreImg" class="more-img" @click="handleGradeMore">
       <div class="list-wrap">
         <scroll-list :data="users">
           <template v-slot:default="{data: {i, item}}">
@@ -55,6 +55,45 @@
         </result-item>
       </div>
     </div>
+
+    <DialogWithTable v-model="dialogVisible" :total="tableTotal.length" title="企业职工列表"
+      :pageChange="pageChange" :isLoading="false" v-if="dialogVisible">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.name" placeholder="员工姓名" style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+              <el-option
+                v-for="item in departmentOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="tableData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="name" label="职工姓名"></el-table-column>
+        <el-table-column prop="department" label="职工部门"></el-table-column>
+        <el-table-column prop="position" label="职工职位"></el-table-column>
+        <el-table-column prop="avg" label="测评平均分数"></el-table-column>
+        <el-table-column prop="resultAnalysis" label="结果分析"></el-table-column>
+        <el-table-column prop="statisticsMonth" label="统计月度"></el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="">
+            <el-button type="text" size="small">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
   </div>
 </template>
 
@@ -62,6 +101,7 @@
 import gradeBg from '@/assets/images/grade-bg.png'
 import titleBg from '@/assets/images/多边形 1_2@2x.png'
 import ScrollList from '@/components/scrollList/index'
+import DialogWithTable from '@/components/dialogWithTable/index'
 import moreImg from '@/assets/images/更多@2x.png'
 import echarts from 'echarts'
 import gradeOption from './grade'
@@ -70,7 +110,7 @@ import ResultItem from './resultItem'
 import recognitionOption from './recognition'
 import appraisalOption from './appraisal'
 import * as service from '../apis'
-import getUsers from '../user'
+import { getEmotionList } from '../user'
 
 const getMonthDays = () => {
   const date = new Date()
@@ -80,10 +120,13 @@ const getMonthDays = () => {
   return d.getDate()
 }
 
+const totalUsers = getEmotionList()
+
 export default {
   components: {
     ScrollList,
-    ResultItem
+    ResultItem,
+    DialogWithTable,
   },
   data() {
     return {
@@ -95,6 +138,18 @@ export default {
       select1: 1,
       select2: 1,
       users: [],
+      dialogVisible: false,
+      tableTotal: totalUsers,
+      formInline: {
+        name: '',
+        department: '',
+      },
+      departmentOptions: [
+        { value: '0', label: '技术部' },
+        { value: '1', label: '工程部' },
+        { value: '2', label: '财务部' },
+      ],
+      tableData: [],
     }
   },
   mounted() {
@@ -122,8 +177,7 @@ export default {
       this.chart.setOption(option)
     },
     initUsers() {
-      const users = getUsers()
-      this.users = users.sort((a, b) => b.avg - a.avg).slice(0, 20)
+      this.users = totalUsers.sort((a, b) => b.avg - a.avg).slice(0, 20)
     },
     gradeChange(v) {
       this.initGradeChart(v)
@@ -135,7 +189,22 @@ export default {
         x.value = rawData.data[x.key]
       })
       this.chart2.setOption(options)
-    }
+    },
+    handleGradeMore() {
+      this.dialogVisible = true
+      this.tableData = this.tableTotal.slice(0, 10)
+    },
+    pageChange(v) {
+      const start = (v - 1)*10
+      const end = start + 10
+      this.tableData = this.tableTotal.slice(start, end)
+    },
+    handleSearch() {
+
+    },
+    handleReset() {
+
+    },
   }
 }
 </script>
@@ -177,6 +246,7 @@ export default {
       position: absolute;
       top: 1.75rem;
       right: 1.75rem;
+      cursor: pointer;
     }
     .list-wrap{
       height: 9.625rem;

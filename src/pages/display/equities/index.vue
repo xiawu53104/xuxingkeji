@@ -2,19 +2,19 @@
   <div class="pages-display-equities">
     <div class="left">
       <div class="left-header">
-        <report-item v-for="(item, i) in reportItems" v-bind="item" :key="i"></report-item>
+        <report-item v-for="(item, i) in reportItems" v-bind="item" @click="handleClick(item)" :key="i"></report-item>
       </div>
       <div class="left-top" :style="{backgroundImage: `url(${alarmBG})`}">
         <div class="left-top-title" :style="{backgroundImage: `url(${alarmTitle})`}">
           <div class="title">今日异常提醒</div>
         </div>
-        <img class="botton" :src="moreIcon" alt="">
+        <img class="botton" :src="moreIcon" alt="" @click="showAlarmList">
         <div class="left-top-content">
             <scroll-list :data="alarmlist">
               <template v-slot:default="{data: {item}}">
                 <!-- <span class="list-item">{{`TOP${i + 1}`}}</span> -->
-                <span class="list-item list-item-lf">{{item.content}}</span>
-                <span class="list-item list-item-rf">{{item.time}}</span>
+                <span class="list-item list-item-lf">{{item.tooltipType}}</span>
+                <span class="list-item list-item-rf">{{item.alarmTime}}</span>
               </template>
             </scroll-list>
         </div>
@@ -38,7 +38,23 @@
         <div class="middle-bottom-title" :style="{backgroundImage: `url(${eventTitle})`}">
           <div class="title">事件上报趋势图</div>
         </div>
-        <img class="botton" :src="moreIcon" alt="">
+        <div class="date-picker-wrap">  
+          <el-date-picker
+          v-model="selectMonth"
+          :picker-options="pickerOption"
+          style="width: 3.25rem;"
+          size="mini"
+          align="right"
+          :editable="false"
+          @change="onChange"
+          format="M"
+          :clearable="false"
+          type="month"
+          placeholder="选择月">
+          </el-date-picker>
+          <img :src="arrowIcon" class="arrow">
+        </div>
+        <img class="botton" :src="moreIcon" alt="" @click="showEReportList">
         <div class="event-container" ref="eventChart"></div>
       </div>
     </div>
@@ -47,7 +63,7 @@
         <div class="right-top-title" :style="{backgroundImage: `url(${hardWareTitle})`}">
           <div class="title">硬件状态</div>
         </div>
-        <img class="botton" :src="moreIcon" alt="">
+        <!-- <img class="botton" :src="moreIcon" alt=""> -->
         <div class="right-top-lf" :style="{backgroundImage: `url(${rightTopLf})`}">
           <div class="right-top-lf-title">
             监控摄像总数：75
@@ -68,6 +84,166 @@
         <div class="studyChart" ref="studyChart"></div>
       </div>
     </div>
+    <DialogWithTable v-model="isAlarmListShow" :total="alarmlist.length" title="今日异常提醒列表"
+      :pageChange="emotionPageChange" :isLoading="false" v-if="isAlarmListShow">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.deviceName" placeholder="设备名称..." style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.deviceType" placeholder="设备类型" style="width: 10.625rem;">
+              <el-option
+                v-for="item in deviceTypeOptions"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.alarmTime" placeholder="报警时间" style="width: 13rem;">
+              <el-option
+                v-for="item in alarmTimeList"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="alarmData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="tooltipType" label="提醒类型"></el-table-column>
+        <el-table-column prop="alarmTime" label="报警时间"></el-table-column>
+        <el-table-column prop="deviceName" label="设备名称"></el-table-column>
+        <el-table-column prop="deviceType" label="设备类型"></el-table-column>
+        <el-table-column prop="manager" label="安全负责人"></el-table-column>
+        <el-table-column  label="操作">
+          <template slot-scope="scope">
+            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
+    <DialogWithTable v-model="isEReportShow" :total="ereportList.length" title="上报记录"
+      :pageChange="ereportChange" :isLoading="false" v-if="isEReportShow">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-select v-model="formInline.reportType" placeholder="" style="width: 10.625rem;">
+              <el-option
+                v-for="item in reportTypeOptions"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.reportTime" placeholder="日期筛选" style="width: 13rem;">
+              <el-option
+                v-for="item in reportTimeList"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="ereportData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="reportType" label="上报类型"></el-table-column>
+        <el-table-column prop="reportNum" label="上报事件数"></el-table-column>
+        <el-table-column prop="reportTime" label="日期"></el-table-column>
+        <el-table-column  label="操作">
+          <template slot-scope="scope">
+            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
+    <DialogWithTable v-model="isSelfReport" :total="selfReportList.length" title="自查上报列表"
+      :pageChange="selfReportChange" :isLoading="false" v-if="isSelfReport">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.reportUser" placeholder="上报人..." style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="selfReportData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="reportTitle" label="上报标题"></el-table-column>
+        <el-table-column prop="reportUser" label="上报人"></el-table-column>
+        <el-table-column prop="reportTime" label="上报时间"></el-table-column>
+        <el-table-column  label="操作">
+          <template slot-scope="scope">
+            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
+    <DialogWithTable v-model="isPeriodReport" :total="periodReportList.length" title="周期巡查上报列表"
+      :pageChange="periodReportChange" :isLoading="false" v-if="isPeriodReport">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.periodReportUser" placeholder="上报人..." style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.isQualified" placeholder="是否合格" style="width: 10.625rem;">
+              <el-option
+                v-for="item in isQualifiedOptions"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.isQualified" placeholder="上报时间" style="width: 10.625rem;">
+              <el-option
+                v-for="item in reportTimeList"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="periodReportData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="reportTitle" label="上报标题"></el-table-column>
+        <el-table-column prop="reportUser" label="上报人"></el-table-column>
+        <el-table-column prop="isQualified" label="是否合格"></el-table-column>
+        <el-table-column prop="reportTime" label="上报时间"></el-table-column>
+        <el-table-column  label="操作">
+          <template slot-scope="scope">
+            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
   </div>
 </template>
 
@@ -93,25 +269,57 @@ import monitorVideoOption from './monitor_video'
 import hardwareOption from './hardware'
 import studyOption from './study'
 import bg from '@/assets/images/曲线 540@2x.png'
+import arrowIcon from '@/assets/images/下 拉_1@2x.png'
+import DialogWithTable from '@/components/dialogWithTable/index'
 export default {
   components: {
     ReportItem,
-    ScrollList
+    ScrollList,
+    DialogWithTable
   },
   data() {
     return {
+      pickerOption: {
+        disabledDate: (date) => {
+          return date.getTime() > Date.now()
+        }
+      },
       reportItems: [
-        { count: 10392, title: '企业总人数', colorType: 'bule' },
-        { count: 2873, title: '历史情绪识别', colorType: 'green' },
-        { count: 17215, title: '预警人次', colorType: 'yellow' },
+        { id: 1, count: 15854, title: '历史自查上报事件', colorType: 'bule' },
+        { id: 2, count: 8452, title: '历史巡查上报事件', colorType: 'green' },
+        { id: 3, count: 859, title: '历史智能预警', colorType: 'yellow' },
       ],
       alarmlist: [
-        { content: '一氧化碳超标1', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标2', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标3', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标4', time: '2020-05-23 11:30' },
-        { content: '一氧化碳超标5', time: '2020-05-23 11:30' }
+        { id: 1, tooltipType: '一氧化碳超标1', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三' },
+        { id: 2, tooltipType: '一氧化碳超标2', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三'  },
+        { id: 3, tooltipType: '一氧化碳超标3', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三'  },
+        { id: 4, tooltipType: '一氧化碳超标4', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三'  },
+        { id: 5, tooltipType: '一氧化碳超标5', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三'  }
       ],
+      isQualifiedOptions: [
+        {label: '是', value: 0},
+        {label: '否', value: 1}
+      ],
+      formInline: {
+        deviceName: '',
+        deviceType: '',
+        alarmTime: '',
+        reportType: '自查上报',
+        reportTime: '',
+        reportUser: '',
+        periodReportUser: '',
+        isQualified: ''
+      },
+      deviceTypeOptions: [
+        {label: '安消智能摄像机' , value: 0},
+        {label: '智慧用水采集终端', value: 0}
+      ],
+      reportTypeOptions: [
+        {label: '自查上报', value: 0},
+        {label: '周期巡查', value: 1}
+      ],
+      reportTimeList: [],
+      alarmTimeList: [],
       moreIcon,
       alarmBG,
       alarmTitle,
@@ -124,8 +332,60 @@ export default {
       studyBG,
       studyTitle,
       rightTopLf,
+      arrowIcon,
       bg,
       select: 1,
+      isAlarmListShow: false,
+      alarmData: [],
+      isEReportShow: false,
+      ereportList: [
+        { id: 1, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 2, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 3, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 4, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 5, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 6, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 7, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 8, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 9, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 10, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 11, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 12, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 13, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 14, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 15, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 16, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 17, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 18, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 19, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 20, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 21, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 22, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 23, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 24, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 25, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 26, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 27, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 28, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 29, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 30, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+      ],
+      ereportData: [],
+      selectMonth: new Date(),
+      isSelfReport: false,
+      selfReportList: [
+        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三', reportTime: '2020-10-05 12:00:00'},
+      ],
+      selfReportData: [],
+      isPeriodReport: false,
+      periodReportList: [
+        {id: 1, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+      ],
+      periodReportData: []
     }
   },
   mounted () {
@@ -139,6 +399,90 @@ export default {
     hardwareChart.setOption(hardwareOption)
     let studyChart = echarts.init(this.$refs.studyChart)
     studyChart.setOption(studyOption)
+  },
+  methods: {
+    async onChange(v) {
+      if (v.getMonth()+1 < new Date().getMonth()+1) {
+        // let newOption = JSON.parse(JSON.stringify(historyOption))
+        // const rawData = await service.getHistoryAnalysis(v.getFullYear())
+        // newOption.series[0].data = rawData.data.map(x => x.avg)
+        // this.hsitoryChart.setOption(historyOption)
+      } else {
+        // this.initHistoryChart()
+      }
+    },
+    handleClick(item) {
+      console.log(item)
+      if (item.id == 1) {
+        this.isSelfReport = true
+        this.selfReportData = this.selfReportList.slice(0, 10)
+      }
+      if (item.id == 2) {
+        this.isPeriodReport = true
+        this.periodReportData = this.periodReportList.slice(0, 10)
+      }
+      if (item.id == 3) {
+        this.isAlarmListShow = true
+        this.alarmData = this.alarmlist.slice(0, 10)
+      }
+    },
+    handleSearch() {
+      let result
+      const { deviceName, deviceType, alarmTime } = this.formInline
+      if (deviceName) {
+        result = this.alarmlist.filter(x => x.deviceName.includes(deviceName))
+      }
+      if (deviceType) {
+        const deviceTypeLabel = this.deviceTypeOptions[deviceType]
+        // console.log('departmentName', departmentName)
+        result = (result || this.alarmlist).filter(x => x.deviceType.includes(deviceTypeLabel))
+      }
+      if (alarmTime) {
+        result = (result || this.alarmlist).filter(x => x.alarmTime.includes(alarmTime))
+      }
+      this.alarmlist = result
+      this.alarmData = this.alarmlist.slice(0, 10)
+    },
+    handleReset() {
+     Object.keys(this.formInline).forEach(x => {
+        this.formInline[x] = ''
+      })
+      this.alarmlist = [{ id: 1, tooltipType: '一氧化碳超标1', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '气体监测', manager: '张三' },
+        { id: 2, tooltipType: '一氧化碳超标2', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '气体监测', manager: '张三'  },
+        { id: 3, tooltipType: '一氧化碳超标3', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '气体监测', manager: '张三'  },
+        { id: 4, tooltipType: '一氧化碳超标4', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '气体监测', manager: '张三'  },
+        { id: 5, tooltipType: '一氧化碳超标5', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '气体监测', manager: '张三'  }]
+      this.alarmData = this.alarmlist.slice(0, 10)
+    },
+    emotionPageChange (v) {
+      const start = (v - 1)*10
+      const end = start + 10
+      this.alarmData = this.emotionList.slice(start, end)
+    },
+    showAlarmList () {
+      this.isAlarmListShow = true
+      this.alarmData = this.alarmlist.slice(0, 10)
+    },
+    showEReportList () {
+      this.isEReportShow = true
+      let result = this.ereportList.filter(v => v.reportType.includes(this.formInline.reportType))
+      this.ereportData = result.slice(0, 10)
+    },
+    ereportChange (v) {
+      const start = (v - 1)*10
+      const end = start + 10
+      this.ereportData = this.ereportList.slice(start, end)
+    },
+    selfReportChange (v) {
+      const start = (v - 1)*10
+      const end = start + 10
+      this.selfReportData = this.selfReportList.slice(start, end)
+    },
+    periodReportChange (v) {
+      const start = (v - 1)*10
+      const end = start + 10
+      this.periodReportData = this.periodReportList.slice(start, end)
+    }
   }
 }
 </script>
@@ -146,31 +490,28 @@ export default {
 <style lang="less" scoped>
 .pages-display-equities{
   display: flex;
+  padding: 0 1.25rem;
+  justify-content: space-around;
   .botton{
     width: 1.5625rem;
     height: 1.4375rem;
     position: absolute;
     top: 1.75rem;
     right: 1.75rem;
+    cursor: pointer;
   }
   .title {
-    // width: 9.625rem;
     width: 100%;
     height: 100%;
     font-size: 1.5rem;
-    font-family: Adobe Heiti Std R, Adobe Heiti Std R-R;
-    font-weight: R;
     text-align: center;
     color: #adfaff;
     margin-top: 0.3125rem;
     line-height: 2.625rem;
-    letter-spacing: 0.125rem;
   }
   .left{
     width: 36.75rem;
     padding-top: 2rem;
-    margin-left: 1.5rem;
-    // float: left;/
     .left-top {
       background-size: 100% 100%;
       width: 36.6875rem;
@@ -258,6 +599,20 @@ export default {
         width: 41.75rem;
         height: 22.8125rem;
         // margin: 0 auto;
+      }
+      .date-picker-wrap{
+        width: 3.25rem;
+        position: absolute;
+        top: 1.75rem;
+        right: 3.75rem;
+        cursor: pointer;
+        .arrow {
+          width: 0.375rem;
+          position: absolute;
+          right: 0.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+        }
       }
     }
   }

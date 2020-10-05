@@ -1,6 +1,8 @@
 <template>
   <div class="pages-forum">
-    <div class="forum-header"></div>
+    <div class="forum-header">
+      <div class="back" @click="handleBack">返回</div>
+    </div>
     <div class="forum-content">
       <el-input class="forum-input" placeholder="我想搜...">
         <el-button slot="append" icon="el-icon-search"></el-button>
@@ -46,6 +48,9 @@ export default {
     $('body').css({ 'background-color': '#0C2050' })
   },
   methods: {
+    handleBack() {
+      this.$router.back()
+    },
     handleSubmit() {
 
     }
@@ -60,6 +65,14 @@ export default {
     height: 5.3125rem;
     background: #132d5d;
     box-shadow: 0.1875rem 0rem 1.6875rem 0rem rgba(16,34,79,0.46);
+    .back{
+      height: 100%;
+      line-height: 5.3125rem;
+      color: #fff;
+      font-size: 1.25rem;
+      margin-left: 2.5rem;
+      cursor: pointer;
+    }
   }
   .forum-content {
     width: 62.5rem;

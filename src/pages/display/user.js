@@ -1,3 +1,5 @@
+import avatarImg from '@/assets/images/avatar.jpg'
+
 export const emotionMap = {
   1: '开心',
   2: '平静',
@@ -8,7 +10,8 @@ export const emotionMap = {
 
 const names = ['张三', '李四', '王五']
 const sexyMap = ['男', '女']
-const departmentMap = ['技术部', '工程部', '财务部']
+const isSpyMap = ['是', '否']
+export const departmentMap = ['技术部', '工程部', '财务部']
 const positionMap = ['部门经理', '电工', '铁工', '会计', '工程师']
 
 // export default [
@@ -42,6 +45,7 @@ export default function getUsers() {
       department: departmentMap[getRandom(departmentMap.length)],
       position: positionMap[getRandom(positionMap.length)],
       spy: '--',
+      isSpy: isSpyMap[getRandom(isSpyMap.length)],
       phone: '13109876543',
       capture: 'xxx',
       result: emotionMap[getRandom(5) + 1],
@@ -51,4 +55,18 @@ export default function getUsers() {
     })
   }
   return users
+}
+
+const resultMap = ['开心', '平静', '困惑', '惊讶', '厌恶']
+const resultAnalysisMap = ['优秀', '良好', '中等', '极差']
+
+export const getEmotionList = function() {
+  const users = getUsers()
+  return users.map(x => ({
+    ...x,
+    capture: avatarImg,
+    result: resultMap[getRandom(resultMap.length)],
+    statisticsMonth: '2020-09',
+    resultAnalysis: resultAnalysisMap[getRandom(resultAnalysisMap.length)],
+  }))
 }

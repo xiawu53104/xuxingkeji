@@ -51,7 +51,7 @@ export default {
     border-color: #52ffff;
   }
   
-  .el-date-editor--year .el-input__prefix{
+  .el-date-editor--year .el-input__prefix, .el-date-editor--month .el-input__prefix{
     display: none;
   }
   .el-input--prefix .el-input__inner{

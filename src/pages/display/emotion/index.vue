@@ -53,7 +53,8 @@
       </div>
     </div>
 
-    <DialogWithTable v-model="dialogVisible" :total="tableData.length" :isLoading="false" v-if="dialogVisible">
+    <DialogWithTable v-model="dialogVisible" :total="users.length" title="企业职工列表"
+      :pageChange="pageChange" :isLoading="false" v-if="dialogVisible">
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
           <el-form-item >
@@ -90,8 +91,8 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary">搜索</el-button>
-            <el-button type="success">重置</el-button>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
           </el-form-item>
         </el-form>
       </template>
@@ -108,6 +109,92 @@
             <el-button type="text" size="small">查看详情</el-button>
           </template>
         </el-table-column>
+      </el-table>
+    </DialogWithTable>
+
+    <el-dialog title="情绪识别记录" width="79.875rem"
+      :visible.sync="logDialogVisible">
+      <el-form :inline="true" :model="formInline" size="mini">
+        <el-form-item >
+          <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名/手机号" style="width: 150px"></el-input>
+        </el-form-item>
+        <el-form-item >
+          <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+            <el-option
+              v-for="item in departmentOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch">搜索</el-button>
+          <el-button type="success" @click="handleReset">重置</el-button>
+        </el-form-item>
+      </el-form>
+      <div class="log-wrap">
+        <LogItem />
+        <LogItem />
+        <LogItem />
+      </div>
+    </el-dialog>
+
+    <DialogWithTable v-model="emotionDialogVisible" :total="emotionList.length" title="情绪识别指数"
+      :pageChange="emotionPageChange" :isLoading="false" v-if="emotionDialogVisible">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名/手机号" style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+              <el-option
+                v-for="item in departmentOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.isSpy" placeholder="是否特殊工种" style="width: 13rem;">
+              <el-option
+                v-for="item in isSpyOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="formInline.sexy" placeholder="性别" style="width: 10.625rem;">
+              <el-option
+                v-for="item in sexyOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="emotionData" style="width: 100%" size="mini" border max-height="450">
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="name" label="职工姓名"></el-table-column>
+        <el-table-column prop="department" label="职工部门"></el-table-column>
+        <el-table-column prop="position" label="职工职位"></el-table-column>
+        <el-table-column prop="capture" label="情绪捕捉">
+          <template slot-scope="scope">
+            <img :src="scope.row.capture" class="capture-img">
+          </template>
+        </el-table-column>
+        <el-table-column prop="result" label="情绪识别结果"></el-table-column>
+        <el-table-column prop="recognitionDate" label="识别日期"></el-table-column>
       </el-table>
     </DialogWithTable>
 
@@ -130,10 +217,12 @@ import historyOption from './employeeHsitory'
 import RightContent from './rightContent'
 import arrowIcon from '@/assets/images/下 拉_1@2x.png'
 import DialogWithTable from '@/components/dialogWithTable/index'
+import LogItem from './logItem'
 import * as service from '../apis'
-import getUsers from '../user'
+import getUsers, { departmentMap, getEmotionList } from '../user'
 
-const users = getUsers();
+const totalUsers = getUsers()
+const totalEmotionList = getEmotionList()
 
 export default {
   components: {
@@ -141,6 +230,7 @@ export default {
     CenterContent,
     RightContent,
     DialogWithTable,
+    LogItem,
   },
   data() {
     return {
@@ -164,18 +254,19 @@ export default {
       arrowIcon,
       selsctYear: new Date(),
       dialogVisible: false,
+      logDialogVisible: false,
       departmentOptions: [
-        { value: '1', label: '技术部' },
-        { value: '2', label: '商务部' },
-        { value: '3', label: '财务部' },
+        { value: '0', label: '技术部' },
+        { value: '1', label: '工程部' },
+        { value: '2', label: '财务部' },
       ],
       isSpyOptions: [
-        { value: '1', label: '是' },
-        { value: '2', label: '否' },
+        { value: '是', label: '是' },
+        { value: '否', label: '否' },
       ],
       sexyOptions: [
-        { value: '1', label: '男' },
-        { value: '2', label: '女' },
+        { value: '男', label: '男' },
+        { value: '女', label: '女' },
       ],
       formInline: {
         nameOrPhone: '',
@@ -183,23 +274,31 @@ export default {
         isSpy: '',
         sexy: '',
       },
+      users: totalUsers,
       tableData: [],
+      emotionDialogVisible: false,
+      emotionList: totalEmotionList,
+      emotionData: [],
     }
   },
   async mounted() {
-    var myChart = echarts.init(this.$refs.container1)
-    myChart.setOption(option)
-    myChart.on('click', { name: 'emotion' }, function(params) {
-      console.log('aaaaaaaa', params)
-    })
-    myChart.on('click', 'radar.indicator', function(params) {
-      console.log('bbbbbbb', params)
-    })
-
+    this.myChart = echarts.init(this.$refs.container1)
+    this.initRadarChart()
+    
     this.hsitoryChart = echarts.init(this.$refs.container2)
     this.initHistoryChart()
   },
   methods: {
+    initRadarChart() {
+      this.myChart.setOption(option)
+      const that = this
+      this.myChart.on('click', function(params) {
+        that.emotionDialogVisible = true
+        const resultName = params.name.slice(0, 2)
+        that.emotionList = totalEmotionList.filter(x => x.result == resultName)
+        that.emotionData = that.emotionList.slice(0, 10)
+      })
+    },
     async initHistoryChart() {
       const month = new Date().getMonth()
       let newOption = JSON.parse(JSON.stringify(historyOption))
@@ -210,13 +309,21 @@ export default {
       this.hsitoryChart.setOption(newOption)
     },
     handleClick(item) {
-      if (item.id === 1) {
+      if (item.id == 1) {
         this.dialogVisible = true
-        this.tableData = users.slice(0, 10)
+        this.tableData = this.users.slice(0, 10)
+      }
+      if (item.id == 2) {
+        this.logDialogVisible = true
+      }
+      if (item.id == 3) {
+        this.logDialogVisible = true
       }
     },
     handleEmotionMore() {
-      this.dialogVisible = true
+      this.emotionDialogVisible = true
+      this.emotionList = totalEmotionList
+      this.emotionData = this.emotionList.slice(0, 10)
     },
     async onChange(v) {
       if (v.getFullYear() < new Date().getFullYear()) {
@@ -227,8 +334,50 @@ export default {
       } else {
         this.initHistoryChart()
       }
+    },
+    pageChange(v) {
+      const start = (v - 1)*10
+      const end = start + 10
+      this.tableData = this.users.slice(start, end)
+    },
+    handleSearch() {
+      let result
+      const { nameOrPhone, department, isSpy, sexy } = this.formInline
+      if (/^\d$/.test(nameOrPhone)) {
+        result = totalUsers.filter(x => x.phone.includes(nameOrPhone))
+      } else {
+        result = totalUsers.filter(x => x.name.includes(nameOrPhone))
+      }
+      if (department) {
+        const departmentName = departmentMap[department]
+        console.log('departmentName', departmentName)
+        result = (result || totalUsers).filter(x => x.department.includes(departmentName))
+      }
+      if (isSpy) {
+        result = (result || totalUsers).filter(x => x.isSpy.includes(isSpy))
+      }
+      if (sexy) {
+        result = (result || totalUsers).filter(x => x.sexy.includes(sexy))
+      }
+      this.users = result
+      this.tableData = this.users.slice(0, 10)
+    },
+    handleReset() {
+      Object.keys(this.formInline).forEach(x => {
+        this.formInline[x] = ''
+      })
+      this.users = totalUsers
+      this.tableData = this.users.slice(0, 10)
+    },
+    emotionPageChange(v) {
+      const start = (v - 1)*10
+      const end = start + 10
+      this.emotionData = this.emotionList.slice(start, end)
     }
-  }
+  },
+  computed: {
+
+  },
 }
 </script>
 
@@ -341,6 +490,13 @@ export default {
       height: 18.75rem;
       margin-top: 2.625rem;
     }
+  }
+  .log-wrap{
+    display: flex;
+  }
+  .capture-img{
+    width: 3.125rem;
+    height: 3.375rem;
   }
 }
 </style>

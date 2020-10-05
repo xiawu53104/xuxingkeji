@@ -4,23 +4,22 @@
       <div class="title-wrap title-width" :style="{backgroundImage: `url(${titleBg})`}">
         职工奖章
       </div>
-      <img :src="moreIcon" class="more-icon">
+      <img :src="moreIcon" class="more-icon" @click="handleMedalMore">
       <img :src="medal" class="medal">
-      <!-- <div class="swiper-wrap"> -->
-        <swiper class="swiper-wrap" ref="mySwiper" :options="swiperOptions">
+      <div class="swiper-wrap">
+        <swiper ref="mySwiper" :options="swiperOptions">
           <swiper-slide>
-            <EmployeeInfo :avatarImg="bg" />
+            <EmployeeInfo :avatarImg="avatarImg" />
           </swiper-slide>
           <swiper-slide>
-            <EmployeeInfo :avatarImg="bg" />
+            <EmployeeInfo :avatarImg="avatarImg" />
           </swiper-slide>
           <swiper-slide>
-            <EmployeeInfo :avatarImg="bg" />
+            <EmployeeInfo :avatarImg="avatarImg" />
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
-      <!-- </div> -->
-      <!-- <EmployeeInfo /> -->
+      </div>
     </div>
     <div class="btn" @click="handleClick">
       <img :src="tipIcon" class="tip-icon">
@@ -32,6 +31,15 @@
         职工活动
       </div>
     </div>
+
+    <el-dialog title="职工奖章" width="79.875rem"
+      :visible.sync="medalDialogVisible">
+      <div class="medal-item-wrap">
+        <MedalItem />
+        <MedalItem />
+        <MedalItem />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -44,11 +52,13 @@ import titleBg from '@/assets/images/left_header_lf_title.png'
 import EmployeeInfo from './employeeInfo'
 import centerMedal from '@/assets/images/center_medal.png'
 import medal from '@/assets/images/奖章@2x.png'
-import bg from '@/assets/images/曲线 540@2x.png'
+import avatarImg from '@/assets/images/avatar3.jpg'
+import MedalItem from './medaltem'
 
 export default {
   components: {
     EmployeeInfo,
+    MedalItem,
   },
   data() {
     return {
@@ -58,7 +68,7 @@ export default {
       activityImg,
       titleBg,
       centerMedal,
-      bg,
+      avatarImg,
       medal,
       swiperOptions: {
         loop: true,
@@ -71,12 +81,16 @@ export default {
           el: '.swiper-pagination',
         }
       },
+      medalDialogVisible: false,
     }
   },
   methods: {
     handleClick() {
       this.$router.push('/forum')
-    }
+    },
+    handleMedalMore() {
+      this.medalDialogVisible = true
+    },
   },
 }
 </script>
@@ -99,6 +113,7 @@ export default {
       top: 1.8125rem;
       right: 1.8125rem;
       z-index: 100;
+      cursor: pointer;
     }
     .medal {
       width: 2.375rem;
@@ -141,6 +156,9 @@ export default {
     .title-width{
       width: 12rem;
     }
+  }
+  .medal-item-wrap{
+    display: flex;
   }
 }
 </style>

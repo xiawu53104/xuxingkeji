@@ -1,16 +1,17 @@
 <template>
   <div class="component-dialogWithTable">
     <el-dialog
-      title="企业职工列表"
+      :title="title"
       width="79.875rem"
       @update:visible="handleClose"
-      :visible.sync="value">
+      :visible.sync="visible">
       <div class="search-box">
         <slot name="search"></slot>
       </div>
-      <slot v-show="!!total"></slot>
+      <slot v-if="!!total"></slot>
       <div class="page-wrap" v-show="total > 0">
         <el-pagination background layout="total,prev,pager,next"
+          @current-change="pageChange"
           :total="total" prev-text="上一页" next-text="下一页"></el-pagination>
       </div>
       <div class="empty-wrap" v-show="!total">
@@ -31,19 +32,22 @@ import loadingImg from '@/assets/images/loading.png'
 export default {
   props: {
     value: Boolean,
+    title: String,
     total: Number,
     isLoading: Boolean,
+    pageChange: Function,
   },
   data() {
     return {
       emptyImg,
       loadingImg,
+      visible: this.value,
     }
   },
   methods: {
     handleClose() {
       this.$emit('input', false)
-    }
+    },
   }
 }
 </script>
