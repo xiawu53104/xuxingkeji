@@ -28,7 +28,7 @@ export default {
     color: ['#15EFEF', '#EB6F49'],
     tooltip: {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)',
+        formatter: '{b} : {c} ({d}%)',
         position: function (pos, params, dom, rect, size) {
         // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
         var obj = {top: 60};
@@ -50,13 +50,13 @@ export default {
     },
     series: [
         {
-            name: '访问来源',
+            name: '',
             type: 'pie',
             radius: '55%',
             center: ['50%', '50%'],
             data: [
-                {value: 335, name: '已完成'},
-                {value: 310, name: '未完成'},
+                {value: 150, name: '已完成'},
+                {value: 42, name: '未完成'},
             ],
             label: {
                 show: false

@@ -30,6 +30,7 @@
       <div class="title-wrap title-width" :style="{backgroundImage: `url(${centerMedal})`}">
         职工活动
       </div>
+      <img :src="moreIcon" class="more-icon" @click="handleActiveMore">
     </div>
 
     <el-dialog title="职工奖章" width="79.875rem"
@@ -39,6 +40,11 @@
         <MedalItem />
         <MedalItem />
       </div>
+    </el-dialog>
+
+    <el-dialog title="职工活动" width="79.875rem"
+      :visible.sync="activeDialogVisible">
+      
     </el-dialog>
   </div>
 </template>
@@ -82,6 +88,7 @@ export default {
         }
       },
       medalDialogVisible: false,
+      activeDialogVisible: false,
     }
   },
   methods: {
@@ -90,6 +97,9 @@ export default {
     },
     handleMedalMore() {
       this.medalDialogVisible = true
+    },
+    handleActiveMore() {
+      this.activeDialogVisible = true
     },
   },
 }
@@ -100,6 +110,14 @@ export default {
   width: 41.75rem;
   height: 100%;
   margin: 2rem 1rem;
+  .more-icon{
+    width: 1.5625rem;
+    position: absolute;
+    top: 1.8125rem;
+    right: 1.8125rem;
+    z-index: 100;
+    cursor: pointer;
+  }
   .medal-wrap{
     width: 100%;
     height: 30.25rem;
@@ -107,14 +125,6 @@ export default {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     position: relative;
-    .more-icon{
-      width: 1.5625rem;
-      position: absolute;
-      top: 1.8125rem;
-      right: 1.8125rem;
-      z-index: 100;
-      cursor: pointer;
-    }
     .medal {
       width: 2.375rem;
       height: 3.0625rem;

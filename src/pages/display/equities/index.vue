@@ -304,7 +304,7 @@ export default {
         deviceName: '',
         deviceType: '',
         alarmTime: '',
-        reportType: '自查上报',
+        reportType: 0,
         reportTime: '',
         reportUser: '',
         periodReportUser: '',
@@ -339,36 +339,26 @@ export default {
       alarmData: [],
       isEReportShow: false,
       ereportList: [
-        { id: 1, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 2, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 3, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 4, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 5, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 6, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 7, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 8, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 9, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 10, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 11, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 12, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 13, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 14, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 15, reportType: '自查上报', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 16, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 17, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 18, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 19, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 20, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 21, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 22, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 23, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 24, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 25, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 26, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 27, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 28, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 29, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
-        { id: 30, reportType: '周期巡查', reportTime: '2020-09-01', reportNum: 15 },
+        { id: 1, reportType: '自查上报', reportTime: '2020-10-01', reportNum: 15 },
+        { id: 2, reportType: '自查上报', reportTime: '2020-10-02', reportNum: 25 },
+        { id: 3, reportType: '自查上报', reportTime: '2020-10-03', reportNum: 10 },
+        { id: 4, reportType: '自查上报', reportTime: '2020-10-04', reportNum: 30 },
+        { id: 5, reportType: '自查上报', reportTime: '2020-10-05', reportNum: 40 },
+        { id: 6, reportType: '自查上报', reportTime: '2020-10-06', reportNum: 5 },
+        { id: 7, reportType: '自查上报', reportTime: '2020-10-07', reportNum: 15 },
+        { id: 8, reportType: '自查上报', reportTime: '2020-10-08', reportNum: 19 },
+        { id: 9, reportType: '自查上报', reportTime: '2020-10-09', reportNum: 24 },
+        { id: 10, reportType: '自查上报', reportTime: '2020-10-10', reportNum: 16 },
+        { id: 11, reportType: '周期巡查', reportTime: '2020-10-01', reportNum: 34 },
+        { id: 12, reportType: '周期巡查', reportTime: '2020-10-02', reportNum: 14 },
+        { id: 13, reportType: '周期巡查', reportTime: '2020-10-03', reportNum: 34 },
+        { id: 14, reportType: '周期巡查', reportTime: '2020-10-04', reportNum: 25 },
+        { id: 15, reportType: '周期巡查', reportTime: '2020-10-05', reportNum: 40 },
+        { id: 16, reportType: '周期巡查', reportTime: '2020-10-06', reportNum: 26 },
+        { id: 17, reportType: '周期巡查', reportTime: '2020-10-07', reportNum: 32 },
+        { id: 18, reportType: '周期巡查', reportTime: '2020-10-08', reportNum: 18 },
+        { id: 19, reportType: '周期巡查', reportTime: '2020-10-09', reportNum: 5 },
+        { id: 20, reportType: '周期巡查', reportTime: '2020-10-10', reportNum: 56 },
       ],
       ereportData: [],
       selectMonth: new Date(),
@@ -391,8 +381,9 @@ export default {
   mounted () {
     let chart = echarts.init(this.$refs.container)
     chart.setOption(option)
+    let eventOptions = eventOption(this.ereportList)
     let eventCharts = echarts.init(this.$refs.eventChart)
-    eventCharts.setOption(eventOption)
+    eventCharts.setOption(eventOptions)
     let monitorVideoChart = echarts.init(this.$refs.monitorVideoChart)
     monitorVideoChart.setOption(monitorVideoOption)
     let hardwareChart = echarts.init(this.$refs.hardwareChart)
@@ -433,7 +424,7 @@ export default {
         result = this.alarmlist.filter(x => x.deviceName.includes(deviceName))
       }
       if (deviceType) {
-        const deviceTypeLabel = this.deviceTypeOptions[deviceType]
+        const deviceTypeLabel = this.deviceTypeOptions[deviceType].label
         // console.log('departmentName', departmentName)
         result = (result || this.alarmlist).filter(x => x.deviceType.includes(deviceTypeLabel))
       }
@@ -465,7 +456,9 @@ export default {
     },
     showEReportList () {
       this.isEReportShow = true
-      let result = this.ereportList.filter(v => v.reportType.includes(this.formInline.reportType))
+      let result = this.ereportList.filter(v => v.reportType.includes(this.reportTypeOptions[this.formInline.reportType].label))
+      this.ereportList = result;
+      // result.sort(function(a, b){return b.reportTime.getTime() - a.reportTime.getTime()})
       this.ereportData = result.slice(0, 10)
     },
     ereportChange (v) {

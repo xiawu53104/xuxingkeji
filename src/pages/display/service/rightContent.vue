@@ -4,7 +4,7 @@
       <div class="title-wrap title-width" :style="{backgroundImage: `url(${titleBg})`}">
         图书借阅
       </div>
-      <img class="botton" :src="moreIcon" alt="">
+      <img class="more-icon" :src="moreIcon">
       <div class="books-wrap-lf" :style="{backgroundImage: `url(${booksWrap})`}">
         <div class="books-wrap-lf-title">
           博学之星
@@ -33,7 +33,13 @@
       <div class="title-wrap title-width" :style="{backgroundImage: `url(${titleBg})`}">
         职工风采
       </div>
+      <img class="more-icon" :src="moreIcon" @click="handleMore">
     </div>
+
+    <el-dialog title="职工风采" width="79.875rem"
+      :visible.sync="dialogVisible">
+      
+    </el-dialog>
   </div>
 </template>
 
@@ -57,6 +63,7 @@ export default {
       booksWrap,
       bottomBg,
       users: [],
+      dialogVisible: false,
     }
   },
   components: {
@@ -72,6 +79,9 @@ export default {
       const users = getUsers()
       this.users = users.sort((a, b) => b.avg - a.avg).slice(0, 10)
     },
+    handleMore() {
+      this.dialogVisible = true
+    },
   }
 }
 </script>
@@ -80,12 +90,13 @@ export default {
 .pages-display-service-right{
   width: 36.6875rem;
   height: 100%;
-  .botton{
+  .more-icon{
     width: 1.5625rem;
     height: 1.4375rem;
     position: absolute;
     top: 1.75rem;
     left: 33.4375rem;
+    cursor: pointer;
   }
   .title-width{
     width: 12rem;
