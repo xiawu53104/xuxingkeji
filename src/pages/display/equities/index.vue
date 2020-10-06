@@ -84,7 +84,8 @@
         <div class="studyChart" ref="studyChart"></div>
       </div>
     </div>
-    <DialogWithTable v-model="isAlarmListShow" :total="alarmlist.length" title="今日异常提醒列表"
+    <DialogWithTable v-model="isAlarmListShow" :total="alarmlist.length"
+      title="今日异常提醒列表" :isError="false"
       :pageChange="emotionPageChange" :isLoading="false" v-if="isAlarmListShow">
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">

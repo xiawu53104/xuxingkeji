@@ -219,9 +219,9 @@ import arrowIcon from '@/assets/images/下 拉_1@2x.png'
 import DialogWithTable from '@/components/dialogWithTable/index'
 import LogItem from './logItem'
 import * as service from '../apis'
-import getUsers, { departmentMap, getEmotionList } from '../user'
+import { departmentMap, getEmotionList } from '../user'
 
-const totalUsers = getUsers()
+const totalUsers = getEmotionList()
 const totalEmotionList = getEmotionList()
 
 export default {
@@ -350,7 +350,6 @@ export default {
       }
       if (department) {
         const departmentName = departmentMap[department]
-        console.log('departmentName', departmentName)
         result = (result || totalUsers).filter(x => x.department.includes(departmentName))
       }
       if (isSpy) {
@@ -361,6 +360,8 @@ export default {
       }
       this.users = result
       this.tableData = this.users.slice(0, 10)
+      this.emotionList = result
+      this.emotionData = this.emotionList.slice(0, 10)
     },
     handleReset() {
       Object.keys(this.formInline).forEach(x => {

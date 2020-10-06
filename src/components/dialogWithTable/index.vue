@@ -21,6 +21,10 @@
         <img :src="emptyImg" class="loading-img">
         <div class="loading-text">正在加载中...</div>
       </div>
+      <div class="loding-wrap" v-show="isError">
+        <img :src="errImg" class="loading-img">
+        <div class="loading-text">网络不给力，请稍后再试</div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -28,6 +32,7 @@
 <script>
 import emptyImg from '@/assets/images/empty.png'
 import loadingImg from '@/assets/images/loading.png'
+import errImg from '@/assets/images/net-err.png'
 
 export default {
   props: {
@@ -35,12 +40,17 @@ export default {
     title: String,
     total: Number,
     isLoading: Boolean,
+    isError: {
+      type: Boolean,
+      default: false,
+    },
     pageChange: Function,
   },
   data() {
     return {
       emptyImg,
       loadingImg,
+      errImg,
       visible: this.value,
     }
   },

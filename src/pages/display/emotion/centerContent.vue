@@ -53,9 +53,43 @@
         <div class="score">
           15<span style="font-size: 28px">分</span>
         </div>
-        <img :src="linkImg" class="link-img">
+        <img :src="linkImg" class="link-img" @click="handleDetail">
       </div>
     </div>
+
+    <el-dialog title="结果分析" width="50rem"
+      :visible.sync="dialogVisible">
+      <div class="content-wrap">
+        <div class="title">测评人员信息</div>
+        <div class="info-wrap">
+          <div class="label info">职工姓名:</div>
+          <div class="value info">{{infoData.name}}</div>
+          <div class="label info">职工性别:</div>
+          <div class="value info">{{infoData.sexy}}</div>
+          <div class="label info">职工籍贯:</div>
+          <div class="value info">{{infoData.jiguan}}</div>
+          <div class="label info">职工民族:</div>
+          <div class="value info">{{infoData.mz}}</div>
+          <div class="label info">职工职位:</div>
+          <div class="value info">{{infoData.position}}</div>
+          <div class="label info">职工部门:</div>
+          <div class="value info">{{infoData.department}}</div>
+          <div class="label info">职工工种:</div>
+          <div class="value info">{{infoData.gz}}</div>
+          <div class="label info">职工手机:</div>
+          <div class="value info">{{infoData.phone}}</div>
+        </div>
+        <div class="title">测评成绩</div>
+        <div class="chart-wrap">
+          <div class="chart-title">
+            <div>89分</div>
+            <div>人员当前情绪良好</div>
+          </div>
+          <div class="chart" ref="chart"></div>
+          <!-- <div class="chart-btm">分数越低说明焦虑表现越明显</div> -->
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -66,6 +100,8 @@ import titleBg from '@/assets/images/多边形 1_3@2x.png'
 import attentionIcon from '@/assets/images/叹号@2x.png'
 import linkImg from '@/assets/images/链接@2x.png'
 import * as service from '../apis'
+import echarts from 'echarts'
+import option from './info'
 
 export default {
   data() {
@@ -78,6 +114,17 @@ export default {
       linkImg,
       lowScoreSelect: '',
       lowScoreOptions: [],
+      dialogVisible: false,
+      infoData: {
+        name: '张三',
+        sexy: '男',
+        jiguan: '北京',
+        mz: '汉',
+        position: '切割员',
+        department: '技术部',
+        gz: '切割工',
+        phone: '188xxxx1245'
+      },
     }
   },
   mounted() {
@@ -94,6 +141,13 @@ export default {
         assess_id: 1
       })
       console.log(rawData)
+    },
+    handleDetail() {
+      this.dialogVisible = true
+      this.$nextTick(() => {
+        const chart = echarts.init(this.$refs.chart)
+        chart.setOption(option)
+      })
     },
   },
   computed: {
@@ -276,6 +330,44 @@ export default {
         width: 1.1875rem;
         right: 0.4375rem;
         top: 0.4375rem;
+        cursor: pointer;
+      }
+    }
+  }
+  .content-wrap{
+    .title{
+      color: #fff;
+      font-size: 1.25rem;
+    }
+    .info-wrap{
+      color: #fff;
+      font-size: 0.875rem;
+      margin: 1.25rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      .info{
+        border: 0.0625rem solid #fff;
+        text-align: center;
+        height: 2.5rem;
+        line-height: 2.5rem;
+      }
+      .label{
+        width: 9.375rem;
+      }
+      .value{
+        width: 12.5rem;
+      }
+    }
+    .chart-wrap{
+      width: 100%;
+      color: #fff;
+      border: 0.0625rem solid #fff;
+      .chart-title{
+        text-align: center;
+      }
+      .chart{
+        width: 100%;
+        height: 16.25rem;
       }
     }
   }
