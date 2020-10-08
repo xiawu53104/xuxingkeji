@@ -69,5 +69,11 @@ export default {
   .el-select .el-input .el-select__caret{
     font-size: 0.75rem;
   }
+  .el-date-editor .el-range-input {
+    background: transparent;
+  }
+  .el-date-editor .el-range-separator {
+    color: #606266;
+  }
 }
 </style>
