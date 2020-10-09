@@ -13,7 +13,10 @@
             <scroll-list :data="alarmlist">
               <template v-slot:default="{data: {item}}">
                 <!-- <span class="list-item">{{`TOP${i + 1}`}}</span> -->
-                <span class="list-item list-item-lf">{{item.tooltipType}}</span>
+                <span class="list-item list-item-lf">
+                  <img :src="alarmImg" alt="" class="list-item-img">
+                  {{item.tooltipType}}
+                </span>
                 <span class="list-item list-item-rf">{{item.alarmTime}}</span>
               </template>
             </scroll-list>
@@ -33,7 +36,10 @@
       </div>
     </div>
     <div class="middle">
-      <div class="middle-top" :style="{backgroundImage: `url(${bg})`}"></div>
+      <div class="middle-top" id="container" :style="{backgroundImage: `url(${bg})`}">
+        <!-- <baidu-map :style="{width:map.width,height:map.height}" class="map" ak="bGARqyOB3gc3Uw0dNVh4rYhaKS1w3BKA" :zoom="map.zoom" :center="{lng: map.center.lng, lat: map.center.lat}"
+          @ready="handler" :scroll-wheel-zoom="true"></baidu-map> -->
+      </div>
       <div class="middle-bottom" :style="{backgroundImage: `url(${eventBG})`}">
         <div class="middle-bottom-title" :style="{backgroundImage: `url(${eventTitle})`}">
           <div class="title">事件上报趋势图</div>
@@ -102,15 +108,22 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item >
-            <el-select v-model="formInline.alarmTime" placeholder="报警时间" style="width: 13rem;">
+          <el-form-item label="报警时间">
+            <el-date-picker
+              v-model="formInline.alarmTime"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+            <!-- <el-select v-model="formInline.alarmTime" placeholder="报警时间" style="width: 13rem;">
               <el-option
                 v-for="item in alarmTimeList"
                 :key="item.label"
                 :label="item.label"
                 :value="item.value">
               </el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -127,7 +140,7 @@
         <el-table-column prop="manager" label="安全负责人"></el-table-column>
         <el-table-column  label="操作">
           <template slot-scope="scope">
-            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+            <el-button type="text" @click="showAlarmListDetails(scope)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -169,7 +182,7 @@
         <el-table-column prop="reportTime" label="日期"></el-table-column>
         <el-table-column  label="操作">
           <template slot-scope="scope">
-            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+            <el-button type="text" @click="showAlarmListDetails(scope)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -194,7 +207,7 @@
         <el-table-column prop="reportTime" label="上报时间"></el-table-column>
         <el-table-column  label="操作">
           <template slot-scope="scope">
-            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+            <el-button type="text" @click="showAlarmListDetails(scope)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -240,7 +253,7 @@
         <el-table-column prop="reportTime" label="上报时间"></el-table-column>
         <el-table-column  label="操作">
           <template slot-scope="scope">
-            <el-botton type="text" @click="showAlarmListDetails(scope)">查看详情</el-botton>
+            <el-button type="text" @click="showAlarmListDetails(scope)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -249,6 +262,13 @@
 </template>
 
 <script>
+// import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+// import BmScale from 'vue-baidu-map/components/controls/Scale'
+// import BmNavigation from 'vue-baidu-map/components/controls/Navigation'
+// import BmMarkerClusterer from  'vue-baidu-map/components/extra/MarkerClusterer'
+// import BmMarker from 'vue-baidu-map/components/overlays/Marker'
+// import BmInfoWindow from 'vue-baidu-map/components/overlays/InfoWindow'
+
 import ReportItem from '../emotion/reportItem'
 import ScrollList from '@/components/scrollList/index'
 import moreIcon from '@/assets/images/botton.png'
@@ -271,12 +291,19 @@ import hardwareOption from './hardware'
 import studyOption from './study'
 import bg from '@/assets/images/曲线 540@2x.png'
 import arrowIcon from '@/assets/images/下 拉_1@2x.png'
+import alarmImg from '@/assets/images/alarm.jpg'
 import DialogWithTable from '@/components/dialogWithTable/index'
 export default {
   components: {
     ReportItem,
     ScrollList,
-    DialogWithTable
+    DialogWithTable,
+    // BaiduMap,
+    // BmScale,
+    // BmNavigation,
+    // BmMarkerClusterer,
+    // BmMarker,
+    // BmInfoWindow
   },
   data() {
     return {
@@ -334,6 +361,7 @@ export default {
       studyTitle,
       rightTopLf,
       arrowIcon,
+      alarmImg,
       bg,
       select: 1,
       isAlarmListShow: false,
@@ -393,6 +421,11 @@ export default {
     studyChart.setOption(studyOption)
   },
   methods: {
+    // initMap () {
+    //   let map = new BMapGL.Map("container")
+    //   var point = new BMapGL.Point(116.404, 39.915);
+    //   map.centerAndZoom(point, 15);
+    // },
     async onChange(v) {
       if (v.getMonth()+1 < new Date().getMonth()+1) {
         // let newOption = JSON.parse(JSON.stringify(historyOption))
@@ -528,6 +561,13 @@ export default {
         .list-item {
           &.list-item-lf {
             margin-left: 2.9375rem;
+          }
+          .list-item-img {
+            width: 2.5rem;
+            height: 2.5rem;
+            vertical-align: middle;
+            transform: translate(0, -8%);
+            margin-right: 0.75rem;
           }
           &.list-item-middle {
             margin-left: 1.4375rem;

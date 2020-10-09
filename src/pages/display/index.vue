@@ -82,5 +82,11 @@ export default {
   .el-range-editor.el-input__inner {
     padding: 1px 10px;
   }
+  .el-date-editor .el-range-input {
+    background: transparent;
+  }
+  .el-date-editor .el-range-separator {
+    color: #606266;
+  }
 }
 </style>
