@@ -4,7 +4,10 @@
       <div class="title-wrap title-width" :style="{backgroundImage: `url(${titleBg})`}">
         图书借阅
       </div>
-      <img class="more-icon" :src="moreIcon">
+      <div class="read-wrap" @click="jumpClick">
+        <img :src="book" class="book">
+        <span>去读书</span>
+      </div>
       <div class="books-wrap-lf" :style="{backgroundImage: `url(${booksWrap})`}">
         <div class="books-wrap-lf-title">
           博学之星
@@ -34,6 +37,9 @@
         职工风采
       </div>
       <img class="more-icon" :src="moreIcon" @click="handleMore">
+      <div class="shaky-box">
+        <img v-for="i in [1,2,3,4,5,6,7,8]" :key="shaky+i" :src="shaky" class="shaky">
+      </div>
     </div>
 
     <el-dialog title="职工风采" width="79.875rem"
@@ -49,6 +55,8 @@ import titleBg from '@/assets/images/left_header_lf_title.png'
 import moreIcon from '@/assets/images/botton.png'
 import booksWrap from '@/assets/images/books_wrap.png'
 import bottomBg from '@/assets/images/BG@2x.png'
+import shaky from '@/assets/images/图层 14.png'
+import book from '@/assets/images/读书.png'
 import ScrollList from '@/components/scrollList/index'
 import getUsers from '../user'
 import echarts from 'echarts'
@@ -64,6 +72,8 @@ export default {
       bottomBg,
       users: [],
       dialogVisible: false,
+      shaky,
+      book,
     }
   },
   components: {
@@ -82,6 +92,9 @@ export default {
     handleMore() {
       this.dialogVisible = true
     },
+    jumpClick() {
+      
+    }
   }
 }
 </script>
@@ -108,6 +121,25 @@ export default {
     margin-top: 2rem;
     display: flex;
     position: relative;
+    .read-wrap{
+      position: absolute;
+      width: 6.1875rem;
+      height: 2rem;
+      opacity: 0.6;
+      background: linear-gradient(#015eea 0%, #00c0fa 100%);
+      border-radius: 1rem;
+      top: 1.75rem;
+      right: 1.3125rem;
+      color: #fff;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      .book{
+        width: 1.1875rem;
+      }
+    }
     .books-wrap-lf {
       width: 16.625rem;
       height: 24.5625rem;
@@ -148,6 +180,22 @@ export default {
     background-repeat: no-repeat;
     margin-top: 2.1875rem;
     position: relative;
+    .shaky-box {
+      width: 100%;
+      height: 100%;
+      padding-top: 2.3125rem;
+      padding-left: 1rem;
+      padding-right: 1.375rem;
+      padding-bottom: 1.125rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .shaky {
+        width: 8rem;
+        height: 10.5625rem;
+        margin-bottom: 0.65rem;
+      }
+    }
   }
 }
 </style>

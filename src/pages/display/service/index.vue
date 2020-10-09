@@ -6,7 +6,7 @@
           <div class="left-header-lf-title" :style="{backgroundImage: `url(${leftHeaderLfTitle})`}">
             <div class="title">劳模榜</div>
           </div>
-          <img class="botton" :src="moreIcon" alt="">
+          <img class="botton" :src="moreIcon" @click="laomoClick">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide>
@@ -26,7 +26,7 @@
           <div class="left-header-lf-title" :style="{backgroundImage: `url(${leftHeaderRfTitle})`}">
             <div class="title">贡献榜</div>
           </div>
-          <img class="botton" :src="moreIcon" alt="">
+          <img class="botton" :src="moreIcon" @click="dialogVisible2 = true">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide>
@@ -47,7 +47,7 @@
         <div class="left-footer-title" :style="{backgroundImage: `url(${leftFooterTitle})`}">
           <div class="title">最美职工</div>
         </div>
-        <img class="botton" :src="moreIcon" alt="">
+        <img class="botton" :src="moreIcon" @click="zuimeiClick">
         <div class="swiper-wrap">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide>
@@ -77,6 +77,23 @@
       </div>
     </div>
 
+    <el-dialog :title="dialogTile" width="79.875rem"
+      :visible.sync="dialogVisible">
+      <div class="laomo-item-wrap">
+        <MedalItem :avatarImg="avatarImg" />
+        <MedalItem :avatarImg="avatarImg" />
+        <MedalItem :avatarImg="avatarImg" />
+      </div>
+    </el-dialog>
+    <el-dialog title="贡献榜" width="79.875rem"
+      :visible.sync="dialogVisible2">
+      <div class="laomo-item-wrap">
+        <MedalItem :avatarImg="avatarImg2" />
+        <MedalItem :avatarImg="avatarImg2" />
+        <MedalItem :avatarImg="avatarImg2" />
+      </div>
+    </el-dialog>
+
     <center-content></center-content>
     <right-content></right-content>
   </div>
@@ -95,12 +112,14 @@ import avatarImg from '@/assets/images/avatar.jpg'
 import avatarImg2 from '@/assets/images/avatar2.jpg'
 import CenterContent from './centerContent'
 import RightContent from './rightContent'
+import MedalItem from './medaltem'
 
 export default {
   components: {
     EmployeeInfo,
     CenterContent,
     RightContent,
+    MedalItem,
   },
   data () {
     return {
@@ -124,16 +143,26 @@ export default {
       },
       avatarImg,
       avatarImg2,
+      dialogTile: '',
+      dialogVisible: false,
+      dialogVisible2: false,
     }
+  },
+  methods: {
+    laomoClick() {
+      this.dialogTile = '劳模榜'
+      this.dialogVisible = true
+    },
+    zuimeiClick() {
+      this.dialogTile = '最美职工'
+      this.dialogVisible = true
+    },
   },
   computed: {
     swiper() {
       return this.$refs.mySwiper.swiper
     }
   },
-  mounted() {
-    // this.swiper.slideTo(3, 1000, false)
-  }
 }
 </script>
 
@@ -142,6 +171,8 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
+  padding: 0 1.25rem;
+  justify-content: space-around;
   .title {
     width: 100%;
     height: 100%;
@@ -172,7 +203,6 @@ export default {
     width: 36.75rem;
     height: 100%;
     padding-top: 2rem;
-    margin-left: 1.1875rem;
     .left-header {
       width: 100%;
       display: flex;
@@ -213,6 +243,9 @@ export default {
         display: flex;
       }
     }
+  }
+  .laomo-item-wrap{
+    display: flex;
   }
 }
 </style>

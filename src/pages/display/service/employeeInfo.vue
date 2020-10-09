@@ -1,11 +1,11 @@
 <template>
   <div class="pages-display-service-employeeInfo">
-    <!-- <img :src="avatarImg" class="avatar-img"> -->
-    <el-image 
+    <img :src="avatarImg" class="avatar-img">
+    <!-- <el-image 
       class="avatar-img"
       :src="avatarImg" 
-      :preview-src-list="avatarImg">
-    </el-image>
+      :preview-src-list="[avatarImg]">
+    </el-image> -->
     <div class="name-box">
       <div>张三</div>
       <div style="margin-left: 1.875rem">XX工程部</div>

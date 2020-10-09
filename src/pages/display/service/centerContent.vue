@@ -39,9 +39,9 @@
     <el-dialog title="职工奖章" width="79.875rem"
       :visible.sync="medalDialogVisible">
       <div class="medal-item-wrap">
-        <MedalItem />
-        <MedalItem />
-        <MedalItem />
+        <MedalItem :avatarImg="avatarImg" />
+        <MedalItem :avatarImg="avatarImg" />
+        <MedalItem :avatarImg="avatarImg" />
       </div>
     </el-dialog>
 

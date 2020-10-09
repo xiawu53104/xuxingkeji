@@ -18,13 +18,14 @@
 </template>
 
 <script>
-import avatarImg from '@/assets/images/图层 11@2x.png'
 import medal from '@/assets/images/奖章@2x.png'
 
 export default {
+  props: {
+    avatarImg: String,
+  },
   data() {
     return {
-      avatarImg,
       medal,
       showInfo: false,
     }
