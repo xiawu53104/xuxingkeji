@@ -30,7 +30,10 @@
       <div class="title-wrap title-width" :style="{backgroundImage: `url(${centerMedal})`}">
         职工活动
       </div>
-      <img :src="moreIcon" class="more-icon" @click="handleActiveMore">
+      <img :src="moreIcon" class="more-icon button" @click="handleActiveMore">
+      <div class="shaky-box">
+        <img v-for="i in [1,2,3,4,5,6,7,8]" :key="shaky+i" :src="shaky" class="shaky">
+      </div>
     </div>
 
     <el-dialog title="职工奖章" width="79.875rem"
@@ -58,7 +61,8 @@ import titleBg from '@/assets/images/left_header_lf_title.png'
 import EmployeeInfo from './employeeInfo'
 import centerMedal from '@/assets/images/center_medal.png'
 import medal from '@/assets/images/奖章@2x.png'
-import avatarImg from '@/assets/images/avatar3.jpg'
+import avatarImg from '@/assets/images/图层 11@2x.png'
+import shaky from '@/assets/images/图层 14@2x.png'
 import MedalItem from './medaltem'
 
 export default {
@@ -76,6 +80,7 @@ export default {
       centerMedal,
       avatarImg,
       medal,
+      shaky,
       swiperOptions: {
         loop: true,
         autoplay: {
@@ -166,6 +171,23 @@ export default {
     .title-width{
       width: 12rem;
     }
+    .shaky-box {
+      width: 100%;
+      height: 100%;
+      padding-top: 2.3125rem;
+      padding-left: 1rem;
+      padding-right: 1.375rem;
+      padding-bottom: 1.125rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .shaky {
+        width: 9.3125rem;
+        height: 8.125rem;
+        margin-bottom: 0.65rem;
+      }
+    }
+    
   }
   .medal-item-wrap{
     display: flex;

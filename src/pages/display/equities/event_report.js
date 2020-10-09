@@ -52,6 +52,7 @@ export const eventOption = (data) => {
             splitLine: {
                 show: false
             },
+            interval: 24*60*60*1000,
             axisLine: {
                 lineStyle: {
                     color: '#9FCEFF',

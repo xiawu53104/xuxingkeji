@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import avatarImg from '@/assets/images/avatar.jpg'
+import avatarImg from '@/assets/images/图层 11@2x.png'
 import medal from '@/assets/images/奖章@2x.png'
 
 export default {

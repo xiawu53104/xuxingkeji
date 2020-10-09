@@ -48,12 +48,12 @@
           <el-date-picker
           v-model="selectMonth"
           :picker-options="pickerOption"
-          style="width: 3.25rem;"
+          style="width: 3.85rem;"
           size="mini"
           align="right"
           :editable="false"
           @change="onChange"
-          format="M"
+          format="M月"
           :clearable="false"
           type="month"
           placeholder="选择月">
@@ -159,15 +159,14 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item >
-            <el-select v-model="formInline.reportTime" placeholder="日期筛选" style="width: 13rem;">
-              <el-option
-                v-for="item in reportTimeList"
-                :key="item.label"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+          <el-form-item label="日期筛选">
+            <el-date-picker
+              v-model="formInline.alarmTime"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -229,15 +228,14 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item >
-            <el-select v-model="formInline.isQualified" placeholder="上报时间" style="width: 10.625rem;">
-              <el-option
-                v-for="item in reportTimeList"
-                :key="item.label"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
+          <el-form-item label="上报时间">
+            <el-date-picker
+              v-model="formInline.alarmTime"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSearch">搜索</el-button>
@@ -254,6 +252,108 @@
         <el-table-column  label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="showAlarmListDetails(scope)">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
+    <DialogWithTable v-model="isPieListShow" :total="periodReportList.length" title="危险源上报统计"
+      :pageChange="periodReportChange" :isLoading="false" v-if="isPieListShow">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.periodReportUser" placeholder="上报人..." style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker
+              v-model="formInline.alarmTime"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="periodReportData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="reportTitle" label="上报标题"></el-table-column>
+        <el-table-column prop="reportUser" label="上报人"></el-table-column>
+        <el-table-column prop="isQualified" label="是否合格"></el-table-column>
+        <el-table-column prop="reportTime" label="上报时间"></el-table-column>
+        <el-table-column  label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" @click="showAlarmListDetails(scope)">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
+    <DialogWithTable v-model="isStudyListShow" :total="completedData.length" title="职工完成情况列表"
+      :pageChange="periodReportChange" :isLoading="false" v-if="isStudyListShow">
+      <template v-slot:search>
+        <el-form :inline="true" :model="formInline" size="mini">
+          <el-form-item >
+            <el-input v-model="formInline.userName" placeholder="职工姓名..." style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.isQualified" placeholder="部门" style="width: 6.625rem;">
+              <el-option
+                v-for="item in classList"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.isQualified" placeholder="特殊工种" style="width: 7.625rem;">
+              <el-option
+                v-for="item in specialList"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.isQualified" placeholder="完成状态" style="width: 8.625rem;">
+              <el-option
+                v-for="item in completionState"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="完成日期">
+            <el-date-picker
+              style="width: 18rem"
+              v-model="formInline.alarmTime"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="studyData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="userName" label="姓名"></el-table-column>
+        <el-table-column prop="class" label="部门"></el-table-column>
+        <el-table-column prop="post" label="职位"></el-table-column>
+        <el-table-column prop="special" label="特殊工种"></el-table-column>
+        <el-table-column prop="process" label="完成进度"></el-table-column>
+        <el-table-column v-if="study == '已完成'" label="完成日期">
+          <template slot-scope="scope">
+            <div>{{scope.row.completionDate}}</div>
           </template>
         </el-table-column>
       </el-table>
@@ -336,7 +436,8 @@ export default {
         reportTime: '',
         reportUser: '',
         periodReportUser: '',
-        isQualified: ''
+        isQualified: '',
+        userName: ''
       },
       deviceTypeOptions: [
         {label: '安消智能摄像机' , value: 0},
@@ -401,24 +502,83 @@ export default {
       isPeriodReport: false,
       periodReportList: [
         {id: 1, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
-        {id: 1, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
-        {id: 1, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 2, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 3, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
       ],
-      periodReportData: []
+      periodReportData: [],
+      isPieListShow: false,
+      studyList: [
+        {id: 1, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
+        {id: 2, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '10%', completionDate: '2020-10-09'},
+        {id: 3, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '80%', completionDate: '2020-10-09'},
+        {id: 4, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
+        {id: 5, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '70%', completionDate: '2020-10-09'},
+        {id: 6, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '50%', completionDate: '2020-10-09'},
+        {id: 7, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '40%', completionDate: '2020-10-09'},
+        {id: 8, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
+      ],
+      studyData: [],
+      completedData: [],
+      study: '',
+      isStudyListShow: false,
+      classList: [
+        {label: '技术部', value: 0},
+        {label: '财务部', value: 1}
+      ],
+      specialList: [
+        {label: '无', value: 0},
+        {label: '切割工', value: 1},
+        {label: '电焊工', value: 2}
+      ],
+      completionState: [
+        {label: '已完成', value: 0},
+        {label: '未完成', value: 1}
+      ]
     }
   },
   mounted () {
     let chart = echarts.init(this.$refs.container)
     chart.setOption(option)
+    chart.on('click', params => {
+      console.log(params)
+      this.isPieListShow = true
+      this.periodReportData = this.periodReportList.slice(0, 10)
+    })
     let eventOptions = eventOption(this.ereportList)
     let eventCharts = echarts.init(this.$refs.eventChart)
     eventCharts.setOption(eventOptions)
+    eventCharts.on('click', params => {
+      console.log(params)
+      if (params.seriesName === '自查上报') {
+        this.isSelfReport = true
+        // let data = this.selfReportList.filter(item => item.reportTime.slice(0, 11) == params.data[0])
+        this.selfReportData = this.selfReportList.slice(0, 10)
+      } else {
+        this.isPeriodReport = true
+        // let data = this.periodReportList.filter(item => item.reportTime.slice(0, 11) == params.data[0])
+        this.periodReportData = this.periodReportList.slice(0, 10)
+      }
+    })
     let monitorVideoChart = echarts.init(this.$refs.monitorVideoChart)
     monitorVideoChart.setOption(monitorVideoOption)
     let hardwareChart = echarts.init(this.$refs.hardwareChart)
     hardwareChart.setOption(hardwareOption)
     let studyChart = echarts.init(this.$refs.studyChart)
     studyChart.setOption(studyOption)
+    studyChart.on('click', params => {
+      console.log(params.data.name)
+      if (params.data.name === '已完成') {
+        this.study = params.data.name
+        this.isStudyListShow = true
+        this.completedData = this.studyList.filter(item => item.process === '100%')
+        this.studyData = this.completedData.slice(0, 10)
+      } else {
+        this.study = params.data.name
+        this.isStudyListShow = true
+        this.completedData = this.studyList.filter(item => item.process !== '100%')
+        this.studyData = this.completedData.slice(0, 10)
+      }
+    })
   },
   methods: {
     // initMap () {
@@ -638,12 +798,13 @@ export default {
         width: 3.25rem;
         position: absolute;
         top: 1.75rem;
-        right: 3.75rem;
+        right: 4.75rem;
         cursor: pointer;
         .arrow {
+          cursor: pointer;
           width: 0.375rem;
           position: absolute;
-          right: 0.5rem;
+          right: -0.1rem;
           top: 50%;
           transform: translateY(-50%);
         }
