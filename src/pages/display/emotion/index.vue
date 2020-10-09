@@ -14,10 +14,10 @@
         </div>
         <img :src="moreIcon" class="more-icon" @click="handleEmotionMore">
         <div class="radio-wrap">
-          <el-radio-group v-model="select1">
-            <el-radio :label="1">日度</el-radio>
-            <el-radio :label="2">月度</el-radio>
-            <el-radio :label="3">年度</el-radio>
+          <el-radio-group v-model="select1" @change="onEmotionChange">
+            <el-radio :label="1">本日</el-radio>
+            <el-radio :label="2">本月</el-radio>
+            <el-radio :label="3">本年</el-radio>
           </el-radio-group>
         </div>
         <div class="container" ref="container1"></div>
@@ -28,11 +28,12 @@
           职工历史心理报告分析
         </div>
         <div class="radio-wrap">
-          <el-radio-group v-model="select2">
-            <el-radio :label="1">日度</el-radio>
-            <el-radio :label="2">月度</el-radio>
-            <el-radio :label="3">年度</el-radio>
-          </el-radio-group>
+          <div></div>
+          <!-- <el-radio-group v-model="select2">
+            <el-radio :label="1">本日</el-radio>
+            <el-radio :label="2">本月</el-radio>
+            <el-radio :label="3">本年</el-radio>
+          </el-radio-group> -->
           <div class="date-picker-wrap">
             <el-date-picker
               :picker-options="pickerOption"
@@ -97,7 +98,7 @@
         </el-form>
       </template>
       <el-table :data="tableData" style="width: 100%" size="mini" border>
-        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column prop="name" label="职工姓名"></el-table-column>
         <el-table-column prop="sexy" label="性别"></el-table-column>
         <el-table-column prop="department" label="职工部门"></el-table-column>
@@ -140,12 +141,12 @@
       </div>
     </el-dialog>
 
-    <DialogWithTable v-model="emotionDialogVisible" :total="emotionList.length" title="情绪识别指数"
+    <DialogWithTable v-model="emotionDialogVisible" :total="emotionList.length" title="情绪指数分布列表"
       :pageChange="emotionPageChange" :isLoading="false" v-if="emotionDialogVisible">
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
           <el-form-item >
-            <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名/手机号" style="width: 150px"></el-input>
+            <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名" style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item >
             <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
@@ -158,7 +159,7 @@
             </el-select>
           </el-form-item>
           <el-form-item >
-            <el-select v-model="formInline.isSpy" placeholder="是否特殊工种" style="width: 13rem;">
+            <el-select v-model="formInline.isSpy" placeholder="是否特殊工种" style="width: 8rem;">
               <el-option
                 v-for="item in isSpyOptions"
                 :key="item.value"
@@ -168,9 +169,21 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="formInline.sexy" placeholder="性别" style="width: 10.625rem;">
+            <el-date-picker
+              style="width: 18rem;"
+              size="mini"
+              value-format="yyyy-MM-dd"
+              v-model="formInline.dateRange"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="formInline.resultV" placeholder="情绪识别结果" style="width: 10.625rem;">
               <el-option
-                v-for="item in sexyOptions"
+                v-for="item in resultOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -184,10 +197,11 @@
         </el-form>
       </template>
       <el-table :data="emotionData" style="width: 100%" size="mini" border max-height="450">
-        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column prop="name" label="职工姓名"></el-table-column>
         <el-table-column prop="department" label="职工部门"></el-table-column>
         <el-table-column prop="position" label="职工职位"></el-table-column>
+        <el-table-column prop="spy" label="特殊工种"></el-table-column>
         <el-table-column prop="capture" label="情绪捕捉">
           <template slot-scope="scope">
             <img :src="scope.row.capture" class="capture-img">
@@ -247,7 +261,7 @@ export default {
       emotionBg,
       titleBg,
       moreIcon,
-      select1: 1,
+      select1: 2,
       select2: 1,
       historyBg,
       historyTitleBg,
@@ -268,11 +282,20 @@ export default {
         { value: '男', label: '男' },
         { value: '女', label: '女' },
       ],
+      resultOptions: [
+        { value: '开心', label: '开心' },
+        { value: '厌恶', label: '厌恶' },
+        { value: '惊讶', label: '惊讶' },
+        { value: '困惑', label: '困惑' },
+        { value: '平静', label: '平静' },
+      ],
       formInline: {
         nameOrPhone: '',
         department: '',
         isSpy: '',
         sexy: '',
+        dateRange: '',
+        resultV: '',
       },
       users: totalUsers,
       tableData: [],
@@ -342,7 +365,7 @@ export default {
     },
     handleSearch() {
       let result
-      const { nameOrPhone, department, isSpy, sexy } = this.formInline
+      const { nameOrPhone, department, isSpy, sexy, resultV, dateRange } = this.formInline
       if (/^\d$/.test(nameOrPhone)) {
         result = totalUsers.filter(x => x.phone.includes(nameOrPhone))
       } else {
@@ -357,6 +380,12 @@ export default {
       }
       if (sexy) {
         result = (result || totalUsers).filter(x => x.sexy.includes(sexy))
+      }
+      if (result) {
+        result = (result || totalUsers).filter(x => x.result.includes(resultV))
+      }
+      if (dateRange) {
+        result = (result || totalUsers).filter(x => x.statisticsMonth > dateRange[0] && x.statisticsMonth <= dateRange[1])
       }
       this.users = result
       this.tableData = this.users.slice(0, 10)
@@ -374,6 +403,20 @@ export default {
       const start = (v - 1)*10
       const end = start + 10
       this.emotionData = this.emotionList.slice(start, end)
+    },
+    onEmotionChange(v) {
+      const newOption = JSON.parse(JSON.stringify(option))
+      if (v == 1) {
+        newOption.series.data[0].value = newOption.series.data[0].value.map(x => x/2)
+        this.myChart.setOption(newOption)
+      }
+      if (v == 2) {
+        this.myChart.setOption(newOption)
+      }
+      if (v == 3) {
+        newOption.series.data[0].value = newOption.series.data[0].value.map(x => x*1.2)
+        this.myChart.setOption(newOption)
+      }
     }
   },
   computed: {

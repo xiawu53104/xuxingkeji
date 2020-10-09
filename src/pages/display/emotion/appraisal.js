@@ -4,7 +4,7 @@ export default {
   },
   color: ['#00FEFF', '#0094F8', '#FF6FAB', '#00EAAE'],
   legend: {
-    data: ['优秀', '良好', '中等', '极差'],
+    data: ['优秀', '一般', '差', '极差'],
     bottom: 10,
     itemWidth: 12,
     itemHeight: 10,
@@ -22,8 +22,8 @@ export default {
       center: ['50%', '40%'],
       data: [
         {value: 335, name: '优秀', key: 'excellent'},
-        {value: 310, name: '良好', key: 'commonly'},
-        {value: 234, name: '中等', key: 'difference'},
+        {value: 310, name: '一般', key: 'commonly'},
+        {value: 234, name: '差', key: 'difference'},
         {value: 135, name: '极差', key: 'very_bad'},
       ],
       emphasis: {

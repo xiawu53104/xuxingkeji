@@ -58,8 +58,8 @@ export default {
     padding: 0;
   }
   .el-input--mini .el-input__inner{
-    height: 1.5rem;
-    line-height: 1.5rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
     padding: 0 0.5rem;
     font-size: 0.75rem;
   }
@@ -68,6 +68,19 @@ export default {
   }
   .el-select .el-input .el-select__caret{
     font-size: 0.75rem;
+  }
+  .el-date-editor .el-range-input{
+    background: transparent;
+    color: #fff;
+  }
+  .el-range-editor--mini.el-input__inner{
+    height: 1.8rem;
+  }
+  .el-range-editor.is-active, .el-range-editor.is-active:hover{
+    border-color: #52ffff;
+  }
+  .el-range-editor.el-input__inner {
+    padding: 1px 10px;
   }
 }
 </style>

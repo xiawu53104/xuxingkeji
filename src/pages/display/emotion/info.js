@@ -1,5 +1,7 @@
 export default {
-  xAxis: {},
+  xAxis: {
+    max: 100,
+  },
   yAxis: {type: 'category'},
   series: [
     {
@@ -11,7 +13,7 @@ export default {
   ],
   dataset: {
     source: [
-      ['', 89]
+      ['', 15]
     ]
   }
 }

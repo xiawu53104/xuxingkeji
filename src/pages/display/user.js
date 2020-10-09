@@ -67,6 +67,7 @@ export const getEmotionList = function() {
     capture: avatarImg,
     result: resultMap[getRandom(resultMap.length)],
     statisticsMonth: '2020-09',
+    spy: '检修工',
     resultAnalysis: resultAnalysisMap[getRandom(resultAnalysisMap.length)],
   }))
 }

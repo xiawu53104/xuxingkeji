@@ -18,7 +18,7 @@
         <div class="content">
           <span class="label">幸福捕获指数:</span>
           <div class="bar" :style="{backgroundSize: bgSize}"></div>
-          <span class="percent">89%</span>
+          <span class="percent">{{barVal}}%</span>
         </div>
       </div>
     </div>
@@ -30,9 +30,8 @@
       </div>
       <div class="radio-wrap">
         <el-radio-group v-model="select">
-          <el-radio :label="1">日度</el-radio>
-          <el-radio :label="2">月度</el-radio>
-          <el-radio :label="3">年度</el-radio>
+          <el-radio :label="2">本月</el-radio>
+          <el-radio :label="3">本年</el-radio>
         </el-radio-group>
 
         <el-select v-model="lowScoreSelect" placeholder="请选择" size="mini" style="width: 9.375rem">
@@ -40,7 +39,7 @@
         </el-select>
       </div>
 
-      <div class="report-wrap">
+      <div class="report-wrap" @click="handleDetail">
         <div class="left">
           <img :src="attentionIcon" class="icon">
           <div class="status">重度焦虑</div>
@@ -53,7 +52,7 @@
         <div class="score">
           15<span style="font-size: 28px">分</span>
         </div>
-        <img :src="linkImg" class="link-img" @click="handleDetail">
+        <img :src="linkImg" class="link-img">
       </div>
     </div>
 
@@ -82,11 +81,18 @@
         <div class="title">测评成绩</div>
         <div class="chart-wrap">
           <div class="chart-title">
-            <div>89分</div>
-            <div>人员当前情绪良好</div>
+            <div>15分</div>
+            <div>人员当前处于重度焦虑状态</div>
           </div>
           <div class="chart" ref="chart"></div>
-          <!-- <div class="chart-btm">分数越低说明焦虑表现越明显</div> -->
+        </div>
+        <div class="title">测评建议</div>
+        <div class="suggest">
+          <div>关于焦虑，你还需要知道这些</div>
+          <div>一. 焦虑不等于焦虑症</div>
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+          <div>二. 如何直观的判断自己是不是焦虑症</div>
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
         </div>
       </div>
     </el-dialog>
@@ -102,6 +108,7 @@ import linkImg from '@/assets/images/链接@2x.png'
 import * as service from '../apis'
 import echarts from 'echarts'
 import option from './info'
+import { setInterval, clearInterval } from 'timers';
 
 export default {
   data() {
@@ -109,7 +116,7 @@ export default {
       bg,
       borderBg,
       titleBg,
-      select: 1,
+      select: 2,
       attentionIcon,
       linkImg,
       lowScoreSelect: '',
@@ -125,10 +132,19 @@ export default {
         gz: '切割工',
         phone: '188xxxx1245'
       },
+      barVal: 28
     }
   },
   mounted() {
     this.initData()
+
+    this.timmer = setInterval(() => {
+      if (this.barVal >= 100) this.timmer&& clearInterval(this.timmer)
+      this.barVal++
+    }, 30*1000)
+  },
+  beforeDestroy() {
+    this.timmer&& clearInterval(this.timmer)
   },
   methods: {
     async initData() {
@@ -152,7 +168,7 @@ export default {
   },
   computed: {
     bgSize() {
-      return `89% 100%`;
+      return `${this.barVal}% 100%`;
     }
   }
 }
@@ -362,12 +378,21 @@ export default {
       width: 100%;
       color: #fff;
       border: 0.0625rem solid #fff;
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
       .chart-title{
         text-align: center;
       }
       .chart{
         width: 100%;
         height: 16.25rem;
+      }
+    }
+    .suggest{
+      color: #fff;
+      margin-top: 0.625rem;
+      &>div{
+        margin-bottom: 0.3125rem;
       }
     }
   }

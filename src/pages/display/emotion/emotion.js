@@ -1,5 +1,13 @@
 export default {
-  tooltip: {},
+  tooltip: {
+    formatter: params => {
+      const arr = ['开心20%', '平静40%', '困惑60%', '惊讶10%', '厌恶10%']
+      const result = arr.map((x, i) => {
+        return `${x}: ${params.value[i]}人次`
+      })
+      return result.join('<br/>')
+    }
+  },
   grid: {
     backgroundColor: 'rgba(96,105,141,0.2)',
     borderColor: '#fff',

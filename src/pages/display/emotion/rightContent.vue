@@ -16,7 +16,7 @@
       <div class="list-wrap">
         <scroll-list :data="users">
           <template v-slot:default="{data: {i, item}}">
-            <span class="list-item">{{`TOP${i}`}}</span>
+            <span class="list-item">{{`TOP${i + 1}`}}</span>
             <span class="list-item">{{item.name}}</span>
             <span class="list-item">{{item.department}}</span>
             <span class="list-item">{{item.position}}</span>
@@ -36,20 +36,19 @@
         <result-item title="情绪识别分析">
           <div class="radio-box">
             <el-radio-group v-model="select1">
-              <el-radio :label="1">日度</el-radio>
-              <el-radio :label="2">月度</el-radio>
-              <el-radio :label="3">年度</el-radio>
+              <el-radio :label="1">本日</el-radio>
+              <el-radio :label="2">本月</el-radio>
             </el-radio-group>
           </div>
           <div ref="chartWrap1" class="chart-wrap"></div>
         </result-item>
         <result-item title="测评分析报告">
           <div class="radio-box">
-            <el-radio-group v-model="select2">
+            <!-- <el-radio-group v-model="select2">
               <el-radio :label="1">日度</el-radio>
               <el-radio :label="2">月度</el-radio>
               <el-radio :label="3">年度</el-radio>
-            </el-radio-group>
+            </el-radio-group> -->
           </div>
           <div ref="chartWrap2" class="chart-wrap"></div>
         </result-item>
