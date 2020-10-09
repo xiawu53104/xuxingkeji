@@ -1,12 +1,9 @@
 export default {
   tooltip: {
     trigger: 'axis',
-    // axisPointer: {
-    //   type: 'cross',
-    //   crossStyle: {
-    //     color: '#999'
-    //   }
-    // }
+    formatter: function (params) {
+      return `整体平均分： ${params[0].value} <br/> 结果分析: 极差`
+    }
   },
   textStyle: {
     color: '#fff'

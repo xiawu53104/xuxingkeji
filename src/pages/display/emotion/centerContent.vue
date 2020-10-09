@@ -2,6 +2,7 @@
   <div class="pages-display-emotion-center">
     <div class="emotion-recognition-wrap">
       <img :src="bg" class="bg-img">
+      <img :src="moreIcon" class="more-icon">
       <div class="info-wrap">
         <div class="border"></div>
         <div class="text">张三</div>
@@ -10,10 +11,20 @@
           <div>年龄： 36</div>
           <div>籍贯： 山东</div>
           <div>民族： 汉族</div>
+          <div>部门： 工程部</div>
+          <div>职位： 技术工</div>
           <div>工种： 电工</div>
           <div>爱好： 看书</div>
         </div>
       </div>
+      <div class="border-o">
+        <div class="border-i"></div>
+      </div>
+      <transition name="el-zoom-in-bottom">
+        <div class="incream-wrap" v-show="showIncream">
+          <span>+1</span>
+        </div>
+      </transition>
       <div class="progress-bar-wrap">
         <div class="content">
           <span class="label">幸福捕获指数:</span>
@@ -105,10 +116,11 @@ import borderBg from '@/assets/images/BG _3@2x.png'
 import titleBg from '@/assets/images/多边形 1_3@2x.png'
 import attentionIcon from '@/assets/images/叹号@2x.png'
 import linkImg from '@/assets/images/链接@2x.png'
+import moreIcon from '@/assets/images/更多@2x.png'
 import * as service from '../apis'
 import echarts from 'echarts'
 import option from './info'
-import { setInterval, clearInterval } from 'timers';
+import { setInterval, clearInterval, setTimeout } from 'timers';
 
 export default {
   data() {
@@ -118,6 +130,7 @@ export default {
       titleBg,
       select: 2,
       attentionIcon,
+      moreIcon,
       linkImg,
       lowScoreSelect: '',
       lowScoreOptions: [],
@@ -132,7 +145,8 @@ export default {
         gz: '切割工',
         phone: '188xxxx1245'
       },
-      barVal: 28
+      barVal: 28,
+      showIncream: false,
     }
   },
   mounted() {
@@ -141,6 +155,8 @@ export default {
     this.timmer = setInterval(() => {
       if (this.barVal >= 100) this.timmer&& clearInterval(this.timmer)
       this.barVal++
+      this.showIncream = true
+      setTimeout(() => this.showIncream = false, 1000)
     }, 30*1000)
   },
   beforeDestroy() {
@@ -192,14 +208,22 @@ export default {
       top: 0;
       left: 0;
     }
+    .more-icon{
+      width: 1.5625rem;
+      position: absolute;
+      top: 0.625rem;
+      right: 0.625rem;
+      cursor: pointer;
+    }
     .info-wrap{
       width: 7.9375rem;
-      height: 12.8125rem;
+      min-height: 12.8125rem;
       position: absolute;
       top: 0;
       left: 0;
       background: rgba(0,0,0,.5);
       box-shadow: 0rem 0rem 2.5rem 0rem rgba(0,0,0,0.7);
+      padding-bottom: 1rem;
       .border{
         width: 7.9375rem;
         height: 0.125rem;
@@ -225,6 +249,31 @@ export default {
           margin-bottom: 0.5rem;
         }
       }
+    }
+    .border-o{
+      width: 15.5625rem;
+      height: 16.0625rem;
+      border: 1px solid #51ffff;
+      position: absolute;
+      top: 6.4375rem;
+      right: 11.4375rem;
+      z-index: 99;
+      .border-i{
+        width: 43px;
+        height: 43px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-left: 1px dashed #51ffff;
+        border-bottom: 1px dashed #51ffff;
+      }
+    }
+    .incream-wrap{
+      position: absolute;
+      color: #FF586F;
+      font-size: 1.5rem;
+      right: 1rem;
+      bottom: 5.625rem;
     }
     .progress-bar-wrap{
       width: 42.0625rem;

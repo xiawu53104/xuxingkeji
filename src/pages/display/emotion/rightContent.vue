@@ -35,7 +35,7 @@
       <div class="content-wrap">
         <result-item title="情绪识别分析">
           <div class="radio-box">
-            <el-radio-group v-model="select1">
+            <el-radio-group v-model="select1" @change="chart1Change">
               <el-radio :label="1">本日</el-radio>
               <el-radio :label="2">本月</el-radio>
             </el-radio-group>
@@ -43,12 +43,15 @@
           <div ref="chartWrap1" class="chart-wrap"></div>
         </result-item>
         <result-item title="测评分析报告">
-          <div class="radio-box">
-            <!-- <el-radio-group v-model="select2">
-              <el-radio :label="1">日度</el-radio>
-              <el-radio :label="2">月度</el-radio>
-              <el-radio :label="3">年度</el-radio>
-            </el-radio-group> -->
+          <div class="radio-box" style="text-align:right;margin-right: 1.25rem">
+            <el-date-picker
+              size="mini"
+              :clearable="false"
+              style="width: 5rem"
+              v-model="select2"
+              type="month"
+              placeholder="统计月度">
+            </el-date-picker>
           </div>
           <div ref="chartWrap2" class="chart-wrap"></div>
         </result-item>
@@ -60,10 +63,10 @@
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
           <el-form-item >
-            <el-input v-model="formInline.name" placeholder="员工姓名" style="width: 150px"></el-input>
+            <el-input v-model="formInline.name" placeholder="职工姓名" style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+            <el-select v-model="formInline.department" placeholder="职工部门" style="width: 10.625rem;">
               <el-option
                 v-for="item in departmentOptions"
                 :key="item.value"
@@ -72,6 +75,35 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item >
+            <el-select v-model="formInline.spy" placeholder="特殊工种" style="width: 10.625rem;">
+              <el-option
+                v-for="item in spyOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="formInline.resultV" placeholder="测评结果" style="width: 10.625rem;">
+              <el-option
+                v-for="item in resultOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker
+              style="width: 10.625rem;"
+              v-model="formInline.month"
+              type="month"
+              value-format="yyyy-MM"
+              placeholder="统计月度">
+            </el-date-picker>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSearch">搜索</el-button>
             <el-button type="success" @click="handleReset">重置</el-button>
@@ -79,7 +111,7 @@
         </el-form>
       </template>
       <el-table :data="tableData" style="width: 100%" size="mini" border>
-        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="name" label="职工姓名"></el-table-column>
         <el-table-column prop="department" label="职工部门"></el-table-column>
         <el-table-column prop="position" label="职工职位"></el-table-column>
@@ -134,19 +166,32 @@ export default {
       select: 2,
       moreImg,
       resultBg,
-      select1: 1,
-      select2: 1,
+      select1: 2,
+      select2: new Date(),
       users: [],
       dialogVisible: false,
       tableTotal: totalUsers,
       formInline: {
         name: '',
         department: '',
+        spy: '',
+        resultV: '',
+        month: '',
       },
       departmentOptions: [
-        { value: '0', label: '技术部' },
-        { value: '1', label: '工程部' },
-        { value: '2', label: '财务部' },
+        { value: '技术部', label: '技术部' },
+        { value: '工程部', label: '工程部' },
+        { value: '财务部', label: '财务部' },
+      ],
+      spyOptions: [
+        { value: '检修工', label: '检修工' },
+        { value: '切割工', label: '切割工' },
+      ],
+      resultOptions: [
+        { value: '优秀', label: '优秀' },
+        { value: '一般', label: '一般' },
+        { value: '差', label: '差' },
+        { value: '极差', label: '极差' },
       ],
       tableData: [],
     }
@@ -156,14 +201,14 @@ export default {
     this.initGradeChart(this.select)
     this.initUsers()
 
-    const chart1 = echarts.init(this.$refs.chartWrap1)
-    chart1.setOption(recognitionOption)
+    this.chart1 = echarts.init(this.$refs.chartWrap1)
+    this.initRecognitionChart()
     this.chart2 = echarts.init(this.$refs.chartWrap2)
     this.initReportChart()
   },
   methods: {
     async initGradeChart(type) {
-      let option = JSON.parse(JSON.stringify(gradeOption))
+      let option = gradeOption
       if (type == 2) {
         const axis = []
         for (let i = 1; i <= getMonthDays(); i++) {
@@ -174,6 +219,17 @@ export default {
       const rawData = await service.getPsychology()
       option.series[0].data = rawData.data.trend.map(x => x.avg)
       this.chart.setOption(option)
+      const that = this
+      this.chart.on('click', 'series.line', function() {
+        that.handleGradeMore()
+      })
+    },
+    initRecognitionChart() {
+      this.chart1.setOption(recognitionOption)
+      const that = this
+      this.chart1.on('click', function(params) {
+        that.$emit('showLogTable', params.name)
+      })
     },
     initUsers() {
       this.users = totalUsers.sort((a, b) => b.avg - a.avg).slice(0, 20)
@@ -181,13 +237,31 @@ export default {
     gradeChange(v) {
       this.initGradeChart(v)
     },
+    chart1Change(v) {
+      let option = JSON.parse(JSON.stringify(recognitionOption))
+      if (v == 1) {
+        option.series.data[0].value = 18
+        option.series.data[1].value = 8
+        this.chart1.setOption(option)
+      }
+      if (v == 2) {
+        this.chart1.setOption(option)
+      } 
+    },
     async initReportChart() {
       const rawData = await service.getReport()
-      const options = JSON.parse(JSON.stringify(appraisalOption))
+      const options = appraisalOption
       options.series[0].data.forEach(x => {
         x.value = rawData.data[x.key]
       })
       this.chart2.setOption(options)
+      const that = this
+      this.chart2.on('click', function(params) {
+        let result = totalUsers.filter(x => x.resultAnalysis == params.name)
+        that.tableTotal = result
+        that.tableData = that.tableTotal.slice(0, 10)
+        that.dialogVisible = true
+      })
     },
     handleGradeMore() {
       this.dialogVisible = true
@@ -199,10 +273,32 @@ export default {
       this.tableData = this.tableTotal.slice(start, end)
     },
     handleSearch() {
-
+      let result
+      const { name, department, spy, resultV, month } = this.formInline
+      if (name) {
+        result = totalUsers.filter(x => x.name.includes(name))
+      }
+      if (department) {
+        result = (result || totalUsers).filter(x => x.department == department)
+      }
+      if (spy) {
+        result = (result || totalUsers).filter(x => x.spy.includes(spy))
+      }
+      if (resultV) {
+        result = (result || totalUsers).filter(x => x.resultAnalysis.includes(resultV))
+      }
+      if (month) {
+        result = (result || totalUsers).filter(x => x.statisticsMonth == month)
+      }
+      this.tableTotal = result
+      this.tableData = this.tableTotal.slice(0, 10)
     },
     handleReset() {
-
+      Object.keys(this.formInline).forEach(x => {
+        this.formInline[x] = ''
+      })
+      this.tableTotal = totalUsers
+      this.tableData = this.tableTotal.slice(0, 10)
     },
   }
 }

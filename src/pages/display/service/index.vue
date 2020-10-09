@@ -6,7 +6,7 @@
           <div class="left-header-lf-title" :style="{backgroundImage: `url(${leftHeaderLfTitle})`}">
             <div class="title">劳模榜</div>
           </div>
-          <!-- <img class="botton" :src="moreIcon" alt=""> -->
+          <img class="botton" :src="moreIcon" alt="">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide>
@@ -26,7 +26,7 @@
           <div class="left-header-lf-title" :style="{backgroundImage: `url(${leftHeaderRfTitle})`}">
             <div class="title">贡献榜</div>
           </div>
-          <!-- <img class="botton" :src="moreIcon" alt=""> -->
+          <img class="botton" :src="moreIcon" alt="">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide>
@@ -47,7 +47,7 @@
         <div class="left-footer-title" :style="{backgroundImage: `url(${leftFooterTitle})`}">
           <div class="title">最美职工</div>
         </div>
-        <!-- <img class="botton" :src="moreIcon" alt=""> -->
+        <img class="botton" :src="moreIcon" alt="">
         <div class="swiper-wrap">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide>
@@ -158,6 +158,7 @@ export default {
     position: absolute;
     top: 0.9375rem;
     right: 0.9375rem;
+    cursor: pointer;
   }
   .swiper-wrap {
     width: 100%;

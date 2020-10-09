@@ -11,11 +11,10 @@ export default {
     textStyle: {
       color: '#fff',
       fontSize: '10',
-      fontFamily: 'Microsoft YaHei Regular, Microsoft YaHei Regular-Regular',
       fontWeight: 400
     }
   },
-  series: [{
+  series: {
     type: 'pie',
     center: ['50%', '40%'],
     radius: ['50%', '70%'],
@@ -48,5 +47,5 @@ export default {
         name: '情绪低落'
       }
     ]
-  }]
+  }
 };

@@ -21,6 +21,7 @@ export default {
       { name: '厌恶10%', max: 6500},
     ],
     triggerEvent: true,
+    
   },
   series: {
     name: 'emotion',

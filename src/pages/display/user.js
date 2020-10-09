@@ -58,7 +58,7 @@ export default function getUsers() {
 }
 
 const resultMap = ['开心', '平静', '困惑', '惊讶', '厌恶']
-const resultAnalysisMap = ['优秀', '良好', '中等', '极差']
+const resultAnalysisMap = ['优秀', '一般', '差', '极差']
 
 export const getEmotionList = function() {
   const users = getUsers()

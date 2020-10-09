@@ -1,6 +1,10 @@
 export default {
   tooltip: {
     trigger: 'item',
+    formatter: (params) => {
+      return `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${params.color};"></span> 
+      ${params.name}: ${params.percent}%`
+    }
   },
   color: ['#00FEFF', '#0094F8', '#FF6FAB', '#00EAAE'],
   legend: {

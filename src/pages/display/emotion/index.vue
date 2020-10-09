@@ -204,7 +204,7 @@
         <el-table-column prop="spy" label="特殊工种"></el-table-column>
         <el-table-column prop="capture" label="情绪捕捉">
           <template slot-scope="scope">
-            <img :src="scope.row.capture" class="capture-img">
+            <img :src="scope.row.capture" class="capture-img" @click="viewImg(scope.row)">
           </template>
         </el-table-column>
         <el-table-column prop="result" label="情绪识别结果"></el-table-column>
@@ -212,8 +212,14 @@
       </el-table>
     </DialogWithTable>
 
+    <el-dialog title="情绪捕捉" :visible.sync="imgDialogVisible" width="31.25rem">
+      <div style="text-align:center">
+        <img :src="avatarImg" style="width: 25rem" />
+      </div>
+    </el-dialog>
+
     <center-content></center-content>
-    <right-content></right-content>
+    <right-content ref="rightContent" @showLogTable="showLogTable"></right-content>
   </div>
 </template>
 
@@ -230,6 +236,7 @@ import CenterContent from './centerContent'
 import historyOption from './employeeHsitory'
 import RightContent from './rightContent'
 import arrowIcon from '@/assets/images/下 拉_1@2x.png'
+import avatarImg from '@/assets/images/avatar.jpg'
 import DialogWithTable from '@/components/dialogWithTable/index'
 import LogItem from './logItem'
 import * as service from '../apis'
@@ -302,6 +309,8 @@ export default {
       emotionDialogVisible: false,
       emotionList: totalEmotionList,
       emotionData: [],
+      imgDialogVisible: false,
+      avatarImg,
     }
   },
   async mounted() {
@@ -324,12 +333,18 @@ export default {
     },
     async initHistoryChart() {
       const month = new Date().getMonth()
-      let newOption = JSON.parse(JSON.stringify(historyOption))
+      let newOption = historyOption
       const len = month + 1
       newOption.xAxis.data = newOption.xAxis.data.slice(0, len)
       const rawData = await service.getHistoryAnalysis(new Date().getFullYear())
       newOption.series[0].data = rawData.data.map(x => x.avg)
+      newOption.series[1].data = rawData.data.map(x => x.avg)
       this.hsitoryChart.setOption(newOption)
+      const that = this
+      this.hsitoryChart.on('click', 'series.bar', function(params) {
+        console.log(params)
+        that.$refs.rightContent.handleGradeMore()
+      })
     },
     handleClick(item) {
       if (item.id == 1) {
@@ -350,7 +365,7 @@ export default {
     },
     async onChange(v) {
       if (v.getFullYear() < new Date().getFullYear()) {
-        let newOption = JSON.parse(JSON.stringify(historyOption))
+        let newOption = historyOption
         const rawData = await service.getHistoryAnalysis(v.getFullYear())
         newOption.series[0].data = rawData.data.map(x => x.avg)
         this.hsitoryChart.setOption(historyOption)
@@ -381,7 +396,7 @@ export default {
       if (sexy) {
         result = (result || totalUsers).filter(x => x.sexy.includes(sexy))
       }
-      if (result) {
+      if (resultV) {
         result = (result || totalUsers).filter(x => x.result.includes(resultV))
       }
       if (dateRange) {
@@ -417,6 +432,20 @@ export default {
         newOption.series.data[0].value = newOption.series.data[0].value.map(x => x*1.2)
         this.myChart.setOption(newOption)
       }
+    },
+    viewImg(row) {
+      this.imgDialogVisible = true
+      console.log(row)
+    },
+    showLogTable(name) {
+      this.emotionDialogVisible = true
+      const arr = ['开心', '平静']
+      if (name == '情绪良好'){
+        this.emotionList = totalEmotionList.filter(x => arr.includes(x.result))
+      } else {
+        this.emotionList = totalEmotionList.filter(x => !arr.includes(x.result))
+      }
+      this.emotionData = this.emotionList.slice(0, 10)
     }
   },
   computed: {

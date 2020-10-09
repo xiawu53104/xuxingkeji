@@ -45,16 +45,21 @@ export default {
     color: #ffffff;
     display: flex;
     padding-left: 0.625rem;
-    margin-top: 0.3125rem;
+    margin-top: 0.625rem;
   }
   .info{
     opacity: 0.6;
     font-size: 0.75rem;
     color: #ffffff;
-    margin-top: 0.3125rem;
+    margin-top: 0.625rem;
     padding: 0 0.3125rem;
-    height: 5.3125rem;
     overflow: hidden;
+    text-overflow:ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-height: 1.5rem;
+    letter-spacing: 1px;
   }
 }
 </style>
