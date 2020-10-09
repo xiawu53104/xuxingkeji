@@ -1,11 +1,16 @@
 <template>
   <div class="pages-display-service-employeeInfo">
     <img :src="avatarImg" class="avatar-img">
+    <!-- <el-image 
+      class="avatar-img"
+      :src="avatarImg" 
+      :preview-src-list="avatarImg">
+    </el-image> -->
     <div class="name-box">
       <div>张三</div>
       <div style="margin-left: 1.875rem">XX工程部</div>
     </div>
-    <div class="info" >
+    <div class="info">
       1995年1月出生，江苏兴化人。中国书法家协会第一、二届常务理事，第三、五、六届理事，
       中国书法家协会资深评委，先后为上海《书法》杂志执行主编和中国书法家协会《中国书法》杂志主编。
       现为《中国书法》杂志特约编审，中国楹联协会顾问，中国人民大学东方艺术研究所副所长、兼职教授。
@@ -55,6 +60,7 @@ export default {
     padding: 0 0.3125rem;
     height: 5.3125rem;
     overflow: hidden;
+
   }
 }
 </style>

@@ -2,7 +2,7 @@ export default {
     tooltip: {
       trigger: 'item',
       formatter: params => {
-        return params.name + '上报问题'+ '<br /> <p style="text-align: center;margin-top: 5px;">' + params.value + '次</p>'
+        return '<p style="font-size: 10px">' + params.name + '上报问题'+ '</p> <p style="font-size: 14px;text-align: center;margin-top: 5px;">' + params.value + '次</p>'
       },
       textStyle: {
         color: '#01D4F9',
