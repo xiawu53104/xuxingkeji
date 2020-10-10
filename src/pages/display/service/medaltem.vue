@@ -1,5 +1,6 @@
 <template>
   <div class="pages-display-service-medalItem"
+    @click="handleClick"
     @mouseenter="showInfo = true" @mouseleave="showInfo = false">
     <img :src="avatarImg" class="avatar-img">
     <img :src="medal" class="medal-img">
@@ -31,7 +32,9 @@ export default {
     }
   },
   methods: {
-
+    handleClick() {
+      this.$emit('click')
+    }
   }
 }
 </script>
@@ -41,6 +44,7 @@ export default {
   width: 12.5rem;
   margin-right: 1.25rem;
   position: relative;
+  cursor: pointer;
   .avatar-img{
     width: 100%;
   }

@@ -2,7 +2,7 @@
   <div class="components-scrollList">
     <vue-seamless-scroll :data="data" :class-option="classOption">
       <template>
-        <ul class="left-top-content-list" v-for="(item, i) in data" :key="i">
+        <ul class="left-top-content-list" v-for="(item, i) in data" :key="item.id || i">
           <el-divider></el-divider>
           <li class="left-top-content-list-container">
             <slot :data="{i, item}"></slot>

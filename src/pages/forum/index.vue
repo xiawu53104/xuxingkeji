@@ -4,8 +4,8 @@
       <div class="back" @click="handleBack">返回</div>
     </div>
     <div class="forum-content">
-      <el-input class="forum-input" placeholder="我想搜...">
-        <el-button slot="append" icon="el-icon-search"></el-button>
+      <el-input class="forum-input" placeholder="我想搜..." v-model="keyWord">
+        <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </el-input>
       <div class="post-wrap">
         <Post v-for="item in postList" :key="item.id" v-bind="item" />
@@ -30,17 +30,20 @@
 import $ from 'jquery'
 import Post from './post'
 
+const posts = [
+  { id: 1, title: '工作太累怎么办？', name: '张三', time: '2020-09-18 22:13', views: 1234, isTop: true, showImg: false },
+  { id: 2, title: '工作太累怎么办？', name: '张三', time: '2020-09-18 22:13', views: 1234, isTop: true, showImg: true },
+  { id: 3, title: '工作太累怎么办？', name: '张三', time: '2020-09-18 22:13', views: 1234, isTop: false, showImg: true },
+]
+
 export default {
   components: {
     Post,
   },
   data() {
     return {
-      postList: [
-        { id: 1, title: '工作太累怎么办？', name: '张三', time: '2020-09-18 22:13', views: 1234, isTop: true, showImg: false },
-        { id: 2, title: '工作太累怎么办？', name: '张三', time: '2020-09-18 22:13', views: 1234, isTop: true, showImg: true },
-        { id: 3, title: '工作太累怎么办？', name: '张三', time: '2020-09-18 22:13', views: 1234, isTop: false, showImg: true },
-      ],
+      keyWord: '',
+      postList: posts,
       postTitle: '',
     }
   },
@@ -52,8 +55,25 @@ export default {
       this.$router.back()
     },
     handleSubmit() {
-
-    }
+      if (!this.postTitle) {
+        this.$message.error({
+          message: '标题不能为空'
+        })
+        return
+      }
+      this.postList.push({
+        id: posts.length + 1,
+        title: this.postTitle,
+        name: '张三',
+        time: '2020-10-12 11:13',
+        views: 0,
+        isTop: false,
+        showImg: false,
+      })
+    },
+    handleSearch() {
+      this.postList = posts.filter(x => x.title.includes(this.keyWord))
+    },
   }
 }
 </script>

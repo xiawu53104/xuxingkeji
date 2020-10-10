@@ -2,7 +2,7 @@
   <div class="pages-display-emotion-center">
     <div class="emotion-recognition-wrap">
       <img :src="bg" class="bg-img">
-      <img :src="moreIcon" class="more-icon">
+      <img :src="moreIcon" class="more-icon" @click="handleMore">
       <div class="info-wrap">
         <div class="border"></div>
         <div class="text">张三</div>
@@ -181,6 +181,9 @@ export default {
         chart.setOption(option)
       })
     },
+    handleMore() {
+      this.$emit('showLogs')
+    }
   },
   computed: {
     bgSize() {

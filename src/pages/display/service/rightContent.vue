@@ -93,7 +93,10 @@ export default {
       this.dialogVisible = true
     },
     jumpClick() {
-      
+      const a = document.createElement('a')
+      a.target = '_blank'
+      a.href = 'https://www.baidu.com'
+      a.click()
     }
   }
 }

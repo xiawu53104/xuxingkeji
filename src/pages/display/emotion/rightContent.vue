@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <DialogWithTable v-model="dialogVisible" :total="tableTotal.length" title="企业职工列表"
+    <DialogWithTable v-model="dialogVisible" :total="tableTotal.length" :title="dialogTitle"
       :pageChange="pageChange" :isLoading="false" v-if="dialogVisible">
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
@@ -115,12 +115,61 @@
         <el-table-column prop="name" label="职工姓名"></el-table-column>
         <el-table-column prop="department" label="职工部门"></el-table-column>
         <el-table-column prop="position" label="职工职位"></el-table-column>
-        <el-table-column prop="avg" label="测评平均分数"></el-table-column>
+        <el-table-column prop="spy" label="特殊工种"></el-table-column>
+        <el-table-column prop="times" label="测评次数"></el-table-column>
         <el-table-column prop="resultAnalysis" label="结果分析"></el-table-column>
         <el-table-column prop="statisticsMonth" label="统计月度"></el-table-column>
         <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="showDetail(scope.row)">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </DialogWithTable>
+
+    <DialogWithTable v-model="showLogDialog" :title="logDialogTitle" :total="logTableData.length"
+      v-if="showLogDialog">
+      <template v-slot:search>
+        <el-form :inline="true" :model="logSearch" size="mini">
+          <el-form-item >
+            <el-input v-model="logSearch.scale" placeholder="量表名称" style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="logSearch.resultV" placeholder="测评结果" style="width: 10.625rem;">
+              <el-option
+                v-for="item in resultOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker
+              style="width: 10.625rem;"
+              v-model="logSearch.time"
+              type="date"
+              value-format="yyyy-MM-dd"
+              :clearable="false"
+              placeholder="测评时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleLogSearch">搜索</el-button>
+            <el-button type="success" @click="logleReset">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
+      <el-table :data="logTableData" style="width: 100%" size="mini" border>
+        <el-table-column prop="id" label="序号"></el-table-column>
+        <el-table-column prop="name" label="职工姓名"></el-table-column>
+        <el-table-column prop="scale" label="测评量表"></el-table-column>
+        <el-table-column prop="score" label="测评得分"></el-table-column>
+        <el-table-column prop="resultAnalysis" label="测评结果"></el-table-column>
+        <el-table-column prop="time" label="测评时间"></el-table-column>
+        <el-table-column label="操作">
           <template slot-scope="">
-            <el-button type="text" size="small">查看详情</el-button>
+            <el-button type="text" size="small" @click="cepingDetail">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -141,17 +190,19 @@ import ResultItem from './resultItem'
 import recognitionOption from './recognition'
 import appraisalOption from './appraisal'
 import * as service from '../apis'
-import { getEmotionList } from '../user'
+import { getEmotionList, getHistoryLog } from '../user'
+import Util from '@/common/utils'
 
-const getMonthDays = () => {
-  const date = new Date()
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const d = new Date(year, month, 0)
-  return d.getDate()
-}
+// const getMonthDays = () => {
+//   const date = new Date()
+//   const year = date.getFullYear()
+//   const month = date.getMonth() + 1
+//   const d = new Date(year, month, 0)
+//   return d.getDate()
+// }
 
 const totalUsers = getEmotionList()
+let logListData = []
 
 export default {
   components: {
@@ -170,6 +221,9 @@ export default {
       select2: new Date(),
       users: [],
       dialogVisible: false,
+      dialogTitle: '',
+      showLogDialog: false,
+      logDialogTitle: '',
       tableTotal: totalUsers,
       formInline: {
         name: '',
@@ -177,6 +231,11 @@ export default {
         spy: '',
         resultV: '',
         month: '',
+      },
+      logSearch: {
+        scale: '',
+        resultV: '',
+        time: '',
       },
       departmentOptions: [
         { value: '技术部', label: '技术部' },
@@ -194,6 +253,7 @@ export default {
         { value: '极差', label: '极差' },
       ],
       tableData: [],
+      logTableData: [],
     }
   },
   mounted() {
@@ -208,16 +268,19 @@ export default {
   },
   methods: {
     async initGradeChart(type) {
-      let option = gradeOption
+      let option = Util.clone(gradeOption)
       if (type == 2) {
-        const axis = []
-        for (let i = 1; i <= getMonthDays(); i++) {
-          axis.push(i)
-        }
-        option.xAxis.data = axis
+        // const axis = []
+        // for (let i = 1; i <= getMonthDays(); i++) {
+        //   axis.push(i)
+        // }
+        const m = new Date().getMonth()
+        option.xAxis.data = [`${m + 1}月`]
       }
       const rawData = await service.getPsychology()
-      option.series[0].data = rawData.data.trend.map(x => x.avg)
+      if (type == 2) {
+        option.series[0].data = rawData.data.trend.map(x => x.avg)
+      }
       this.chart.setOption(option)
       const that = this
       this.chart.on('click', 'series.line', function() {
@@ -225,10 +288,29 @@ export default {
       })
     },
     initRecognitionChart() {
-      this.chart1.setOption(recognitionOption)
+      const option = Util.clone(recognitionOption)
+      this.chart1.setOption(option)
       const that = this
       this.chart1.on('click', function(params) {
         that.$emit('showLogTable', params.name)
+      })
+      this.chart1.on('mouseover', function() {
+        const option = Util.clone(recognitionOption)
+        option.series.label.show = false
+        if (that.select1 == 1) {
+          option.series.data[0].value = 18
+          option.series.data[1].value = 8
+        }
+        that.chart1.setOption(option)
+      })
+      this.chart1.on('mouseout', function() {
+        const option = Util.clone(recognitionOption)
+        option.series.label.show = true
+        if (that.select1 == 1) {
+          option.series.data[0].value = 18
+          option.series.data[1].value = 8
+        }
+        that.chart1.setOption(option)
       })
     },
     initUsers() {
@@ -236,9 +318,12 @@ export default {
     },
     gradeChange(v) {
       this.initGradeChart(v)
+      const start = Math.round(Math.random()*20)
+      const end = start + 20
+      this.users = totalUsers.sort((a, b) => b.avg - a.avg).slice(start, end)
     },
     chart1Change(v) {
-      let option = JSON.parse(JSON.stringify(recognitionOption))
+      let option = Util.clone(recognitionOption)
       if (v == 1) {
         option.series.data[0].value = 18
         option.series.data[1].value = 8
@@ -261,10 +346,12 @@ export default {
         that.tableTotal = result
         that.tableData = that.tableTotal.slice(0, 10)
         that.dialogVisible = true
+        that.dialogTitle = '测评分析报告列表'
       })
     },
     handleGradeMore() {
       this.dialogVisible = true
+      this.dialogTitle = '测评排行榜列表'
       this.tableData = this.tableTotal.slice(0, 10)
     },
     pageChange(v) {
@@ -299,6 +386,33 @@ export default {
       })
       this.tableTotal = totalUsers
       this.tableData = this.tableTotal.slice(0, 10)
+    },
+    showDetail(row) {
+      this.logDialogTitle = `${row.name}-${row.statisticsMonth}-测评记录`
+      logListData = getHistoryLog(row)
+      this.logTableData = logListData
+      this.showLogDialog = true
+    },
+    handleLogSearch() {
+      const { scale, resultV, time } = this.logSearch
+      if (scale) {
+        this.logTableData = logListData.filter(x => x.scale.includes(scale))
+      }
+      if (resultV) {
+        this.logTableData = logListData.filter(x => x.resultAnalysis.includes(resultV))
+      }
+      if (time) {
+        this.logTableData = logListData.filter(x => x.time.includes(time))
+      }
+    },
+    logleReset() {
+      Object.keys(this.logSearch).forEach(k => {
+        this.logSearch[k] = ''
+      })
+      this.logTableData = logListData
+    },
+    cepingDetail() {
+      this.$emit('showCePing')
     },
   }
 }

@@ -1,6 +1,8 @@
 <template>
   <div class="component-dialogWithTable">
     <el-dialog
+      class="customer-dialog"
+      :append-to-body="true"
       :title="title"
       width="79.875rem"
       @update:visible="handleClose"
@@ -44,7 +46,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    pageChange: Function,
+    pageChange: {
+      type: Function,
+      default: () => {}
+    },
   },
   data() {
     return {
@@ -64,10 +69,6 @@ export default {
 
 <style lang="less" scoped>
 .component-dialogWithTable{
-  .page-wrap{
-    text-align: right;
-    margin-top: 1.75rem;
-  }
   .empty-wrap{
     margin: 3.125rem 0;
     text-align: center;
@@ -86,5 +87,12 @@ export default {
       margin-bottom: 3.125rem;
     }
   }
+}
+</style>
+
+<style lang="less">
+.page-wrap{
+  text-align: right;
+  margin-top: 1.75rem;
 }
 </style>

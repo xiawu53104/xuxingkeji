@@ -192,5 +192,8 @@ export default {
   .medal-item-wrap{
     display: flex;
   }
+  .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets{
+    bottom: 1rem;
+  }
 }
 </style>

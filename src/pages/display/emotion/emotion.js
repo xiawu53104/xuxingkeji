@@ -21,7 +21,14 @@ export default {
       { name: '厌恶10%', max: 6500},
     ],
     triggerEvent: true,
-    
+    name: {
+      // formatter: function (value) {
+      //   return `${value} <br/> a`;
+      // },
+      textStyle: {
+        color: '#fff'
+      }
+    },
   },
   series: {
     name: 'emotion',
