@@ -1,8 +1,10 @@
 export default {
   tooltip: {
     trigger: 'axis',
-    formatter: function (params) {
-      return `整体平均分： ${params[0].value} <br/> 结果分析: 极差`
+    formatter: function () {
+      const arr = ['一般', '差', '极差']
+      const r = arr[Math.floor(Math.random()*3)]
+      return `结果分析: ${r}`
     }
   },
   textStyle: {
@@ -63,7 +65,7 @@ export default {
       itemStyle: {
         color: '#32B7E9',
       },
-      data: [2.0, 4.9, 7.0, 23.2, 25.6, 32.6, 20.0, 6.4, 3.3],
+      data: [20, 49, 70, 23, 25, 32, 20, 64, 33, 73, 36, 53],
       showSymbol: false,
       areaStyle: {
         color: {

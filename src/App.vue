@@ -22,7 +22,6 @@ export default {
 body{
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 }
 #app{
   margin: 0 auto;

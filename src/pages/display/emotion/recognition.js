@@ -20,8 +20,17 @@ export default {
     radius: ['50%', '70%'],
     avoidLabelOverlap: false,
     label: {
-      show: false,
-      position: 'center'
+      show: true,
+      position: 'center',
+      formatter: function(params) {
+        if (params.name == '情绪良好') {
+          return `${params.percent}%`
+        }
+        return ''
+      },
+      fontSize: '24',
+      color: '#CDE1FF',
+      fontWeight: 'bold'
     },
     emphasis: {
       label: {

@@ -29,11 +29,6 @@
         </div>
         <div class="radio-wrap">
           <div></div>
-          <!-- <el-radio-group v-model="select2">
-            <el-radio :label="1">本日</el-radio>
-            <el-radio :label="2">本月</el-radio>
-            <el-radio :label="3">本年</el-radio>
-          </el-radio-group> -->
           <div class="date-picker-wrap">
             <el-date-picker
               :picker-options="pickerOption"
@@ -59,10 +54,10 @@
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
           <el-form-item >
-            <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名/手机号" style="width: 150px"></el-input>
+            <el-input v-model="formInline.nameOrPhone" placeholder="职工姓名/手机号" style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+            <el-select v-model="formInline.department" placeholder="职工部门" style="width: 10.625rem;">
               <el-option
                 v-for="item in departmentOptions"
                 :key="item.value"
@@ -113,14 +108,14 @@
       </el-table>
     </DialogWithTable>
 
-    <el-dialog title="情绪识别记录" width="79.875rem"
+    <el-dialog title="情绪识别记录列表" width="79.875rem"
       :visible.sync="logDialogVisible">
-      <el-form :inline="true" :model="formInline" size="mini">
+      <el-form :inline="true" :model="logSearch" size="mini">
         <el-form-item >
-          <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名/手机号" style="width: 150px"></el-input>
+          <el-input v-model="logSearch.name" placeholder="职工姓名" style="width: 9.375rem"></el-input>
         </el-form-item>
         <el-form-item >
-          <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+          <el-select v-model="logSearch.department" placeholder="职工部门" style="width: 9.375rem">
             <el-option
               v-for="item in departmentOptions"
               :key="item.value"
@@ -129,15 +124,43 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item >
+          <el-select v-model="logSearch.spy" placeholder="特殊工种" style="width: 9.375rem">
+            <el-option
+              v-for="item in spyOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleSearch">搜索</el-button>
-          <el-button type="success" @click="handleReset">重置</el-button>
+          <el-date-picker
+            style="width: 9.375rem"
+            size="mini"
+            value-format="yyyy-MM-dd"
+            v-model="logSearch.date"
+            type="date"
+            placeholder="识别日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-select v-model="logSearch.resultV" placeholder="情绪识别结果" style="width: 9.375rem">
+            <el-option
+              v-for="item in resultOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleLogSearch">搜索</el-button>
+          <el-button type="success" @click="handleLogReset">重置</el-button>
         </el-form-item>
       </el-form>
       <div class="log-wrap">
-        <LogItem />
-        <LogItem />
-        <LogItem />
+        <LogItem v-for="it in logItemList" :key="it.name" v-bind="it" />
       </div>
     </el-dialog>
 
@@ -146,10 +169,10 @@
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
           <el-form-item >
-            <el-input v-model="formInline.nameOrPhone" placeholder="员工姓名" style="width: 150px"></el-input>
+            <el-input v-model="formInline.nameOrPhone" placeholder="职工姓名" style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-select v-model="formInline.department" placeholder="员工部门" style="width: 10.625rem;">
+            <el-select v-model="formInline.department" placeholder="职工部门" style="width: 10.625rem;">
               <el-option
                 v-for="item in departmentOptions"
                 :key="item.value"
@@ -159,9 +182,9 @@
             </el-select>
           </el-form-item>
           <el-form-item >
-            <el-select v-model="formInline.isSpy" placeholder="是否特殊工种" style="width: 8rem;">
+            <el-select v-model="formInline.spy" placeholder="特殊工种" style="width: 8rem;">
               <el-option
-                v-for="item in isSpyOptions"
+                v-for="item in spyOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -218,8 +241,8 @@
       </div>
     </el-dialog>
 
-    <center-content></center-content>
-    <right-content ref="rightContent" @showLogTable="showLogTable"></right-content>
+    <center-content ref="centerContent" @showLogs="logDialogVisible = true"></center-content>
+    <right-content ref="rightContent" @showLogTable="showLogTable" @showCePing="showCePing"></right-content>
   </div>
 </template>
 
@@ -241,9 +264,15 @@ import DialogWithTable from '@/components/dialogWithTable/index'
 import LogItem from './logItem'
 import * as service from '../apis'
 import { departmentMap, getEmotionList } from '../user'
+import Util from '@/common/utils'
 
 const totalUsers = getEmotionList()
 const totalEmotionList = getEmotionList()
+const logItems = [
+  { name: '张三', department: '技术部', position: '检修工', result: '平静', time: '2020-09-15 08:24:15' },
+  { name: '李四', department: '工程部', position: '检修工', result: '开心', time: '2020-09-15 08:24:15' },
+  { name: '王五', department: '技术部', position: '切割工', result: '困惑', time: '2020-09-15 08:24:15' },
+]
 
 export default {
   components: {
@@ -281,9 +310,9 @@ export default {
         { value: '1', label: '工程部' },
         { value: '2', label: '财务部' },
       ],
-      isSpyOptions: [
-        { value: '是', label: '是' },
-        { value: '否', label: '否' },
+      spyOptions: [
+        { value: '检修工', label: '检修工' },
+        { value: '切割工', label: '切割工' },
       ],
       sexyOptions: [
         { value: '男', label: '男' },
@@ -299,10 +328,17 @@ export default {
       formInline: {
         nameOrPhone: '',
         department: '',
-        isSpy: '',
+        spy: '',
         sexy: '',
         dateRange: '',
         resultV: '',
+      },
+      logSearch: {
+        name: '',
+        department: '',
+        spy: '',
+        resultV: '',
+        date: '',
       },
       users: totalUsers,
       tableData: [],
@@ -311,6 +347,7 @@ export default {
       emotionData: [],
       imgDialogVisible: false,
       avatarImg,
+      logItemList: logItems,
     }
   },
   async mounted() {
@@ -333,7 +370,7 @@ export default {
     },
     async initHistoryChart() {
       const month = new Date().getMonth()
-      let newOption = historyOption
+      let newOption = Util.clone(historyOption)
       const len = month + 1
       newOption.xAxis.data = newOption.xAxis.data.slice(0, len)
       const rawData = await service.getHistoryAnalysis(new Date().getFullYear())
@@ -341,8 +378,7 @@ export default {
       newOption.series[1].data = rawData.data.map(x => x.avg)
       this.hsitoryChart.setOption(newOption)
       const that = this
-      this.hsitoryChart.on('click', 'series.bar', function(params) {
-        console.log(params)
+      this.hsitoryChart.on('click', 'series.bar', function() {
         that.$refs.rightContent.handleGradeMore()
       })
     },
@@ -365,9 +401,10 @@ export default {
     },
     async onChange(v) {
       if (v.getFullYear() < new Date().getFullYear()) {
-        let newOption = historyOption
+        let newOption = Util.clone(historyOption)
         const rawData = await service.getHistoryAnalysis(v.getFullYear())
         newOption.series[0].data = rawData.data.map(x => x.avg)
+        newOption.series[1].data = rawData.data.map(x => x.avg)
         this.hsitoryChart.setOption(historyOption)
       } else {
         this.initHistoryChart()
@@ -380,7 +417,7 @@ export default {
     },
     handleSearch() {
       let result
-      const { nameOrPhone, department, isSpy, sexy, resultV, dateRange } = this.formInline
+      const { nameOrPhone, department, spy, sexy, resultV, dateRange } = this.formInline
       if (/^\d$/.test(nameOrPhone)) {
         result = totalUsers.filter(x => x.phone.includes(nameOrPhone))
       } else {
@@ -390,8 +427,8 @@ export default {
         const departmentName = departmentMap[department]
         result = (result || totalUsers).filter(x => x.department.includes(departmentName))
       }
-      if (isSpy) {
-        result = (result || totalUsers).filter(x => x.isSpy.includes(isSpy))
+      if (spy) {
+        result = (result || totalUsers).filter(x => x.spy.includes(spy))
       }
       if (sexy) {
         result = (result || totalUsers).filter(x => x.sexy.includes(sexy))
@@ -420,7 +457,7 @@ export default {
       this.emotionData = this.emotionList.slice(start, end)
     },
     onEmotionChange(v) {
-      const newOption = JSON.parse(JSON.stringify(option))
+      const newOption = Util.clone(option)
       if (v == 1) {
         newOption.series.data[0].value = newOption.series.data[0].value.map(x => x/2)
         this.myChart.setOption(newOption)
@@ -446,7 +483,35 @@ export default {
         this.emotionList = totalEmotionList.filter(x => !arr.includes(x.result))
       }
       this.emotionData = this.emotionList.slice(0, 10)
-    }
+    },
+    showCePing() {
+      this.$refs.centerContent.handleDetail()
+    },
+    handleLogSearch() {
+      const { name, spy, department, date, resultV } = this.logSearch
+      if (name) {
+        this.logItemList = logItems.filter(x => x.name.includes(name))
+      }
+      if (spy) {
+        this.logItemList = logItems.filter(x => x.position.includes(spy))
+      }
+      if (department) {
+        const departmentName = departmentMap[department]
+        this.logItemList = logItems.filter(x => x.department.includes(departmentName))
+      }
+      if (date) {
+        this.logItemList = logItems.filter(x => x.time.includes(date))
+      }
+      if (resultV) {
+        this.logItemList = logItems.filter(x => x.result.includes(resultV))
+      }
+    },
+    handleLogReset() {
+      Object.keys(this.logSearch).forEach(k => {
+        this.logSearch[k] = ''
+      })
+      this.logItemList = logItems
+    },
   },
   computed: {
 
@@ -559,9 +624,9 @@ export default {
       font-size: 1.5rem;
     }
     .data-wrap{
-      width: 35rem;
-      height: 18.75rem;
-      margin-top: 2.625rem;
+      width: 36.25rem;
+      height: 21.25rem;
+      margin-top: 0.625rem;
     }
   }
   .log-wrap{
@@ -571,5 +636,12 @@ export default {
     width: 3.125rem;
     height: 3.375rem;
   }
+}
+</style>
+
+<style lang="less">
+.capture-img{
+  width: 3.125rem;
+  height: 3.375rem;
 }
 </style>

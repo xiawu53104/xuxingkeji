@@ -59,6 +59,7 @@ export default function getUsers() {
 
 const resultMap = ['开心', '平静', '困惑', '惊讶', '厌恶']
 const resultAnalysisMap = ['优秀', '一般', '差', '极差']
+const spyMap = ['检修工', '切割工']
 
 export const getEmotionList = function() {
   const users = getUsers()
@@ -67,7 +68,23 @@ export const getEmotionList = function() {
     capture: avatarImg,
     result: resultMap[getRandom(resultMap.length)],
     statisticsMonth: '2020-09',
-    spy: '检修工',
+    spy: spyMap[getRandom(spyMap.length)],
     resultAnalysis: resultAnalysisMap[getRandom(resultAnalysisMap.length)],
+    times: Math.round(Math.random()*5 + 1),
   }))
+}
+
+export const getHistoryLog = function(row) {
+  let result = []
+  for(let i = 0; i < row.times; i++) {
+    result.push({
+      id: i + 1,
+      name: row.name,
+      scale: 'XXX量表',
+      score: getRandom(100) + 1,
+      resultAnalysis: resultAnalysisMap[getRandom(resultAnalysisMap.length)],
+      time: `${row.statisticsMonth} 13:15:23`
+    })
+  }
+  return result.sort((a, b) => b.id - a.id)
 }

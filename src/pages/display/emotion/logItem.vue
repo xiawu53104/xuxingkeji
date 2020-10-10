@@ -4,14 +4,14 @@
       <img :src="avatarImg" class="avatar-img">
       <transition name="el-fade-in-linear">
         <div class="info" v-show="infoShow">
-          <div>张三</div>
-          <div>技术部</div>
-          <div>电工</div>
-          <div>识别结果：平静</div>
+          <div>{{name}}</div>
+          <div>{{department}}</div>
+          <div>{{position}}</div>
+          <div>识别结果：{{result}}</div>
         </div>
       </transition>
     </div>
-    <div class="date">2020-09-15 08:24:15</div>
+    <div class="date">{{time}}</div>
   </div>
 </template>
 
@@ -19,6 +19,13 @@
 import avatarImg from '@/assets/images/avatar.jpg'
 
 export default {
+  props: {
+    name: String,
+    department: String,
+    position: String,
+    result: String,
+    time: String,
+  },
   data() {
     return {
       avatarImg,

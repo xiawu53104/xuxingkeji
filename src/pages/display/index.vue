@@ -34,7 +34,7 @@ export default {
 }
 </style>
 <style lang="less">
-.pages-display{
+.pages-display, .customer-dialog{
   .el-input__inner{
     background-color: transparent;
     border: 0.0625rem solid #52ffff;
@@ -87,6 +87,11 @@ export default {
   }
   .el-date-editor .el-range-separator {
     color: #606266;
+  }
+  .el-date-editor--date{
+    .el-icon-date{
+      display: none;
+    }
   }
 }
 </style>
