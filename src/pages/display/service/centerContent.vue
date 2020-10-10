@@ -47,7 +47,11 @@
 
     <el-dialog title="职工活动" width="79.875rem"
       :visible.sync="activeDialogVisible">
-      
+      <div class="active-dialog-wrap">
+        <ActiveItem :imgPath="shaky" />
+        <ActiveItem :imgPath="shaky" />
+        <ActiveItem :imgPath="shaky" />
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -64,11 +68,13 @@ import medal from '@/assets/images/奖章@2x.png'
 import avatarImg from '@/assets/images/图层 11@2x.png'
 import shaky from '@/assets/images/图层 14@2x.png'
 import MedalItem from './medaltem'
+import ActiveItem from './activeItem'
 
 export default {
   components: {
     EmployeeInfo,
     MedalItem,
+    ActiveItem,
   },
   data() {
     return {
@@ -194,6 +200,9 @@ export default {
   }
   .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets{
     bottom: 1rem;
+  }
+  .active-dialog-wrap{
+    display: flex;
   }
 }
 </style>

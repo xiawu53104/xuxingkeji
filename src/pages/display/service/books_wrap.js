@@ -8,7 +8,7 @@ export default {
   tooltip: {
     position: 'top',
     formatter: (params) => {
-      return '借阅次数：' + params.value + '<br />' + '借阅部门：' + params.name
+      return '借阅次数：' + params.value + '<br />' + '部门：' + params.name
     },
     textStyle: {
       fontSize: 12,

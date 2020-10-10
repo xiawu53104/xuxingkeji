@@ -1,5 +1,5 @@
 <template>
-  <div class="pages-display-service-employeeInfo">
+  <div class="pages-display-service-employeeInfo" @click="$emit('click')">
     <img :src="avatarImg" class="avatar-img">
     <!-- <el-image 
       class="avatar-img"
@@ -41,6 +41,7 @@ export default {
   padding: 0.625rem;
   padding-bottom: 2.1875rem;
   overflow: hidden;
+  cursor: pointer;
   .avatar-img{
     width: 100%;
     height: 100%;

@@ -10,13 +10,13 @@
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="handleClick" />
               </swiper-slide>
               <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="handleClick" />
               </swiper-slide>
               <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="handleClick" />
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -30,13 +30,13 @@
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg2" />
+                <EmployeeInfo :avatarImg="avatarImg2" @click="dialogVisible2 = true" />
               </swiper-slide>
               <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg2" />
+                <EmployeeInfo :avatarImg="avatarImg2" @click="dialogVisible2 = true" />
               </swiper-slide>
               <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg2" />
+                <EmployeeInfo :avatarImg="avatarImg2" @click="dialogVisible2 = true" />
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -52,23 +52,23 @@
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide>
               <div class="slide-item">
-                <EmployeeInfo :avatarImg="avatarImg" />
-                <EmployeeInfo :avatarImg="avatarImg" />
-                <EmployeeInfo :avatarImg="avatarImg" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
               </div>
             </swiper-slide>
             <swiper-slide>
               <div class="slide-item">
-                <EmployeeInfo :avatarImg="avatarImg2" />
-                <EmployeeInfo :avatarImg="avatarImg2" />
-                <EmployeeInfo :avatarImg="avatarImg2" />
+                <EmployeeInfo :avatarImg="avatarImg2" @click="zmItemClick" />
+                <EmployeeInfo :avatarImg="avatarImg2" @click="zmItemClick" />
+                <EmployeeInfo :avatarImg="avatarImg2" @click="zmItemClick" />
               </div>
             </swiper-slide>
             <swiper-slide>
               <div class="slide-item">
-                <EmployeeInfo :avatarImg="avatarImg" />
-                <EmployeeInfo :avatarImg="avatarImg" />
-                <EmployeeInfo :avatarImg="avatarImg" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
+                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
               </div>
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -184,21 +184,33 @@ export default {
       dialogVisible2: false,
       showDetail: false,
       detailDialogTitle: '',
+      itemLeng: 3,
     }
   },
   methods: {
     laomoClick() {
       this.dialogTile = '劳模榜'
       this.dialogVisible = true
+      this.itemLeng = 3
     },
     zuimeiClick() {
       this.dialogTile = '最美职工'
       this.dialogVisible = true
+      this.itemLeng = 3
     },
     viewDetail() {
       this.showDetail = true
       this.detailDialogTitle = '劳模大图'
     },
+    handleClick() {
+      this.dialogTile = '劳模榜'
+      this.dialogVisible = true
+      this.itemLeng = 9
+    },
+    zmItemClick() {
+      this.dialogTile = '最美职工'
+      this.dialogVisible = true
+    }
   },
   computed: {
     swiper() {

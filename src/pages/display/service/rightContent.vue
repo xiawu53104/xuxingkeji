@@ -26,7 +26,7 @@
       </div>
       <div class="books-wrap-lf rf" :style="{backgroundImage: `url(${booksWrap})`}">
         <div class="books-wrap-lf-title">
-          工种借阅分析
+          部门借阅分析
         </div>
         <div class="booksWrapChart" ref="booksWrapChart"></div>
       </div>
@@ -44,7 +44,11 @@
 
     <el-dialog title="职工风采" width="79.875rem"
       :visible.sync="dialogVisible">
-      
+      <div class="active-dialog-wrap">
+        <ActiveItem :imgPath="shaky" />
+        <ActiveItem :imgPath="shaky" />
+        <ActiveItem :imgPath="shaky" />
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -61,6 +65,7 @@ import ScrollList from '@/components/scrollList/index'
 import getUsers from '../user'
 import echarts from 'echarts'
 import booksWrapOption from './books_wrap'
+import ActiveItem from './activeItem'
 
 export default {
   data() {
@@ -78,6 +83,7 @@ export default {
   },
   components: {
     ScrollList,
+    ActiveItem,
   },
   mounted() {
     this.initUsers()
@@ -199,6 +205,9 @@ export default {
         margin-bottom: 0.65rem;
       }
     }
+  }
+  .active-dialog-wrap{
+    display: flex;
   }
 }
 </style>
