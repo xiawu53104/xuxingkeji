@@ -181,7 +181,7 @@
         <el-table-column prop="reportTime" label="日期"></el-table-column>
         <el-table-column  label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="showAlarmListDetails(scope)">查看详情</el-button>
+            <el-button type="text" @click="showEventReportDetails(scope)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -193,6 +193,16 @@
           <el-form-item >
             <el-input v-model="formInline.reportUser" placeholder="上报人..." style="width: 150px"></el-input>
           </el-form-item>
+          <el-form-item v-if="isEvent">
+            <el-select v-model="formInline.isQualified" placeholder="是否合格" style="width: 10.625rem;">
+              <el-option
+                v-for="item in isQualifiedOptions"
+                :key="item.label"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleSearch">搜索</el-button>
             <el-button type="success" @click="handleReset">重置</el-button>
@@ -203,6 +213,7 @@
         <el-table-column prop="id" label="序号"></el-table-column>
         <el-table-column prop="reportTitle" label="上报标题"></el-table-column>
         <el-table-column prop="reportUser" label="上报人"></el-table-column>
+        <el-table-column prop="isQualified" v-if="isEvent" label="是否合格"></el-table-column>
         <el-table-column prop="reportTime" label="上报时间"></el-table-column>
         <el-table-column  label="操作">
           <template slot-scope="scope">
@@ -318,7 +329,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item >
+          <!-- <el-form-item >
             <el-select v-model="formInline.isQualified" placeholder="完成状态" style="width: 8.625rem;">
               <el-option
                 v-for="item in completionState"
@@ -327,7 +338,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="完成日期">
             <el-date-picker
               style="width: 18rem"
@@ -494,9 +505,9 @@ export default {
       selectMonth: new Date(),
       isSelfReport: false,
       selfReportList: [
-        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三', reportTime: '2020-10-05 12:00:00'},
-        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三', reportTime: '2020-10-05 12:00:00'},
-        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
       ],
       selfReportData: [],
       isPeriodReport: false,
@@ -533,24 +544,90 @@ export default {
       completionState: [
         {label: '已完成', value: 0},
         {label: '未完成', value: 1}
-      ]
+      ],
+      eventCharts: null,
+      isEvent: false
+    }
+  },
+  watch: {
+    selectMonth (val) {
+      let data = [],len = 0
+      if (val.getMonth()+1 < new Date().getMonth()+1) {
+        if (val.getMonth()+1 === 1 || val.getMonth()+1 === 3 ||val.getMonth()+1 === 5 ||val.getMonth()+1 === 7||val.getMonth()+1 === 8) {
+          len = 32
+        } else {
+          len = 31
+        }
+        for (let i=1; i<len; i++) {
+          data.push({
+            id: i, 
+            reportType: '自查上报', 
+            reportTime: '2020-'+(val.getMonth()+1)+'-'+ i, 
+            reportNum: Math.ceil(50*Math.random())
+          })
+          data.push({
+            id: i, 
+            reportType: '周期巡查', 
+            reportTime: '2020-'+(val.getMonth()+1)+'-'+ i, 
+            reportNum: Math.ceil(50*Math.random())
+          })
+        }
+      } else {
+        data = [
+          { id: 1, reportType: '自查上报', reportTime: '2020-10-01', reportNum: 15 },
+          { id: 2, reportType: '自查上报', reportTime: '2020-10-02', reportNum: 25 },
+          { id: 3, reportType: '自查上报', reportTime: '2020-10-03', reportNum: 10 },
+          { id: 4, reportType: '自查上报', reportTime: '2020-10-04', reportNum: 30 },
+          { id: 5, reportType: '自查上报', reportTime: '2020-10-05', reportNum: 40 },
+          { id: 6, reportType: '自查上报', reportTime: '2020-10-06', reportNum: 5 },
+          { id: 7, reportType: '自查上报', reportTime: '2020-10-07', reportNum: 15 },
+          { id: 8, reportType: '自查上报', reportTime: '2020-10-08', reportNum: 19 },
+          { id: 9, reportType: '自查上报', reportTime: '2020-10-09', reportNum: 24 },
+          { id: 10, reportType: '自查上报', reportTime: '2020-10-10', reportNum: 16 },
+          { id: 11, reportType: '周期巡查', reportTime: '2020-10-01', reportNum: 34 },
+          { id: 12, reportType: '周期巡查', reportTime: '2020-10-02', reportNum: 14 },
+          { id: 13, reportType: '周期巡查', reportTime: '2020-10-03', reportNum: 34 },
+          { id: 14, reportType: '周期巡查', reportTime: '2020-10-04', reportNum: 25 },
+          { id: 15, reportType: '周期巡查', reportTime: '2020-10-05', reportNum: 40 },
+          { id: 16, reportType: '周期巡查', reportTime: '2020-10-06', reportNum: 26 },
+          { id: 17, reportType: '周期巡查', reportTime: '2020-10-07', reportNum: 32 },
+          { id: 18, reportType: '周期巡查', reportTime: '2020-10-08', reportNum: 18 },
+          { id: 19, reportType: '周期巡查', reportTime: '2020-10-09', reportNum: 5 },
+          { id: 20, reportType: '周期巡查', reportTime: '2020-10-10', reportNum: 56 },
+        ]
+      }
+      this.ereportList = data
+      let eventOptions = eventOption(this.ereportList)
+      this.eventCharts = echarts.init(this.$refs.eventChart)
+      this.eventCharts.setOption(eventOptions)
     }
   },
   mounted () {
+    let options = option(true)
     let chart = echarts.init(this.$refs.container)
-    chart.setOption(option)
-    chart.on('click', params => {
-      console.log(params)
+    chart.setOption(options)
+    chart.on('click', () => {
       this.isPieListShow = true
       this.periodReportData = this.periodReportList.slice(0, 10)
     })
+    chart.on('mouseover', () => {
+      options = option(false)
+      chart = echarts.init(this.$refs.container)
+      chart.setOption(options)
+    })
+    chart.on('mouseout', () => {
+      options = option(true)
+      chart = echarts.init(this.$refs.container)
+      chart.setOption(options)
+    })
     let eventOptions = eventOption(this.ereportList)
-    let eventCharts = echarts.init(this.$refs.eventChart)
-    eventCharts.setOption(eventOptions)
-    eventCharts.on('click', params => {
+    this.eventCharts = echarts.init(this.$refs.eventChart)
+    this.eventCharts.setOption(eventOptions)
+    this.eventCharts.on('click', params => {
       console.log(params)
       if (params.seriesName === '自查上报') {
         this.isSelfReport = true
+        this.isEvent = true
         // let data = this.selfReportList.filter(item => item.reportTime.slice(0, 11) == params.data[0])
         this.selfReportData = this.selfReportList.slice(0, 10)
       } else {
@@ -586,6 +663,19 @@ export default {
     //   var point = new BMapGL.Point(116.404, 39.915);
     //   map.centerAndZoom(point, 15);
     // },
+    showEventReportDetails (scope) {
+      console.log(scope)
+      if (scope.row.reportType === '自查上报') {
+        this.isSelfReport = true
+        this.isEvent = true
+        // let data = this.selfReportList.filter(item => item.reportTime.slice(0, 11) == params.data[0])
+        this.selfReportData = this.selfReportList.slice(0, 10)
+      } else {
+        this.isPeriodReport = true
+        // let data = this.periodReportList.filter(item => item.reportTime.slice(0, 11) == params.data[0])
+        this.periodReportData = this.periodReportList.slice(0, 10)
+      }
+    },
     async onChange(v) {
       if (v.getMonth()+1 < new Date().getMonth()+1) {
         // let newOption = JSON.parse(JSON.stringify(historyOption))
@@ -600,6 +690,7 @@ export default {
       console.log(item)
       if (item.id == 1) {
         this.isSelfReport = true
+        this.isEvent = false
         this.selfReportData = this.selfReportList.slice(0, 10)
       }
       if (item.id == 2) {

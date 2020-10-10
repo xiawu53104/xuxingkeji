@@ -1,4 +1,5 @@
-export default {
+export const option = (item) => {
+  return {
     tooltip: {
       trigger: 'item',
       formatter: params => {
@@ -54,8 +55,18 @@ export default {
       radius: ['45%', '65%'],
       avoidLabelOverlap: false,
       label: {
-        show: false,
-        position: 'center'
+        show: item,
+        position: 'center',
+        formatter: function (params) {
+          if (params.data.name == 'XX危险源1') {
+            return params.percent + ' %'
+          } else {
+            return ''
+          }
+        },
+        fontSize: '18',
+        color: '#2BFAFF',
+        fontWeight: 'bold'
       },
       emphasis: {
         label: {
@@ -102,4 +113,6 @@ export default {
         },
       ]
     }]
-  };
+  }
+}
+export default option
