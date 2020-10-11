@@ -28,9 +28,6 @@ export default {
       quiteImg,
     }
   },
-  created() {
-    console.log(this.$router.options)
-  },
   methods: {
     handleQuite() {
       window.sessionStorage.removeItem('isLogin')

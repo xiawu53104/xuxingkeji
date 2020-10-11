@@ -4,7 +4,7 @@
       <template>
         <ul class="left-top-content-list" v-for="(item, i) in data" :key="item.id || i">
           <el-divider></el-divider>
-          <li class="left-top-content-list-container">
+          <li class="left-top-content-list-container" @click="$emit('listItemClick', item)">
             <slot :data="{i, item}"></slot>
           </li>
         </ul>

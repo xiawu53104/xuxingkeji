@@ -10,7 +10,7 @@
         </div>
         <img class="botton" :src="moreIcon" alt="" @click="showAlarmList">
         <div class="left-top-content">
-            <scroll-list :data="alarmlist">
+            <scroll-list :data="alarmlist" @listItemClick="listItemClick">
               <template v-slot:default="{data: {item}}">
                 <!-- <span class="list-item">{{`TOP${i + 1}`}}</span> -->
                 <span class="list-item list-item-lf">
@@ -39,6 +39,7 @@
       <div class="middle-top" id="container" :style="{backgroundImage: `url(${bg})`}">
         <!-- <baidu-map :style="{width:map.width,height:map.height}" class="map" ak="bGARqyOB3gc3Uw0dNVh4rYhaKS1w3BKA" :zoom="map.zoom" :center="{lng: map.center.lng, lat: map.center.lat}"
           @ready="handler" :scroll-wheel-zoom="true"></baidu-map> -->
+          <div id="cesiumContainer"></div>
       </div>
       <div class="middle-bottom" :style="{backgroundImage: `url(${eventBG})`}">
         <div class="middle-bottom-title" :style="{backgroundImage: `url(${eventTitle})`}">
@@ -404,6 +405,11 @@ import bg from '@/assets/images/曲线 540@2x.png'
 import arrowIcon from '@/assets/images/下 拉_1@2x.png'
 import alarmImg from '@/assets/images/alarm.jpg'
 import DialogWithTable from '@/components/dialogWithTable/index'
+
+let viewer;
+let handler;
+let tileset;
+
 export default {
   components: {
     ReportItem,
@@ -429,11 +435,11 @@ export default {
         { id: 3, count: 859, title: '历史智能预警', colorType: 'yellow' },
       ],
       alarmlist: [
-        { id: 1, tooltipType: '一氧化碳超标1', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三' },
-        { id: 2, tooltipType: '一氧化碳超标2', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三'  },
-        { id: 3, tooltipType: '一氧化碳超标3', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三'  },
-        { id: 4, tooltipType: '一氧化碳超标4', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三'  },
-        { id: 5, tooltipType: '一氧化碳超标5', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三'  }
+        { id: 1, tooltipType: '一氧化碳超标1', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.3027036899936, y: 34.92011694233448 } },
+        { id: 2, tooltipType: '一氧化碳超标2', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三', pos: {x: 118.5027036899936, y: 34.12011694233448 }  },
+        { id: 3, tooltipType: '一氧化碳超标3', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.1027036899936, y: 34.02011694233448 }  },
+        { id: 4, tooltipType: '一氧化碳超标4', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三', pos: {x: 118.2027036899936, y: 34.42011694233448 }  },
+        { id: 5, tooltipType: '一氧化碳超标5', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.9027036899936, y: 34.82011694233448 }  }
       ],
       isQualifiedOptions: [
         {label: '是', value: 0},
@@ -546,7 +552,14 @@ export default {
         {label: '未完成', value: 1}
       ],
       eventCharts: null,
-      isEvent: false
+      isEvent: false,
+      morph: '3D',
+      homeBusinessDropInfo: [],
+      moveGeo: {
+        lng: 118.3027036899936,
+        lat: 34.92011694233448,
+        alt: 500
+      },
     }
   },
   watch: {
@@ -656,6 +669,8 @@ export default {
         this.studyData = this.completedData.slice(0, 10)
       }
     })
+
+    this.mapInit()
   },
   methods: {
     // initMap () {
@@ -760,6 +775,173 @@ export default {
       const start = (v - 1)*10
       const end = start + 10
       this.periodReportData = this.periodReportList.slice(start, end)
+    },
+    mapInit() {
+      // Cesium资源默认令牌
+      Cesium.Ion.defaultAccessToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1MDZiODg5ZS0yMTYwLTQwNzgtODNkMi0xMjk5NzU1NDMzYTciLCJpZCI6MTM0MTUsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1NjMyNTQ1ODF9.ZSTW9uIkKQKW2hO3KsHdBRJ-udZ4tWMEChZCSslFTyw";
+      let options = {
+        animation: false, // [ Bool, 是否显示动画控件 ]
+        shouldAnimate: true, // [ Bool, 是否开启动画 ]
+        homeButton: false, // [ Bool, 是否显示Home按钮 ]
+        vrButton: false, // [ Bool, 是否显示vr按钮 ]
+        fullscreenButton: false, // [ Bool, 是否显示全屏按钮 ]
+        baseLayerPicker: false, // [ Bool, 是否显示图层选择控件 ]
+        geocoder: false, // [ Bool, 是否显示地名查找控件 ]
+        timeline: false, // [ Bool, 是否显示时间线控件 ]
+        sceneModePicker: false, // [ Bool, 是否显示投影方式控件，场景切换 ]
+        navigationHelpButton: false, // [ Bool, 是否显示帮助信息控件 ]
+        infoBox: false, // [ Bool, 是否显示点击要素之后显示的信息 ]
+        requestRenderMode: true, // [ Bool, 启用请求渲染模式 ]
+        scene3DOnly: true, // [ Bool, 每个几何实例将只能以3D渲染以节省GPU内存 ]
+        sceneMode: 3, // [ Number,初始场景模式 1 2D模式 2 2D循环模式 3 3D模式  Cesium.SceneMode ]
+        fullscreenElement: document.body, // [ Object, 全屏时渲染的HTML元素 ]
+      };
+
+      viewer = new Cesium.Viewer("cesiumContainer", options);
+
+      viewer.scene.globe.depthTestAgainstTerrain = false;
+
+      // logo隐藏
+      viewer._cesiumWidget._creditContainer.style.display = "none";
+      // 加载影像
+      this.addImagery(this.morph);
+
+      this.homeBusinessDrop();
+    },
+    addImagery(type = "3D") {
+      // 清除默认的第一个影像 bing地图影像
+      viewer.imageryLayers.remove(viewer.imageryLayers.get(0));
+      let img, label;
+      if (type == "3D") {
+        this.toView3Dtileset();
+        // arcGis影像
+        img = viewer.imageryLayers.addImageryProvider(
+          new Cesium.ArcGisMapServerImageryProvider({
+            url:
+              "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+            baseLayerPicker: false,
+          })
+        );
+
+        // 天地图并标注
+        label = viewer.imageryLayers.addImageryProvider(
+          new Cesium.WebMapTileServiceImageryProvider({
+            url:
+              "http://t0.tianditu.com/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cia&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg" +
+              "&tk=" +
+              "19b72f6cde5c8b49cf21ea2bb4c5b21e",
+            layer: "tdtAnnoLayer",
+            style: "default",
+            maximumLevel: 18, // 天地图的最大缩放级别
+            format: "image/jpeg",
+            tileMatrixSetID: "GoogleMapsCompatible",
+            show: false,
+          })
+        );
+      }
+      if (type == "2D") {
+        img = viewer.imageryLayers.addImageryProvider(
+          new Cesium.UrlTemplateImageryProvider({
+            url:
+              "http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
+            layer: "tdtVecBasicLayer",
+            style: "default",
+            format: "image/png",
+            tileMatrixSetID: "GoogleMapsCompatible",
+            show: false,
+          })
+        );
+        // 高德标注
+        label = viewer.imageryLayers.addImageryProvider(
+          new Cesium.UrlTemplateImageryProvider({
+            url:
+              "http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=5&scale=5&style=8&x={x}&y={y}&z={z}",
+            layer: "tdtAnnoLayer",
+            style: "default",
+            format: "image/jpeg",
+            tileMatrixSetID: "GoogleMapsCompatible",
+          })
+        );
+        this.clear3Dtileset();
+      }
+    },
+    // 恢复3Dtileset
+    toView3Dtileset() {
+      if (tileset) {
+        setTimeout(() => {
+          tileset.show = true;
+          console.log(tileset);
+          console.log("移除3Dtil");
+        }, 60);
+      }
+    },
+    homeBusinessDrop() {
+      viewer.entities.removeAll();
+      // if (handler) {
+      //   handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK); // 移除之前事件绑定
+      // }
+      // console.log(this.homeBusinessDropInfo);
+      this.homeBusinessDropInfo.map((e, i) => {
+        // 循环添加点
+        viewer.entities.add({
+          id: `${e.id}${e.name}`,
+          position: Cesium.Cartesian3.fromDegrees(e.lon, e.lat, e.height), // 点位置
+          label: {
+            show: false,
+            // text: `企业名称 : ${e.name} \n 企业行业 : ${e.industry_type}`,
+            text: `企业名称 : ${e.name}`,
+            font: "10pt monospace",
+            showBackground: true,
+            backgroundColor: new Cesium.Color(0, 0.45, 0.6, 0.6),
+            pixelOffset: new Cesium.Cartesian2(0.0, -45.0),
+          },
+          billboard: {
+            // image: require("../../assets/home/jianzhuquan.png"),
+            width: 50,
+            height: 50,
+          },
+        });
+      });
+      const moveGeo = this.moveGeo
+      viewer.scene.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(
+          moveGeo.lng,
+          moveGeo.lat,
+          moveGeo.alt
+        ), // 设置位置
+        orientation: {
+          heading: Cesium.Math.toRadians(0), // 方向
+          pitch: Cesium.Math.toRadians(-90), // 倾斜角度
+          roll: 0,
+        },
+      });
+      this.clear3Dtileset();
+    },
+    // 清空3Dtileset
+    clear3Dtileset() {
+      if (tileset) {
+        setTimeout(() => {
+          tileset.show = false;
+          console.log(tileset);
+          console.log("移除3Dtil");
+        }, 60);
+      }
+    },
+    listItemClick(it) {
+      const moveGeo = this.moveGeo
+      viewer.scene.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(
+          it.pos.x,
+          it.pos.y,
+          moveGeo.alt
+        ), // 设置位置
+        orientation: {
+          heading: Cesium.Math.toRadians(0), // 方向
+          pitch: Cesium.Math.toRadians(-90), // 倾斜角度
+          roll: 0,
+        },
+      });
     }
   }
 }
@@ -864,6 +1046,10 @@ export default {
       height: 30.25rem;
       margin-top: 2.0625rem;
       background-size: 100% 100%;
+      #cesiumContainer{
+        width: 100%;
+        height: 100%;
+      }
     }
     .middle-bottom {
       width: 41.75rem;
