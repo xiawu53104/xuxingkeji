@@ -1,6 +1,6 @@
 <template>
   <div class="pages-display-service-employeeInfo" @click="$emit('click')">
-    <img :src="avatarImg" class="avatar-img">
+    <img :src="avatarImg" class="avatar-img" object-fit="cover">
     <div class="name-box">
       <div>{{name}}</div>
       <div style="margin-left: 1.875rem">{{department}}</div>
@@ -38,9 +38,8 @@ export default {
   overflow: hidden;
   cursor: pointer;
   .avatar-img{
-    width: 16.125rem;
-    height: 17.4375rem;
-    object-fit: cover;
+    width: 11.0625rem;
+    height: 13.625rem;
   }
   .name-box{
     font-size: 1rem;

@@ -36,8 +36,8 @@ export const option = (item) => {
     legend: {
       width: 300,
       bottom: 33,
-      left: 81,
-      data: ['XX危险源1', 'XX危险源2', 'XX危险源3', 'XX危险源4', 'XX危险源5','XX危险源6','XX危险源7'],
+      left: 'center',
+      data: ['液压油', '氮气罐', '弱酸洗池', '油漆'],
       itemWidth: 10,
       itemHeight: 10,
       // itemGap: 52,
@@ -58,7 +58,7 @@ export const option = (item) => {
         show: item,
         position: 'center',
         formatter: function (params) {
-          if (params.data.name == 'XX危险源1') {
+          if (params.data.name == '液压油') {
             return params.percent + ' %'
           } else {
             return ''
@@ -85,32 +85,32 @@ export const option = (item) => {
       data: [
         {
           value: 45,
-          name: 'XX危险源1'
+          name: '液压油'
         },
         {
           value: 30,
-          name: 'XX危险源2'
+          name: '氮气罐'
         },
         {
           value: 17,
-          name: 'XX危险源3'
+          name: '弱酸洗池'
         },
         {
           value: 23,
-          name: 'XX危险源4'
+          name: '油漆'
         },
-        {
-          value: 5,
-          name: 'XX危险源5'
-        },
-        {
-          value: 4,
-          name: 'XX危险源6'
-        },
-        {
-          value: 14,
-          name: 'XX危险源7'
-        },
+        // {
+        //   value: 5,
+        //   name: 'XX危险源5'
+        // },
+        // {
+        //   value: 4,
+        //   name: 'XX危险源6'
+        // },
+        // {
+        //   value: 14,
+        //   name: 'XX危险源7'
+        // },
       ]
     }]
   }

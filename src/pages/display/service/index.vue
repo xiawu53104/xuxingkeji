@@ -9,14 +9,8 @@
           <img class="botton" :src="moreIcon" @click="laomoClick">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
-              <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg" @click="handleClick" />
-              </swiper-slide>
-              <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg" @click="handleClick" />
-              </swiper-slide>
-              <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg" @click="handleClick" />
+              <swiper-slide v-for="(it, i) in laomoItems" :key="i" >
+                <EmployeeInfo v-bind="it" @click="handleClick" />
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -29,14 +23,8 @@
           <img class="botton" :src="moreIcon" @click="dialogVisible2 = true">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
-              <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg2" @click="dialogVisible2 = true" />
-              </swiper-slide>
-              <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg2" @click="dialogVisible2 = true" />
-              </swiper-slide>
-              <swiper-slide>
-                <EmployeeInfo :avatarImg="avatarImg2" @click="dialogVisible2 = true" />
+              <swiper-slide v-for="(it, i) in gongxItems" :key="i" >
+                <EmployeeInfo v-bind="it" @click="handleClick" />
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -48,27 +36,21 @@
           <div class="title">最美职工</div>
         </div>
         <img class="botton" :src="moreIcon" @click="zuimeiClick">
-        <div class="swiper-wrap">
+        <div class="swiper-wrap zuimei-wrap">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide>
               <div class="slide-item">
-                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
-                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
-                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
+                <ZmItem v-for="(it, i) in laomoItems" :key="i" v-bind="it" @click="zmItemClick" />
               </div>
             </swiper-slide>
             <swiper-slide>
               <div class="slide-item">
-                <EmployeeInfo :avatarImg="avatarImg2" @click="zmItemClick" />
-                <EmployeeInfo :avatarImg="avatarImg2" @click="zmItemClick" />
-                <EmployeeInfo :avatarImg="avatarImg2" @click="zmItemClick" />
+                <ZmItem v-for="(it, i) in gongxItems" :key="i" v-bind="it" @click="zmItemClick" />
               </div>
             </swiper-slide>
             <swiper-slide>
               <div class="slide-item">
-                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
-                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
-                <EmployeeInfo :avatarImg="avatarImg" @click="zmItemClick" />
+                <ZmItem v-for="(it, i) in laomoItems" :key="i" v-bind="it" @click="zmItemClick" />
               </div>
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -136,6 +118,7 @@ import leftHeaderRfTitle from '@/assets/images/left_header_rf_title.png'
 import leftFooterTitle from '@/assets/images/left_footer_title.png'
 import moreIcon from '@/assets/images/botton.png'
 import EmployeeInfo from './employeeInfo'
+import ZmItem from './zmItem'
 import avatarImg from '@/assets/images/avatar.jpg'
 import avatarImg2 from '@/assets/images/avatar2.jpg'
 import datu from '@/assets/images/datu.png'
@@ -145,10 +128,13 @@ import allIcon from '@/assets/images/全部@2x.png'
 import CenterContent from './centerContent'
 import RightContent from './rightContent'
 import MedalItem from './medaltem'
+import laomoItems from './laomo'
+import gongxItems from './gongxian'
 
 export default {
   components: {
     EmployeeInfo,
+    ZmItem,
     CenterContent,
     RightContent,
     MedalItem,
@@ -185,6 +171,8 @@ export default {
       showDetail: false,
       detailDialogTitle: '',
       itemLeng: 3,
+      laomoItems,
+      gongxItems,
     }
   },
   methods: {
@@ -250,7 +238,6 @@ export default {
     height: 100%;
     color: #fff;
     padding-top: 2.5625rem;
-    // padding-bottom: 2.3125rem;
     overflow: hidden;
   }
   .left{

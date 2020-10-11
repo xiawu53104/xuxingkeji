@@ -1,7 +1,7 @@
 <template>
   <div class="pages-display-emotion-center">
     <div class="emotion-recognition-wrap">
-      <img :src="bg" class="bg-img">
+      <img :src="bg" class="bg-img" @click="playVideo">
       <img :src="moreIcon" class="more-icon" @click="handleMore">
       <div class="info-wrap">
         <div class="border"></div>
@@ -107,6 +107,12 @@
         </div>
       </div>
     </el-dialog>
+
+    <el-dialog title="识别记录" :visible.sync="videoDialogVisible" v-if="videoDialogVisible">
+      <div class="video-wrap">
+        <video :src="videoSrc" autoplay class="video"></video>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -117,6 +123,7 @@ import titleBg from '@/assets/images/多边形 1_3@2x.png'
 import attentionIcon from '@/assets/images/叹号@2x.png'
 import linkImg from '@/assets/images/链接@2x.png'
 import moreIcon from '@/assets/images/更多@2x.png'
+import videoSrc from '@/assets/video/1.mp4'
 import * as service from '../apis'
 import echarts from 'echarts'
 import option from './info'
@@ -146,7 +153,9 @@ export default {
         phone: '188xxxx1245'
       },
       barVal: 28,
+      videoSrc,
       showIncream: false,
+      videoDialogVisible: false,
     }
   },
   mounted() {
@@ -183,6 +192,9 @@ export default {
     },
     handleMore() {
       this.$emit('showLogs')
+    },
+    playVideo() {
+      this.videoDialogVisible = true
     }
   },
   computed: {
@@ -210,6 +222,7 @@ export default {
       z-index: 0;
       top: 0;
       left: 0;
+      cursor: pointer;
     }
     .more-icon{
       width: 1.5625rem;
@@ -446,6 +459,12 @@ export default {
       &>div{
         margin-bottom: 0.3125rem;
       }
+    }
+  }
+  .video-wrap{
+    text-align: center;
+    .video{
+      width: 100%;
     }
   }
 }

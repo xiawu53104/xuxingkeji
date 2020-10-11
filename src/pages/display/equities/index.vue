@@ -435,11 +435,11 @@ export default {
         { id: 3, count: 859, title: '历史智能预警', colorType: 'yellow' },
       ],
       alarmlist: [
-        { id: 1, tooltipType: '一氧化碳超标1', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.3027036899936, y: 34.92011694233448 } },
-        { id: 2, tooltipType: '一氧化碳超标2', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三', pos: {x: 118.5027036899936, y: 34.12011694233448 }  },
-        { id: 3, tooltipType: '一氧化碳超标3', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.1027036899936, y: 34.02011694233448 }  },
-        { id: 4, tooltipType: '一氧化碳超标4', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三', pos: {x: 118.2027036899936, y: 34.42011694233448 }  },
-        { id: 5, tooltipType: '一氧化碳超标5', alarmTime: '2020-05-23 11:30', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.9027036899936, y: 34.82011694233448 }  }
+        { id: 1, tooltipType: '氮气罐泄漏', alarmTime: '2020-10-02 10:04:45', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.3027036899936, y: 34.92011694233448 } },
+        { id: 2, tooltipType: '油漆泄漏', alarmTime: '2020-10-03 10:04:45', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三', pos: {x: 118.5027036899936, y: 34.12011694233448 }  },
+        { id: 3, tooltipType: '氮气罐周围烟头', alarmTime: '2020-10-04 10:04:45', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.1027036899936, y: 34.02011694233448 }  },
+        { id: 4, tooltipType: '弱酸洗池围栏松动', alarmTime: '2020-10-05 10:04:45', deviceName: '设备1', deviceType: '智慧用水采集终端', manager: '张三', pos: {x: 118.2027036899936, y: 34.42011694233448 }  },
+        { id: 5, tooltipType: '安全通道杂物堆放', alarmTime: '2020-10-06 10:04:45', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.9027036899936, y: 34.82011694233448 }  }
       ],
       isQualifiedOptions: [
         {label: '是', value: 0},

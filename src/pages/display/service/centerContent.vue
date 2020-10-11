@@ -8,14 +8,8 @@
       <img :src="medal" class="medal">
       <div class="swiper-wrap">
         <swiper ref="mySwiper" :options="swiperOptions">
-          <swiper-slide>
-            <EmployeeInfo :avatarImg="avatarImg" />
-          </swiper-slide>
-          <swiper-slide>
-            <EmployeeInfo :avatarImg="avatarImg" />
-          </swiper-slide>
-          <swiper-slide>
-            <EmployeeInfo :avatarImg="avatarImg" />
+          <swiper-slide v-for="(it, i) in medalUsers" :key="i" >
+            <MedalUser v-bind="it" @click="handleClick" />
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -62,17 +56,18 @@ import moreIcon from '@/assets/images/botton.png'
 import tipIcon from '@/assets/images/tip.png'
 import activityImg from '@/assets/images/activity-border.png'
 import titleBg from '@/assets/images/left_header_lf_title.png'
-import EmployeeInfo from './employeeInfo'
+import MedalUser from './medalUser'
 import centerMedal from '@/assets/images/center_medal.png'
 import medal from '@/assets/images/奖章@2x.png'
 import avatarImg from '@/assets/images/图层 11@2x.png'
 import shaky from '@/assets/images/图层 14@2x.png'
 import MedalItem from './medaltem'
 import ActiveItem from './activeItem'
+import medalUsers from './medal'
 
 export default {
   components: {
-    EmployeeInfo,
+    MedalUser,
     MedalItem,
     ActiveItem,
   },
@@ -100,6 +95,7 @@ export default {
       },
       medalDialogVisible: false,
       activeDialogVisible: false,
+      medalUsers,
     }
   },
   methods: {

@@ -38,8 +38,8 @@ export default {
   overflow: hidden;
   cursor: pointer;
   .avatar-img{
-    width: 16.125rem;
-    height: 17.4375rem;
+    // width: 43.3125rem;
+    height: 20.8125rem;
     object-fit: cover;
   }
   .name-box{

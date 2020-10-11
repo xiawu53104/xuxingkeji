@@ -75,7 +75,18 @@ export default {
       moreIcon,
       booksWrap,
       bottomBg,
-      users: [],
+      users: [
+        { name: '张琳', department: '安全科' },
+        { name: '姜岩', department: '后勤办' },
+        { name: '王士昌', department: '运行部' },
+        { name: '姚文龙', department: '运行部' },
+        { name: '孙玉艳', department: '运行部' },
+        { name: '刘振洋', department: '综合办' },
+        { name: '刘志山', department: '设备科' },
+        { name: '张晓东', department: '安全科' },
+        { name: '颜芳', department: '设备科' },
+        { name: '孙爱波', department: '生产办' },
+      ],
       dialogVisible: false,
       shaky,
       book,
@@ -86,15 +97,10 @@ export default {
     ActiveItem,
   },
   mounted() {
-    this.initUsers()
     let booksWrapChart = echarts.init(this.$refs.booksWrapChart)
     booksWrapChart.setOption(booksWrapOption)
   },
   methods: {
-    initUsers() {
-      const users = getUsers()
-      this.users = users.sort((a, b) => b.avg - a.avg).slice(0, 10)
-    },
     handleMore() {
       this.dialogVisible = true
     },

@@ -98,7 +98,7 @@
         <el-table-column prop="sexy" label="性别"></el-table-column>
         <el-table-column prop="department" label="职工部门"></el-table-column>
         <el-table-column prop="position" label="职工职位"></el-table-column>
-        <el-table-column prop="isSpy" label="是否特殊工种"></el-table-column>
+        <el-table-column prop="spy" label="特殊工种"></el-table-column>
         <el-table-column prop="phone" label="职工手机号"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="">
@@ -265,8 +265,9 @@ import LogItem from './logItem'
 import * as service from '../apis'
 import { departmentMap, getEmotionList } from '../user'
 import Util from '@/common/utils'
+import totalUsers from './emp'
 
-const totalUsers = getEmotionList()
+// const totalUsers = getEmotionList()
 const totalEmotionList = getEmotionList()
 const logItems = [
   { name: '张三', department: '技术部', position: '检修工', result: '平静', time: '2020-09-15 08:24:15' },
