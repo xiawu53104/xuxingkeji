@@ -53,15 +53,15 @@
       <div class="report-wrap" @click="handleDetail">
         <div class="left">
           <img :src="attentionIcon" class="icon">
-          <div class="status">重度焦虑</div>
+          <div class="status">{{infoData.resultAnalysis}}</div>
           <div class="right-border"></div>
         </div>
         <div class="name-box">
-          <div class="name">焦虑测量表-张三</div>
-          <div class="date">2019-05-23</div>
+          <div class="name">焦虑测量表-{{infoData.name}}</div>
+          <div class="date">{{infoData.time}}</div>
         </div>
         <div class="score">
-          15<span style="font-size: 28px">分</span>
+          {{infoData.score}}<span style="font-size: 28px">分</span>
         </div>
         <img :src="linkImg" class="link-img">
       </div>
@@ -79,21 +79,21 @@
           <div class="label info">职工籍贯:</div>
           <div class="value info">{{infoData.jiguan}}</div>
           <div class="label info">职工民族:</div>
-          <div class="value info">{{infoData.mz}}</div>
+          <div class="value info">{{infoData.nation}}</div>
           <div class="label info">职工职位:</div>
           <div class="value info">{{infoData.position}}</div>
           <div class="label info">职工部门:</div>
           <div class="value info">{{infoData.department}}</div>
           <div class="label info">职工工种:</div>
-          <div class="value info">{{infoData.gz}}</div>
+          <div class="value info">{{infoData.position}}</div>
           <div class="label info">职工手机:</div>
           <div class="value info">{{infoData.phone}}</div>
         </div>
         <div class="title">测评成绩</div>
         <div class="chart-wrap">
           <div class="chart-title">
-            <div>15分</div>
-            <div>人员当前处于重度焦虑状态</div>
+            <div>{{infoData.score}}分</div>
+            <div>人员当前处于{{infoData.resultAnalysis}}状态</div>
           </div>
           <div class="chart" ref="chart"></div>
         </div>
@@ -127,7 +127,8 @@ import videoSrc from '@/assets/video/1.mp4'
 import * as service from '../apis'
 import echarts from 'echarts'
 import option from './info'
-import { setInterval, clearInterval, setTimeout } from 'timers';
+import testReport from './testReport'
+import emps from './emp'
 
 export default {
   data() {
@@ -142,16 +143,6 @@ export default {
       lowScoreSelect: '',
       lowScoreOptions: [],
       dialogVisible: false,
-      infoData: {
-        name: '张三',
-        sexy: '男',
-        jiguan: '北京',
-        mz: '汉',
-        position: '切割员',
-        department: '技术部',
-        gz: '切割工',
-        phone: '188xxxx1245'
-      },
       barVal: 28,
       videoSrc,
       showIncream: false,
@@ -162,7 +153,7 @@ export default {
     this.initData()
 
     this.timmer = setInterval(() => {
-      if (this.barVal >= 100) this.timmer&& clearInterval(this.timmer)
+      if (this.barVal >= 99) this.timmer && clearInterval(this.timmer)
       this.barVal++
       this.showIncream = true
       setTimeout(() => this.showIncream = false, 1000)
@@ -176,17 +167,12 @@ export default {
       const res = await service.getLowScoreSelections()
       this.lowScoreOptions = res.data
       this.lowScoreSelect = res.data[0].scale_id
-      // TODO: 接口联调
-      const rawData = await service.getLowScore({
-        status: 1,
-        assess_id: 1
-      })
-      console.log(rawData)
     },
     handleDetail() {
       this.dialogVisible = true
       this.$nextTick(() => {
         const chart = echarts.init(this.$refs.chart)
+        option.dataset.source[0][1] = this.infoData.score
         chart.setOption(option)
       })
     },
@@ -200,7 +186,56 @@ export default {
   computed: {
     bgSize() {
       return `${this.barVal}% 100%`;
-    }
+    },
+    infoData() {
+      let list
+      if (this.select == 2) {
+        list = testReport.filter(x => x.statisticsMonth == '2020-10')
+      } else {
+        list = testReport
+      }
+      switch (this.lowScoreSelect) {
+        case 1: {
+          const result = list.reduce((prev, cur) => {
+            if (!prev) {
+              prev = cur
+            } else if (cur.SAS && cur.SAS.score < prev.SAS.score) {
+              prev = cur
+            }
+            return prev
+          }, null)
+          const emp = emps.find(x => x.name === result.name)
+          return { ...emp, ...result, ...result.SAS }
+        }
+        case 2: {
+          const result = list.reduce((prev, cur) => {
+            if (!prev) {
+              prev = cur
+            } else if (cur.UCLA && cur.UCLA.score < prev.UCLA.score) {
+              prev = cur
+            }
+            return prev
+          }, null)
+          const emp = emps.find(x => x.name === result.name)
+          return { ...emp, ...result, ...result.UCLA }
+        }
+        case 3: {
+          const result = list.reduce((prev, cur) => {
+            if (!prev) {
+              prev = cur
+            } else if (cur.BK && cur.BK.score < prev.BK.score) {
+              prev = cur
+            }
+            return prev
+          }, null)
+          const emp = emps.find(x => x.name === result.name)
+          return { ...emp, ...result, ...result.BK }
+        }
+        default:
+          return {}
+      }
+
+    },
   }
 }
 </script>

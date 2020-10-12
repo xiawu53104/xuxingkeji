@@ -194,14 +194,6 @@ import * as service from '../apis'
 import { getEmotionList, getHistoryLog } from '../user'
 import Util from '@/common/utils'
 
-// const getMonthDays = () => {
-//   const date = new Date()
-//   const year = date.getFullYear()
-//   const month = date.getMonth() + 1
-//   const d = new Date(year, month, 0)
-//   return d.getDate()
-// }
-
 const totalUsers = getEmotionList()
 let logListData = []
 
