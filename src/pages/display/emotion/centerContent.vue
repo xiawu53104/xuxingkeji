@@ -40,7 +40,7 @@
         低分报告案例
       </div>
       <div class="radio-wrap">
-        <el-radio-group v-model="select">
+        <el-radio-group v-model="select" >
           <el-radio :label="2">本月</el-radio>
           <el-radio :label="3">本年</el-radio>
         </el-radio-group>

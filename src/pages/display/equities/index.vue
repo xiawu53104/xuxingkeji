@@ -100,7 +100,7 @@
             <el-input v-model="formInline.deviceName" placeholder="设备名称..." style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item >
-            <el-select v-model="formInline.deviceType" placeholder="设备类型" style="width: 10.625rem;">
+            <el-select v-model="formInline.deviceType" placeholder="设备类型" style="width: 10.625rem;" clearable @change="handleSearch" >
               <el-option
                 v-for="item in deviceTypeOptions"
                 :key="item.label"
@@ -115,7 +115,9 @@
               type="datetimerange"
               range-separator="至"
               start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              end-placeholder="结束日期"
+              @change="handleSearch"
+              >
             </el-date-picker>
             <!-- <el-select v-model="formInline.alarmTime" placeholder="报警时间" style="width: 13rem;">
               <el-option
@@ -457,8 +459,8 @@ export default {
         userName: ''
       },
       deviceTypeOptions: [
-        {label: '安消智能摄像机' , value: 0},
-        {label: '智慧用水采集终端', value: 0}
+        {label: '安消智能摄像机' , value: 1},
+        {label: '智慧用水采集终端', value: 2}
       ],
       reportTypeOptions: [
         {label: '自查上报', value: 0},
@@ -718,21 +720,25 @@ export default {
       }
     },
     handleSearch() {
-      let result
+      let result = this.alarmlist
+      
       const { deviceName, deviceType, alarmTime } = this.formInline
       if (deviceName) {
         result = this.alarmlist.filter(x => x.deviceName.includes(deviceName))
       }
       if (deviceType) {
-        const deviceTypeLabel = this.deviceTypeOptions[deviceType].label
+        const deviceTypeLabel = this.deviceTypeOptions[deviceType-1].label
         // console.log('departmentName', departmentName)
         result = (result || this.alarmlist).filter(x => x.deviceType.includes(deviceTypeLabel))
       }
-      if (alarmTime) {
-        result = (result || this.alarmlist).filter(x => x.alarmTime.includes(alarmTime))
+      
+      if (alarmTime&&alarmTime.length===2) {
+        
+        result = (result || this.alarmlist).filter(x =>alarmTime[0]<=new Date(x.alarmTime) && new Date(x.alarmTime)<= alarmTime[1])
       }
-      this.alarmlist = result
-      this.alarmData = this.alarmlist.slice(0, 10)
+      // this.alarmlist = result
+     
+      this.alarmData = result.slice(0, 10)
     },
     handleReset() {
      Object.keys(this.formInline).forEach(x => {

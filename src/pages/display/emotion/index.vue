@@ -164,7 +164,7 @@
       </div>
     </el-dialog>
 
-    <DialogWithTable v-model="emotionDialogVisible" :total="emotionList.length" title="情绪指数分布列表"
+    <DialogWithTable v-model="emotionDialogVisible" :total="emotionList.length" title="情绪指数识别分析列表"
       :pageChange="emotionPageChange" :isLoading="false" v-if="emotionDialogVisible">
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
@@ -419,6 +419,7 @@ export default {
     handleSearch() {
       let result
       const { nameOrPhone, department, spy, sexy, resultV, dateRange } = this.formInline
+      const totalUsers = totalEmotionList
       if (/^\d$/.test(nameOrPhone)) {
         result = totalUsers.filter(x => x.phone.includes(nameOrPhone))
       } else {
@@ -434,6 +435,7 @@ export default {
       if (sexy) {
         result = (result || totalUsers).filter(x => x.sexy.includes(sexy))
       }
+      
       if (resultV) {
         result = (result || totalUsers).filter(x => x.result.includes(resultV))
       }

@@ -101,6 +101,7 @@
               v-model="formInline.month"
               type="month"
               value-format="yyyy-MM"
+              @change="handleSearch"
               placeholder="统计月度">
             </el-date-picker>
           </el-form-item>
@@ -214,7 +215,7 @@ export default {
     return {
       gradeBg,
       titleBg,
-      select: 2,
+      select: 3,
       moreImg,
       resultBg,
       select1: 2,
@@ -274,13 +275,22 @@ export default {
         // for (let i = 1; i <= getMonthDays(); i++) {
         //   axis.push(i)
         // }
+        console.log(option)
+      
         const m = new Date().getMonth()
-        option.xAxis.data = [`${m + 1}月`]
+        // option.xAxis.data = [`${m + 1}月`]
+        this.chart.dispatchAction({
+                type: 'showTip',         //提示框
+                seriesIndex: 0,
+                dataIndex:m
+                //dataIndex: m     //第 lightIndex   柱子高亮
+            })
+            return 
       }
       const rawData = await service.getPsychology()
-      if (type == 2) {
-        option.series[0].data = rawData.data.trend.map(x => x.avg)
-      }
+      // if (type == 2) {
+      //   option.series[0].data = rawData.data.trend.map(x => x.avg)
+      // }
       this.chart.setOption(option)
       const that = this
       this.chart.on('click', 'series.line', function() {
@@ -336,6 +346,7 @@ export default {
     async initReportChart() {
       const rawData = await service.getReport()
       const options = appraisalOption
+
       options.series[0].data.forEach(x => {
         x.value = rawData.data[x.key]
       })
