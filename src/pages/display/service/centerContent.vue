@@ -26,16 +26,17 @@
       </div>
       <img :src="moreIcon" class="more-icon button" @click="handleActiveMore">
       <div class="shaky-box">
-        <img v-for="i in [1,2,3,4,5,6,7,8]" :key="shaky+i" :src="shaky" class="shaky">
+        <img v-for="i in [1,2,3,4,5,6,7,8]" :key="shaky+i" :src="require('@/assets/images/fenc'+i+'.jpg')" class="shaky">
       </div>
     </div>
 
     <el-dialog title="职工奖章" width="79.875rem"
       :visible.sync="medalDialogVisible">
       <div class="medal-item-wrap">
+         <MedalItem v-for="(item,index) in medalUsers" :key="index" :avatarImg="item.avatarImg" :name="item.name" :department="item.department" :info="item.info"  />
+        <!-- <MedalItem :avatarImg="avatarImg" />
         <MedalItem :avatarImg="avatarImg" />
-        <MedalItem :avatarImg="avatarImg" />
-        <MedalItem :avatarImg="avatarImg" />
+        <MedalItem :avatarImg="avatarImg" /> -->
       </div>
     </el-dialog>
 
@@ -58,9 +59,9 @@ import activityImg from '@/assets/images/activity-border.png'
 import titleBg from '@/assets/images/left_header_lf_title.png'
 import MedalUser from './medalUser'
 import centerMedal from '@/assets/images/center_medal.png'
-import medal from '@/assets/images/奖章@2x.png'
-import avatarImg from '@/assets/images/图层 11@2x.png'
-import shaky from '@/assets/images/图层 14@2x.png'
+import medal from '@/assets/images/jzhang.png'
+import avatarImg from '@/assets/images/tceng11.png'
+import shaky from '@/assets/images/tceng14.png'
 import MedalItem from './medaltem'
 import ActiveItem from './activeItem'
 import medalUsers from './medal'

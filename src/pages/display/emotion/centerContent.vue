@@ -5,7 +5,7 @@
       <img :src="moreIcon" class="more-icon" @click="handleMore">
       <div class="info-wrap">
         <div class="border"></div>
-        <div class="text">张三</div>
+        <div class="text">王士昌</div>
         <div class="box">
           <div>情绪： 开心</div>
           <div>年龄： 36</div>
@@ -117,12 +117,12 @@
 </template>
 
 <script>
-import bg from '@/assets/images/曲线 540@2x.png'
+import bg from '@/assets/images/quxi1.png'
 import borderBg from '@/assets/images/BG _3@2x.png'
-import titleBg from '@/assets/images/多边形 1_3@2x.png'
-import attentionIcon from '@/assets/images/叹号@2x.png'
-import linkImg from '@/assets/images/链接@2x.png'
-import moreIcon from '@/assets/images/更多@2x.png'
+import titleBg from '@/assets/images/dbx2.png'
+import attentionIcon from '@/assets/images/th2.png'
+import linkImg from '@/assets/images/ljie.png'
+import moreIcon from '@/assets/images/gend.png'
 import videoSrc from '@/assets/video/1.mp4'
 import * as service from '../apis'
 import echarts from 'echarts'

@@ -275,16 +275,16 @@
 <script>
 import ReportItem from './reportItem'
 import emotionBg from '@/assets/images/BG _4@2x.png'
-import titleBg from '@/assets/images/多边形 1_4@2x.png'
-import moreIcon from '@/assets/images/更多@2x.png'
+import titleBg from '@/assets/images/dbx3.png'
+import moreIcon from '@/assets/images/gend.png'
 import echarts from 'echarts'
 import option from './emotion'
 import historyBg from '@/assets/images/BG@2x.png'
-import historyTitleBg from '@/assets/images/多边形 1@2x.png'
+import historyTitleBg from '@/assets/images/dbx4.png'
 import CenterContent from './centerContent'
 import historyOption from './employeeHsitory'
 import RightContent from './rightContent'
-import arrowIcon from '@/assets/images/下 拉_1@2x.png'
+import arrowIcon from '@/assets/images/xl22.png'
 import avatarImg from '@/assets/images/avatar.jpg'
 import userImg from '@/assets/images/user.png'
 import DialogWithTable from '@/components/dialogWithTable/index'
@@ -296,9 +296,9 @@ import totalUsers, { departmentList, spyList } from './emp'
 
 const totalEmotionList = getEmotionList()
 const logItems = [
-  { name: '张三', department: '技术部', position: '检修工', result: '平静', time: '2020-09-15 08:24:15' },
-  { name: '李四', department: '工程部', position: '检修工', result: '开心', time: '2020-09-15 08:24:15' },
-  { name: '王五', department: '技术部', position: '切割工', result: '困惑', time: '2020-09-15 08:24:15' },
+  { name: '孟祥飞', department: '技术部', position: '检修工', result: '平静', time: '2020-09-15 08:24:15' },
+  { name: '刘学艳', department: '工程部', position: '检修工', result: '开心', time: '2020-09-15 08:24:15' },
+  { name: '张欣丽', department: '技术部', position: '切割工', result: '困惑', time: '2020-09-15 08:24:15' },
 ]
 
 export default {
@@ -318,8 +318,8 @@ export default {
       },
       reportItems: [
         { id: 1, count: totalUsers.length, title: '企业总人数', colorType: 'bule' },
-        { id: 2, count: 2873, title: '历史情绪识别', colorType: 'green' },
-        { id: 3, count: 17215, title: '预警人次', colorType: 'yellow' },
+        { id: 2, count: 3, title: '历史情绪识别', colorType: 'green' },
+        { id: 3, count: 3, title: '预警人次', colorType: 'yellow' },
       ],
       emotionBg,
       titleBg,
@@ -401,8 +401,12 @@ export default {
       newOption.series[1].data = rawData.data.map(x => x.avg)
       this.hsitoryChart.setOption(newOption)
       const that = this
-      this.hsitoryChart.on('click', 'series.bar', function() {
-        that.$refs.rightContent.handleGradeMore()
+      this.hsitoryChart.on('click', 'series.bar', function(x) {
+        console.log(x)
+        that.$refs.rightContent.handleGradeMore({
+          dialogTitle:'职工历史心理报告列表',
+          month:`2020-0${(x.dataIndex+1)}`
+        })
       })
     },
     handleClick(item) {
@@ -498,7 +502,7 @@ export default {
       this.imgDialogVisible = true
       console.log(row)
     },
-    showLogTable(name) {
+    showLogTable(name,value) {
       this.emotionDialogVisible = true
       const arr = ['开心', '平静']
       if (name == '情绪良好'){
@@ -506,6 +510,7 @@ export default {
       } else {
         this.emotionList = totalEmotionList.filter(x => !arr.includes(x.result))
       }
+      if(value) this.emotionList = this.emotionList.splice(0,value)
       this.emotionData = this.emotionList.slice(0, 10)
     },
     showCePing() {

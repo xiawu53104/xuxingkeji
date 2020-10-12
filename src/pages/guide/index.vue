@@ -18,9 +18,9 @@
 <script>
 import bg from '@/assets/images/guide-bg.png'
 import headerBg from '@/assets/images/header-bg.png'
-import equitiesImg from '@/assets/images/组 49501@2x.png'
-import emotionImg from '@/assets/images/组 263@2x.png'
-import serviceImg from '@/assets/images/组 4950 拷贝 2@2x.png'
+import equitiesImg from '@/assets/images/zu49501.png'
+import emotionImg from '@/assets/images/zu263.png'
+import serviceImg from '@/assets/images/zu4950.png'
 
 export default {
   data() {

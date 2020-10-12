@@ -1,3 +1,10 @@
+/*
+ * @Author            : dingwen1
+ * @Date              : 2020-10-12 21:46:53
+ * @LastEditors       : dingwen1
+ * @LastEditTime      : 2020-10-13 02:52:46
+ * @Description       : 
+ */
 export default {
   tooltip: {
     formatter: params => {
@@ -14,11 +21,11 @@ export default {
   },
   radar: {
     indicator: [
-      { name: '开心20%', max: 6500},
-      { name: '平静40%', max: 6500},
-      { name: '困惑60%', max: 6500},
-      { name: '惊讶10%', max: 6500},
-      { name: '厌恶10%', max: 6500},
+      { name: '开心20%', max: 60},
+      { name: '平静40%', max: 60},
+      { name: '困惑60%', max: 60},
+      { name: '惊讶10%', max: 60},
+      { name: '厌恶10%', max: 60},
     ],
     triggerEvent: true,
     name: {
@@ -42,7 +49,7 @@ export default {
     },
     data: [
       {
-        value: [4300, 4000, 4500, 5000, 2000],
+        value: [20, 40, 60, 10, 10],
         name: 'emotion'
       },
     ]

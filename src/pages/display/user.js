@@ -1,3 +1,10 @@
+/*
+ * @Author            : dingwen1
+ * @Date              : 2020-10-12 21:46:53
+ * @LastEditors       : dingwen1
+ * @LastEditTime      : 2020-10-13 00:18:09
+ * @Description       : 
+ */
 import avatarImg from '@/assets/images/avatar.jpg'
 
 export const emotionMap = {
@@ -8,7 +15,31 @@ export const emotionMap = {
   5: '厌恶',
 }
 
-const names = ['张三', '李四', '王五']
+const names = [
+"周洋","王炬凯",
+"武新钊",
+"李昭斌",
+"李纪超",
+"郭俊","张东亮",
+"刘太发",
+"孟祥飞",
+"徐方栋",
+"刘学艳",
+"王建丽",
+"周佳音",
+"杜培点",
+"孙玉艳",
+"郭真真",
+"陈丽","寇运丽",
+"张欣丽",
+"杨敬美",
+"崔传珠",
+"马小花",
+"王士昌",
+"姚文龙",
+"肖振华",
+"钱立哲",
+]
 const sexyMap = ['男', '女']
 const isSpyMap = ['是', '否']
 export const departmentMap = ['技术部', '工程部', '财务部']
@@ -50,7 +81,7 @@ export const getEmotionList = function() {
     ...x,
     capture: avatarImg,
     result: resultMap[getRandom(resultMap.length)],
-    statisticsMonth: '2020-09',
+    statisticsMonth: '2020-08',
     spy: spyMap[getRandom(spyMap.length)],
     resultAnalysis: resultAnalysisMap[getRandom(resultAnalysisMap.length)],
     times: Math.round(Math.random()*5 + 1),

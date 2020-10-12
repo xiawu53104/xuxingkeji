@@ -270,7 +270,7 @@
         </el-table-column>
       </el-table>
     </DialogWithTable>
-    <DialogWithTable v-model="isPieListShow" :total="periodReportList.length" title="危险源上报统计"
+    <DialogWithTable v-model="isPieListShow" :total="periodReportData.length" title="危险源上报统计"
       :pageChange="periodReportChange" :isLoading="false" v-if="isPieListShow">
       <template v-slot:search>
         <el-form :inline="true" :model="formInline" size="mini">
@@ -403,8 +403,8 @@ import rightTopLf from '@/assets/images/right_top_lf.png'
 import monitorVideoOption from './monitor_video'
 import hardwareOption from './hardware'
 import studyOption from './study'
-import bg from '@/assets/images/曲线 540@2x.png'
-import arrowIcon from '@/assets/images/下 拉_1@2x.png'
+import bg from '@/assets/images/quxi1.png'
+import arrowIcon from '@/assets/images/xl22.png'
 import alarmImg from '@/assets/images/alarm.jpg'
 import DialogWithTable from '@/components/dialogWithTable/index'
 
@@ -432,9 +432,9 @@ export default {
         }
       },
       reportItems: [
-        { id: 1, count: 15854, title: '历史自查上报事件', colorType: 'bule' },
-        { id: 2, count: 8452, title: '历史巡查上报事件', colorType: 'green' },
-        { id: 3, count: 859, title: '历史智能预警', colorType: 'yellow' },
+        { id: 1, count: 10, title: '历史自查上报事件', colorType: 'bule' },
+        { id: 2, count: 10, title: '历史巡查上报事件', colorType: 'green' },
+        { id: 3, count: 5, title: '历史智能预警', colorType: 'yellow' },
       ],
       alarmlist: [
         { id: 1, tooltipType: '氮气罐泄漏', alarmTime: '2020-10-02 10:04:45', deviceName: '设备1', deviceType: '安消智能摄像机', manager: '张三', pos: {x: 118.3027036899936, y: 34.92011694233448 } },
@@ -513,28 +513,44 @@ export default {
       selectMonth: new Date(),
       isSelfReport: false,
       selfReportList: [
-        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
-        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
-        {id: 1, reportTitle: '仓储堆放杂物', reportUser: '张三',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '氮气罐泄漏', reportUser: '周洋',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 2, reportTitle: '油漆泄漏', reportUser: '王炬凯',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 3, reportTitle: '氮气罐周围烟头', reportUser: '武新钊',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 4, reportTitle: '弱酸洗池围栏松动', reportUser: '武新钊',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 5, reportTitle: '安全通道杂物堆放', reportUser: '武新钊',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 6, reportTitle: '氮气罐泄漏', reportUser: '周洋',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 7, reportTitle: '油漆泄漏', reportUser: '王炬凯',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 8, reportTitle: '氮气罐周围烟头', reportUser: '武新钊',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 9, reportTitle: '弱酸洗池围栏松动', reportUser: '李昭斌',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 10, reportTitle: '安全通道杂物堆放', reportUser: '李纪超',isQualified: '是', reportTime: '2020-10-05 12:00:00'},
       ],
       selfReportData: [],
       isPeriodReport: false,
       periodReportList: [
-        {id: 1, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
-        {id: 2, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
-        {id: 3, reportTitle: '化学仓储', reportUser: '张三', isQualified: '是', reportTime: '2020-10-05 12:00:00'},
+        {id: 1, reportTitle: '液压油', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 2, reportTitle: '氮气罐', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 3, reportTitle: '弱酸洗池', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 4, reportTitle: '油漆', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 5, reportTitle: '液压油', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 6, reportTitle: '氮气罐', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 7, reportTitle: '弱酸洗池', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 8, reportTitle: '油漆', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 9, reportTitle: '液压油', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
+        {id: 10, reportTitle: '氮气罐', reportUser: '周洋', isQualified: '是', reportTime: '2020-10-2 10:04:45'},
       ],
       periodReportData: [],
       isPieListShow: false,
       studyList: [
-        {id: 1, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
-        {id: 2, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '10%', completionDate: '2020-10-09'},
-        {id: 3, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '80%', completionDate: '2020-10-09'},
-        {id: 4, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
-        {id: 5, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '70%', completionDate: '2020-10-09'},
-        {id: 6, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '50%', completionDate: '2020-10-09'},
-        {id: 7, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '40%', completionDate: '2020-10-09'},
-        {id: 8, userName: '张三', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
+        {id: 1, userName: '周洋', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
+        {id: 2, userName: '王炬凯', class: '技术部', post: '部门经理', special: '切割工', process: '10%', completionDate: '2020-10-09'},
+        {id: 3, userName: '武新钊', class: '技术部', post: '部门经理', special: '切割工', process: '80%', completionDate: '2020-10-09'},
+        {id: 4, userName: '李昭斌', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
+        {id: 5, userName: '李纪超', class: '技术部', post: '部门经理', special: '切割工', process: '70%', completionDate: '2020-10-09'},
+        {id: 6, userName: '郭俊', class: '技术部', post: '部门经理', special: '切割工', process: '50%', completionDate: '2020-10-09'},
+        {id: 7, userName: '张东亮', class: '技术部', post: '部门经理', special: '切割工', process: '40%', completionDate: '2020-10-09'},
+        {id: 8, userName: '刘太发', class: '技术部', post: '部门经理', special: '切割工', process: '100%', completionDate: '2020-10-09'},
+        {id: 9, userName: '孟祥飞', class: '后勤部', post: '销售', special: '--', process: '2%', completionDate: '2020-10-09'},
+        {id: 10, userName: '徐方栋', class: '工会部', post: '工会', special: '--', process: '19%', completionDate: '2020-10-09'},
       ],
       studyData: [],
       completedData: [],
@@ -621,9 +637,10 @@ export default {
     let options = option(true)
     let chart = echarts.init(this.$refs.container)
     chart.setOption(options)
-    chart.on('click', () => {
+    chart.on('click', (params) => {
       this.isPieListShow = true
-      this.periodReportData = this.periodReportList.slice(0, 10)
+      console.log(params.data.name)
+      this.periodReportData = this.periodReportList.filter(v=>v.reportTitle===params.data.name).slice(0, 10)
     })
     chart.on('mouseover', () => {
       options = option(false)

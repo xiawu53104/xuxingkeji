@@ -1,12 +1,19 @@
+/*
+ * @Author            : dingwen1
+ * @Date              : 2020-10-12 21:46:53
+ * @LastEditors       : dingwen1
+ * @LastEditTime      : 2020-10-13 02:55:50
+ * @Description       : 
+ */
 export default {
     title: {
-        text: '已完成：150人',
+        text: '已完成：3人',
         textStyle: {
             fontSize: 14,
             color: '#fff',
             fontWeight: 600
         },
-        subtext: '{a|未完成：}{b|42人}',
+        subtext: '{a|未完成：}{b|7人}',
         subtextStyle: {
             rich: {
                 a: {
@@ -55,8 +62,8 @@ export default {
             radius: '55%',
             center: ['50%', '50%'],
             data: [
-                {value: 150, name: '已完成'},
-                {value: 42, name: '未完成'},
+                {value: 3, name: '已完成'},
+                {value: 7, name: '未完成'},
             ],
             label: {
                 show: false

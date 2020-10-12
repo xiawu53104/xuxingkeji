@@ -180,10 +180,10 @@
 
 <script>
 import gradeBg from '@/assets/images/grade-bg.png'
-import titleBg from '@/assets/images/多边形 1_2@2x.png'
+import titleBg from '@/assets/images/dbx.png'
 import ScrollList from '@/components/scrollList/index'
 import DialogWithTable from '@/components/dialogWithTable/index'
-import moreImg from '@/assets/images/更多@2x.png'
+import moreImg from '@/assets/images/gend.png'
 import echarts from 'echarts'
 import gradeOption from './grade'
 import resultBg from '@/assets/images/BG@2x.png'
@@ -285,7 +285,8 @@ export default {
       // }
       this.chart.setOption(option)
       const that = this
-      this.chart.on('click', 'series.line', function() {
+      this.chart.on('click', 'series.line', function(params) {
+        console.log(params)
         that.handleGradeMore()
       })
     },
@@ -294,7 +295,8 @@ export default {
       this.chart1.setOption(option)
       const that = this
       this.chart1.on('click', function(params) {
-        that.$emit('showLogTable', params.name)
+        console.log(params)
+        that.$emit('showLogTable', params.name,params.data.value)
       })
       this.chart1.on('mouseover', function() {
         const option = Util.clone(recognitionOption)
@@ -346,16 +348,20 @@ export default {
       const that = this
       this.chart2.on('click', function(params) {
         let result = totalUsers.filter(x => x.resultAnalysis == params.name)
+        console.log(params)
         that.tableTotal = result
         that.tableData = that.tableTotal.slice(0, 10)
         that.dialogVisible = true
         that.dialogTitle = '测评分析报告列表'
       })
     },
-    handleGradeMore() {
+    handleGradeMore({dialogTitle,month}) {
       this.dialogVisible = true
-      this.dialogTitle = '测评排行榜列表'
-      this.tableData = this.tableTotal.slice(0, 10)
+      this.dialogTitle = dialogTitle||'测评排行榜列表'
+      console.log(month)
+  if(month) this.formInline.month = month
+  this.handleSearch()
+      // this.tableData = this.tableTotal.slice(0, 10)
     },
     pageChange(v) {
       const start = (v - 1)*10
@@ -363,7 +369,7 @@ export default {
       this.tableData = this.tableTotal.slice(start, end)
     },
     handleSearch() {
-      let result
+      let result = totalUsers
       const { name, department, spy, resultV, month } = this.formInline
       if (name) {
         result = totalUsers.filter(x => x.name.includes(name))
@@ -391,7 +397,7 @@ export default {
       this.tableData = this.tableTotal.slice(0, 10)
     },
     showDetail(row) {
-      this.logDialogTitle = `${row.name}-${row.statisticsMonth}-测评记录`
+      this.logDialogTitle = `${row.name}在${row.statisticsMonth}的测评记录`
       logListData = getHistoryLog(row)
       this.logTableData = logListData
       this.showLogDialog = true

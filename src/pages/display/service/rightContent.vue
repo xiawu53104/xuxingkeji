@@ -6,7 +6,7 @@
       </div>
       <div class="read-wrap" @click="jumpClick">
         <img :src="book" class="book">
-        <span>去读书</span>
+        <span>去dush</span>
       </div>
       <div class="books-wrap-lf" :style="{backgroundImage: `url(${booksWrap})`}">
         <div class="books-wrap-lf-title">
@@ -38,7 +38,7 @@
       </div>
       <img class="more-icon" :src="moreIcon" @click="handleMore">
       <div class="shaky-box">
-        <img v-for="i in [1,2,3,4,5,6,7,8]" :key="shaky+i" :src="shaky" class="shaky">
+        <img v-for="i in [1,2,3,4,5,6,7,8]" :key="shaky+i" :src="require('@/assets/images/zhif'+i+'.jpg')" class="shaky">
       </div>
     </div>
 
@@ -59,8 +59,8 @@ import titleBg from '@/assets/images/left_header_lf_title.png'
 import moreIcon from '@/assets/images/botton.png'
 import booksWrap from '@/assets/images/books_wrap.png'
 import bottomBg from '@/assets/images/BG@2x.png'
-import shaky from '@/assets/images/图层 14.png'
-import book from '@/assets/images/读书.png'
+import shaky from '@/assets/images/tceng14.png'
+import book from '@/assets/images/dush.png'
 import ScrollList from '@/components/scrollList/index'
 import getUsers from '../user'
 import echarts from 'echarts'
@@ -206,6 +206,7 @@ export default {
       flex-wrap: wrap;
       justify-content: space-between;
       .shaky {
+      object-fit: cover;
         width: 8rem;
         height: 10.5625rem;
         margin-bottom: 0.65rem;

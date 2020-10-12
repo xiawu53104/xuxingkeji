@@ -7,11 +7,11 @@
     <transition name="el-zoom-in-bottom">
       <div v-show="showInfo" class="info-wrap">
         <div class="name-box">
-          <div style="margin-right: 1.25rem">张三</div>
-          <div>XX工程部</div>
+          <div style="margin-right: 1.25rem">{{name}}</div>
+          <div>{{department}}</div>
         </div>
-        <div class="info">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+        <div class="info" :title="info">
+          {{info}}
         </div>
       </div>
     </transition>
@@ -19,11 +19,14 @@
 </template>
 
 <script>
-import medal from '@/assets/images/奖章@2x.png'
+import medal from '@/assets/images/jzhang.png'
 
 export default {
   props: {
     avatarImg: String,
+    name: String,
+    department: String,
+    info: String,
   },
   data() {
     return {
@@ -70,6 +73,11 @@ export default {
     }
     .info{
       font-size: 0.75rem;
+      overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     }
   }
 }

@@ -6,11 +6,11 @@
           <div class="left-header-lf-title" :style="{backgroundImage: `url(${leftHeaderLfTitle})`}">
             <div class="title">劳模榜</div>
           </div>
-          <img class="botton" :src="moreIcon" @click="laomoClick">
+          <img class="botton" :src="moreIcon" @click="laomoClick(laomoItems,'劳模榜')">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide v-for="(it, i) in laomoItems" :key="i" >
-                <EmployeeInfo v-bind="it" @click="handleClick" />
+                <EmployeeInfo v-bind="it" @click="handleClick(laomoItems,i,'劳模大图')" />
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -20,11 +20,11 @@
           <div class="left-header-lf-title" :style="{backgroundImage: `url(${leftHeaderRfTitle})`}">
             <div class="title">贡献榜</div>
           </div>
-          <img class="botton" :src="moreIcon" @click="dialogVisible2 = true">
+          <img class="botton" :src="moreIcon" @click="laomoClick(gongxItems,'贡献榜')">
           <div class="swiper-wrap">
             <swiper ref="mySwiper" :options="swiperOptions">
               <swiper-slide v-for="(it, i) in gongxItems" :key="i" >
-                <EmployeeInfo v-bind="it" @click="handleClick" />
+                <EmployeeInfo v-bind="it" @click="handleClick(gongxItems,i,'贡献大图')" />
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -35,22 +35,22 @@
         <div class="left-footer-title" :style="{backgroundImage: `url(${leftFooterTitle})`}">
           <div class="title">最美职工</div>
         </div>
-        <img class="botton" :src="moreIcon" @click="zuimeiClick">
+        <img class="botton" :src="moreIcon" @click="laomoClick([...laomoItems,...gongxItems,...laomoItems],'最美职工')">
         <div class="swiper-wrap zuimei-wrap">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide>
               <div class="slide-item">
-                <ZmItem v-for="(it, i) in laomoItems" :key="i" v-bind="it" @click="zmItemClick" />
+                <ZmItem v-for="(it, i) in gongxItems" :key="i" v-bind="it" @click="handleClick([...laomoItems,...gongxItems,...laomoItems],i,'最美职工大图')" />
               </div>
             </swiper-slide>
             <swiper-slide>
               <div class="slide-item">
-                <ZmItem v-for="(it, i) in gongxItems" :key="i" v-bind="it" @click="zmItemClick" />
+                <ZmItem v-for="(it, i) in gongxItems" :key="i" v-bind="it" @click="handleClick([...laomoItems,...gongxItems,...laomoItems],i+3,'最美职工大图')" />
               </div>
             </swiper-slide>
             <swiper-slide>
               <div class="slide-item">
-                <ZmItem v-for="(it, i) in laomoItems" :key="i" v-bind="it" @click="zmItemClick" />
+                <ZmItem v-for="(it, i) in laomoItems" :key="i" v-bind="it" @click="handleClick([...laomoItems,...gongxItems,...laomoItems],i+6,'最美职工大图')" />
               </div>
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -62,9 +62,7 @@
     <el-dialog :title="dialogTile" width="79.875rem"
       :visible.sync="dialogVisible">
       <div class="laomo-item-wrap">
-        <MedalItem :avatarImg="avatarImg" @click="viewDetail" />
-        <MedalItem :avatarImg="avatarImg" @click="viewDetail" />
-        <MedalItem :avatarImg="avatarImg" @click="viewDetail" />
+        <MedalItem v-for="(item,index) in showImageList" :key="index" :avatarImg="item.avatarImg" :name="item.name" :department="item.department" :info="item.info" @click="viewDetail(index)" />
       </div>
     </el-dialog>
     <el-dialog title="贡献榜" width="79.875rem"
@@ -75,26 +73,23 @@
         <MedalItem :avatarImg="avatarImg2" @click="viewDetail" />
       </div>
     </el-dialog>
-    <el-dialog :title="detailDialogTitle" :visible.sync="showDetail"
+    <el-dialog :title="detailDialogTitle" :visible.sync="showDetail" v-if="showImageList.length>0"
       width="37.5rem" :append-to-body="true">
       <div class="detail-wrap">
         <div class="datu-wrap">
-          <el-image :src="datu" class="datu"></el-image>
+          <el-image :src="showImageList[showImageIndex].avatarImg" class="datu"></el-image>
           <div class="info-wrap">
-            <div class="name">张三 XX工程部</div>
+            <div class="name">{{showImageList[showImageIndex].name}} {{showImageList[showImageIndex].department}}</div>
             <div class="descript">
-              1995年1月出生，江苏兴化人。中国书法家协会第一、二届常务理事，第三、五、六届理事，
-              中国书法家协会资深评委，先后为上海《书法》杂志执行主编和中国书法家协会《中国书法》杂志主编。
-              现为《中国书法》杂志特约编审，中国楹联协会顾问，中国人民大学东方艺术研究所副所长、兼职教授。
-              中国书协编辑出版委员会副主任，世界华人协会副理事长，
+              {{showImageList[showImageIndex].name}} {{showImageList[showImageIndex].info}}
             </div>
           </div>
         </div>
         <div class="btns-wrap">
-          <div class="btn">
+          <div class="btn" @click="preimage">
             <img :src="arrowLeft" class="arrow-left">
           </div>
-          <div class="btn">
+          <div class="btn" @click="nextimage">
             <img :src="arrowRight" class="arrow-left">
           </div>
           <div class="btn" @click="showDetail = false">
@@ -122,9 +117,9 @@ import ZmItem from './zmItem'
 import avatarImg from '@/assets/images/avatar.jpg'
 import avatarImg2 from '@/assets/images/avatar2.jpg'
 import datu from '@/assets/images/datu.png'
-import arrowLeft from '@/assets/images/返回 (2)@2x.png'
+import arrowLeft from '@/assets/images/fhy.png'
 import arrowRight from '@/assets/images/arrowR.png'
-import allIcon from '@/assets/images/全部@2x.png'
+import allIcon from '@/assets/images/qbu.png'
 import CenterContent from './centerContent'
 import RightContent from './rightContent'
 import MedalItem from './medaltem'
@@ -148,6 +143,8 @@ export default {
       leftHeaderRfTitle,
       leftFooterTitle,
       moreIcon,
+      showImageList:[],
+      showImageIndex:0,
       swiperOptions: {
         loop: true,
         autoplay: {
@@ -176,8 +173,15 @@ export default {
     }
   },
   methods: {
-    laomoClick() {
-      this.dialogTile = '劳模榜'
+    nextimage(){
+      if(this.showImageIndex<this.showImageList.length-1) this.showImageIndex+=1
+    },
+    preimage(){
+      if(this.showImageIndex>0) this.showImageIndex-=1
+    },
+    laomoClick(list,title) {
+      this.dialogTile = title
+      this.showImageList = list
       this.dialogVisible = true
       this.itemLeng = 3
     },
@@ -186,13 +190,17 @@ export default {
       this.dialogVisible = true
       this.itemLeng = 3
     },
-    viewDetail() {
+    viewDetail(index) {
+      this.showImageIndex = index
       this.showDetail = true
       this.detailDialogTitle = '劳模大图'
     },
-    handleClick() {
+    handleClick(list,index,title) {
       this.dialogTile = '劳模榜'
-      this.dialogVisible = true
+      this.detailDialogTitle = title
+      this.showImageList = list
+      this.showImageIndex = index
+      this.showDetail = true
       this.itemLeng = 9
     },
     zmItemClick() {

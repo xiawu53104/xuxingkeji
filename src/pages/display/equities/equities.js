@@ -84,19 +84,19 @@ export const option = (item) => {
       },
       data: [
         {
-          value: 45,
+          value: 3,
           name: '液压油'
         },
         {
-          value: 30,
+          value: 3,
           name: '氮气罐'
         },
         {
-          value: 17,
+          value: 2,
           name: '弱酸洗池'
         },
         {
-          value: 23,
+          value: 2,
           name: '油漆'
         },
         // {
