@@ -67,9 +67,9 @@
             </el-select>
           </el-form-item>
           <el-form-item >
-            <el-select v-model="formInline.isSpy" placeholder="是否特殊工种" style="width: 13rem;">
+            <el-select v-model="formInline.isSpy" placeholder="特殊工种" style="width: 13rem;">
               <el-option
-                v-for="item in isSpyOptions"
+                v-for="item in spyOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -101,12 +101,38 @@
         <el-table-column prop="spy" label="特殊工种"></el-table-column>
         <el-table-column prop="phone" label="职工手机号"></el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="">
-            <el-button type="text" size="small">查看详情</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="viewDetails(scope.row)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
     </DialogWithTable>
+
+    <el-dialog title="职工信息详情" :visible.sync="showEmpDetail" width="37.5rem">
+      <div class="emp-detail-wrap">
+        <div class="emp-details">
+          <div class="label item">职工姓名：</div>
+          <div class="value item">{{curShowDetailsEmp.name}}</div>
+          <div class="label item">职工性别：</div>
+          <div class="value item">{{curShowDetailsEmp.sexy}}</div>
+          <div class="label item">职工民族：</div>
+          <div class="value item">{{curShowDetailsEmp.nation}}</div>
+          <div class="label item">职工籍贯：</div>
+          <div class="value item">{{curShowDetailsEmp.jiguan}}</div>
+          <div class="label item">职工部门：</div>
+          <div class="value item">{{curShowDetailsEmp.department}}</div>
+          <div class="label item">职工职位：</div>
+          <div class="value item">{{curShowDetailsEmp.position}}</div>
+          <div class="label item">职工工种：</div>
+          <div class="value item">{{curShowDetailsEmp.position}}</div>
+          <div class="label item no-btm-b">职工手机：</div>
+          <div class="value item no-btm-b">{{curShowDetailsEmp.phone}}</div>
+        </div>
+        <div class="emp-img">
+          <img :src="userImg">
+        </div>
+      </div>
+    </el-dialog>
 
     <el-dialog title="情绪识别记录列表" width="79.875rem"
       :visible.sync="logDialogVisible">
@@ -260,14 +286,14 @@ import historyOption from './employeeHsitory'
 import RightContent from './rightContent'
 import arrowIcon from '@/assets/images/下 拉_1@2x.png'
 import avatarImg from '@/assets/images/avatar.jpg'
+import userImg from '@/assets/images/user.png'
 import DialogWithTable from '@/components/dialogWithTable/index'
 import LogItem from './logItem'
 import * as service from '../apis'
-import { departmentMap, getEmotionList } from '../user'
+import { getEmotionList } from '../user'
 import Util from '@/common/utils'
-import totalUsers from './emp'
+import totalUsers, { departmentList, spyList } from './emp'
 
-// const totalUsers = getEmotionList()
 const totalEmotionList = getEmotionList()
 const logItems = [
   { name: '张三', department: '技术部', position: '检修工', result: '平静', time: '2020-09-15 08:24:15' },
@@ -291,7 +317,7 @@ export default {
         }
       },
       reportItems: [
-        { id: 1, count: 10392, title: '企业总人数', colorType: 'bule' },
+        { id: 1, count: totalUsers.length, title: '企业总人数', colorType: 'bule' },
         { id: 2, count: 2873, title: '历史情绪识别', colorType: 'green' },
         { id: 3, count: 17215, title: '预警人次', colorType: 'yellow' },
       ],
@@ -303,18 +329,13 @@ export default {
       historyBg,
       historyTitleBg,
       arrowIcon,
+      userImg,
       selsctYear: new Date(),
       dialogVisible: false,
+      showEmpDetail: false,
       logDialogVisible: false,
-      departmentOptions: [
-        { value: '0', label: '技术部' },
-        { value: '1', label: '工程部' },
-        { value: '2', label: '财务部' },
-      ],
-      spyOptions: [
-        { value: '检修工', label: '检修工' },
-        { value: '切割工', label: '切割工' },
-      ],
+      departmentOptions: departmentList,
+      spyOptions: spyList,
       sexyOptions: [
         { value: '男', label: '男' },
         { value: '女', label: '女' },
@@ -349,6 +370,7 @@ export default {
       imgDialogVisible: false,
       avatarImg,
       logItemList: logItems,
+      curShowDetailsEmp: {},
     }
   },
   async mounted() {
@@ -425,8 +447,7 @@ export default {
         result = totalUsers.filter(x => x.name.includes(nameOrPhone))
       }
       if (department) {
-        const departmentName = departmentMap[department]
-        result = (result || totalUsers).filter(x => x.department.includes(departmentName))
+        result = (result || totalUsers).filter(x => x.department.includes(department))
       }
       if (spy) {
         result = (result || totalUsers).filter(x => x.spy.includes(spy))
@@ -497,8 +518,7 @@ export default {
         this.logItemList = logItems.filter(x => x.position.includes(spy))
       }
       if (department) {
-        const departmentName = departmentMap[department]
-        this.logItemList = logItems.filter(x => x.department.includes(departmentName))
+        this.logItemList = logItems.filter(x => x.department.includes(department))
       }
       if (date) {
         this.logItemList = logItems.filter(x => x.time.includes(date))
@@ -513,6 +533,10 @@ export default {
       })
       this.logItemList = logItems
     },
+    viewDetails(row) {
+      this.curShowDetailsEmp = row
+      this.showEmpDetail = true
+    }
   },
   computed: {
 
@@ -636,6 +660,41 @@ export default {
   .capture-img{
     width: 3.125rem;
     height: 3.375rem;
+  }
+  .emp-detail-wrap{
+    color: #fff;
+    font-size: 0.875rem;
+    display: flex;
+    border: 1px solid #ccc;
+    text-align: center;
+    .emp-details{
+      width: 60%;
+      display: flex;
+      flex-wrap: wrap;
+      .label{
+        width: 33.3%
+      }
+      .value{
+        width: 66.6%
+      }
+      .item{
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        padding: 0.625rem;
+      }
+      .no-btm-b{
+        border-bottom: 0;
+      }
+    }
+    .emp-img{
+      width: 40%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img{
+        width: 90%;
+      }
+    }
   }
 }
 </style>

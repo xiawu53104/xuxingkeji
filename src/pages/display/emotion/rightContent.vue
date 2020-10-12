@@ -193,14 +193,6 @@ import * as service from '../apis'
 import { getEmotionList, getHistoryLog } from '../user'
 import Util from '@/common/utils'
 
-// const getMonthDays = () => {
-//   const date = new Date()
-//   const year = date.getFullYear()
-//   const month = date.getMonth() + 1
-//   const d = new Date(year, month, 0)
-//   return d.getDate()
-// }
-
 const totalUsers = getEmotionList()
 let logListData = []
 
@@ -270,17 +262,13 @@ export default {
     async initGradeChart(type) {
       let option = Util.clone(gradeOption)
       if (type == 2) {
-        // const axis = []
-        // for (let i = 1; i <= getMonthDays(); i++) {
-        //   axis.push(i)
-        // }
-        const m = new Date().getMonth()
-        option.xAxis.data = [`${m + 1}月`]
+        // const m = new Date().getMonth()
+        // option.xAxis.data = [`${m + 1}月`]
       }
-      const rawData = await service.getPsychology()
-      if (type == 2) {
-        option.series[0].data = rawData.data.trend.map(x => x.avg)
-      }
+      // const rawData = await service.getPsychology()
+      // if (type == 2) {
+      //   option.series[0].data = rawData.data.trend.map(x => x.avg)
+      // }
       this.chart.setOption(option)
       const that = this
       this.chart.on('click', 'series.line', function() {
